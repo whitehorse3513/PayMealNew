@@ -1,0 +1,17 @@
+body {
+  background-color: black !important;
+}
+
+ons-pull-hook,
+.iphonex_margin
+{
+margin: 13px auto auto !important;
+}
+
+ons-action-sheet{
+margin-bottom:-20px !important;
+}
+
+.action-sheet--filter_sheet{
+height:500px !important;
+}

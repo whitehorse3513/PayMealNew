@@ -1,0 +1,88 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {
+            "*-Info.plist": {
+                "parents": {
+                    "NSCameraUsageDescription": [
+                        {
+                            "xml": "<string>Enable PayMeal to access your camera to take photos of you and to save as profile picture.</string>",
+                            "count": 1,
+                            "mode": "merge",
+                            "id": "config.xml"
+                        }
+                    ],
+                    "NSPhotoLibraryUsageDescription": [
+                        {
+                            "xml": "<string>Enable PayMeal to access your photo library to get pictures from there.</string>",
+                            "count": 1,
+                            "mode": "merge",
+                            "id": "config.xml"
+                        }
+                    ],
+                    "NSLocationWhenInUseUsageDescription": [
+                        {
+                            "xml": "<string>This allows us to use your location to find restaurant nearby.</string>",
+                            "count": 1,
+                            "mode": "merge",
+                            "id": "config.xml"
+                        }
+                    ],
+                    "NSLocationAlwaysAndWhenInUseUsageDescription": [
+                        {
+                            "xml": "<string>This allows us to use your location to provide you a nearby restaurant, and to facilitate more accurately, keeping you in the loop about PayMeal.</string>",
+                            "count": 1,
+                            "mode": "merge",
+                            "id": "config.xml"
+                        }
+                    ],
+                    "NSLocationAlwaysUsageDescription": [
+                        {
+                            "xml": "<string>This allows us to use your location to find restaurant nearby.</string>",
+                            "count": 1,
+                            "mode": "merge",
+                            "id": "config.xml"
+                        }
+                    ],
+                    "NSPhotoLibraryAddUsageDescription": [
+                        {
+                            "xml": "<string>Enable PayMeal to access your photo library to save pictures there.</string>",
+                            "count": 1,
+                            "mode": "merge",
+                            "id": "config.xml"
+                        }
+                    ],
+                    "NSMicrophoneUsageDescription": [
+                        {
+                            "xml": "<string>PayMeal need microphone access to record sounds</string>",
+                            "count": 1,
+                            "mode": "merge",
+                            "id": "config.xml"
+                        }
+                    ],
+                    "NSBluetoothAlwaysUsageDescription": [
+                        {
+                            "xml": "<string>This allows us to facilitate more accurately, keeping you in the loop about PayMeal.</string>",
+                            "count": 1,
+                            "mode": "merge",
+                            "id": "config.xml"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "installed_plugins": {
+        "com.cmackay.plugins.googleanalytics": {
+            "PACKAGE_NAME": "com.paymeal"
+        }
+    },
+    "dependent_plugins": {},
+    "modules": [],
+    "plugin_metadata": {
+        "com.cmackay.plugins.googleanalytics": "1.0.4"
+    }
+}

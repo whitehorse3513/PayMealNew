@@ -1,0 +1,22 @@
+{
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": {
+        "source": {
+            "type": "registry",
+            "id": "uk.co.workingedge.phonegap.plugin.launchnavigator@5.0.4"
+        },
+        "is_top_level": true,
+        "variables": {
+            "GOOGLE_API_KEY_FOR_ANDROID": ""
+        }
+    },
+    "com.cmackay.plugins.googleanalytics": {
+        "source": {
+            "type": "registry",
+            "id": "com.cmackay.plugins.googleanalytics@1.0.4"
+        },
+        "is_top_level": true,
+        "variables": {
+            "ANALYTICS_VERSION": "11.0.1"
+        }
+    }
+}

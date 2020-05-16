@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget xmlns = "http://www.w3.org/ns/widgets"
+    xmlns:gap = "http://phonegap.com/ns/1.0"
+    xmlns:android = "http://schemas.android.com/apk/res/android"
+    id        = "com.paymeal"
+    versionCode = "1.2"
+    version   = "1.2">
+    <name>PayMeal</name>
+    <description>
+        PayMeal
+    </description>
+    <author email="pivotdesignmedia@gmail.com" href="http://paymeal.app">
+        paymeal.app
+    </author>
+            
+    <content src="index.html" />
+               
+	<preference name="orientation" value="portrait" />		
+	<preference name="phonegap-version" value="cli-8.1.1" />	
+			    
+	<preference name="AutoHideSplashScreen" value="false" />  	
+    <preference name="SplashScreenDelay" value="0" />    
+    <preference name="fullscreen" value="false" />        
+    <preference name="ShowSplashScreenSpinner" value="false" />	   
+        
+    <preference name="android-minSdkVersion" value="19" />    
+    <preference name="android-targetSdkVersion" value="28" />
+    <preference name="DisallowOverscroll" value="true" />            
+    
+    <gap:plugin name="cordova-plugin-whitelist" source="npm" />	   
+    <gap:plugin name="cordova-plugin-device" source="npm" />		
+	<gap:plugin name="cordova-plugin-inappbrowser" source="npm" />		
+	<gap:plugin name="cordova-plugin-splashscreen" source="npm" />	
+	<gap:plugin name="cordova-plugin-geolocation" source="npm" />
+	<gap:plugin name="cordova-plugin-network-information" source="npm" />
+	    
+    <gap:plugin name="phonegap-plugin-push" source="npm" spec="2.1.2"  />
+            
+    <gap:plugin spec="https://github.com/bastikikang/cordova-plugin-request-location-accuracy" source="git">    
+      <variable name="PLAY_SERVICES_VERSION" value="11.0.1" /> 
+    </gap:plugin>
+    
+    <gap:plugin name="cordova-plugin-x-toast" source="npm" spec="2.7.0" />         
+        
+    <!--<gap:plugin spec="https://github.com/razorpay/razorpay-cordova.git#v1.4.3" source="git" />-->
+    
+    <gap:plugin name="cordova-plugin-media" source="npm" spec="5.0.2" />
+    <gap:plugin name="cordova.plugins.diagnostic" source="npm" spec="4.0.0" />
+    <gap:plugin name="cordova-plugin-buildinfo" source="npm" spec="2.0.1"  />
+    <gap:plugin name="cordova-plugin-camera" source="npm" spec="2.4.1" />
+    <gap:plugin name="cordova-plugin-file-transfer" source="npm" spec="1.7.1" /> 
+                       
+    <gap:plugin name="cordova-plugin-googleplus" source="npm" spec="7.0.2"  >    
+	  <variable name="REVERSED_CLIENT_ID" value="" />
+	  <variable name="PLAY_SERVICES_VERSION" value="11.0.1" /> 
+	</gap:plugin>
+	
+      
+	<gap:plugin name="cordova-plugin-facebook4" source="npm"  spec="5.0.0" >
+	  <variable name="APP_ID" value="2716575325030499" />
+	  <variable name="APP_NAME" value="PayMeal" />
+	</gap:plugin>	
+	
+		
+	<plugin name="uk.co.workingedge.phonegap.plugin.launchnavigator" source="npm" spec="5.0.4" >
+       <variable name="GOOGLE_API_KEY_FOR_ANDROID" value="AIzaSyBMGEAp9dZ242jLnqDMo525r1g2EWQqfaI" />
+    </plugin>
+	
+	<plugin name="com.cmackay.plugins.googleanalytics" source="npm" spec="1.0.4" >	
+	   <variable name="ANALYTICS_VERSION" value="11.0.1" /> 
+	</plugin>
+	
+	<gap:plugin name="com-sarriaroman-photoviewer" source="npm"  /> 
+	
+	<gap:plugin name="cordova-plugin-x-socialsharing" source="npm" spec="5.4.6" > 
+	   <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="PayMeal will use your photo library" /> 
+	   <variable name="PHOTO_LIBRARY_ADD_USAGE_DESCRIPTION" value="PayMeal saves images of your photo library" /> 
+	</gap:plugin>
+		
+	<!--ENABLED THIS PLUGIN ONLY FOR IOS-->
+   <gap:plugin name="cordova-plugin-ionic-webview" source="npm" spec="4.1.1" />
+    <gap:plugin name="cordova-plugin-ionic-keyboard" source="npm" spec="2.2.0" />
+	
+	<!--END OF PLUGIN-->
+	    	
+    <access origin="*" />
+    <access origin="tel:*" launch-external="yes" />
+       
+    <gap:config-file platform="android" parent="/manifest">
+        <supports-screens android:xlargeScreens="true" android:largeScreens="true" android:smallScreens="true" />
+        <application android:theme="@android:style/Theme.NoTitleBar" >            
+        </application>        
+    </gap:config-file> 
+    	                    
+
+    <platform name="ios">    
+	    <config-file platform="ios" target="*-Info.plist" parent="NSLocationAlwaysUsageDescription">
+	        <string>This allows us to use your location to provide you a nearby restaurant, and to facilitate more accurately, keeping you in the loop about Karenderia.</string>
+	    </config-file>
+	    <config-file platform="ios" target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
+	        <string>This allows us to use your location to provide you a nearby restaurant, and to facilitate more accurately, keeping you in the loop about PayMeal.</string>
+	    </config-file>
+	</platform>   
+	
+	<edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
+    <string>Enable PayMeal to access your camera to take photos of you and to save as profile picture.</string>
+	</edit-config>
+	
+	<edit-config target="NSPhotoLibraryUsageDescription" file="*-Info.plist" mode="merge">
+	    <string>Enable PayMeal to access your photo library to get pictures from there.</string>
+	</edit-config>
+	
+	<edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
+	    <string>This allows us to use your location to find restaurant nearby.</string>
+	</edit-config>
+	
+	<edit-config target="NSLocationAlwaysAndWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
+	    <string>This allows us to use your location to provide you a nearby restaurant, and to facilitate more accurately, keeping you in the loop about PayMeal.</string>
+	</edit-config>
+	
+	<edit-config target="NSLocationAlwaysUsageDescription" file="*-Info.plist" mode="merge">
+	    <string>This allows us to use your location to find restaurant nearby.</string>
+	</edit-config>
+	
+	<edit-config target="NSPhotoLibraryAddUsageDescription" file="*-Info.plist" mode="merge">
+	    <string>Enable PayMeal to access your photo library to save pictures there.</string>
+	</edit-config>
+	
+	<edit-config target="NSMicrophoneUsageDescription" file="*-Info.plist" mode="merge">
+      <string>PayMeal need microphone access to record sounds</string>
+    </edit-config>        
+    
+    <edit-config target="NSBluetoothAlwaysUsageDescription" file="*-Info.plist" mode="merge">
+      <string>This allows us to facilitate more accurately, keeping you in the loop about PayMeal.</string>
+    </edit-config>   
+    
+	<platform name="android">
+		           
+		<edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
+		   <application android:usesCleartextTraffic="true" />
+		</edit-config>
+		
+	    <resource-file src="www/beep.wav" target="app/src/main/res/raw/beep.wav" />
+	    <resource-file src="www/beep.wav" target="res/raw/beep.wav" /> 	    
+	    
+	    <resource-file src="google-services.json" target="google-services.json" />
+	    <resource-file src="google-services.json" target="app/google-services.json" />
+	
+		<icon density="ldpi" src="res/icons/android/drawable-ldpi-icon.png" />
+		<icon density="mdpi" src="res/icons/android/drawable-mdpi-icon.png" />
+		<icon density="hdpi" src="res/icons/android/drawable-hdpi-icon.png" />
+		<icon density="xhdpi" src="res/icons/android/drawable-xhdpi-icon.png" />
+		<icon density="xxhdpi" src="res/icons/android/drawable-xxhdpi-icon.png" />
+		<icon density="xxxhdpi" src="res/icons/android/drawable-xxxhdpi-icon.png" />
+		
+		<splash density="land-ldpi" src="res/screens/android/drawable-land-ldpi-screen.png" />
+		<splash density="land-mdpi" src="res/screens/android/drawable-land-mdpi-screen.png" />
+		<splash density="land-hdpi" src="res/screens/android/drawable-land-hdpi-screen.png" />
+		<splash density="land-xhdpi" src="res/screens/android/drawable-land-xhdpi-screen.png" />
+		<splash density="land-xxhdpi" src="res/screens/android/drawable-land-xxhdpi-screen.png" />
+		<splash density="land-xxxhdpi" src="res/screens/android/drawable-land-xxxhdpi-screen.png" />
+		<splash density="port-ldpi" src="res/screens/android/drawable-port-ldpi-screen.png" />
+		<splash density="port-mdpi" src="res/screens/android/drawable-port-mdpi-screen.png" />
+		<splash density="port-hdpi" src="res/screens/android/drawable-port-hdpi-screen.png" />
+		<splash density="port-xhdpi" src="res/screens/android/drawable-port-xhdpi-screen.png" />
+		<splash density="port-xxhdpi" src="res/screens/android/drawable-port-xxhdpi-screen.png" />
+		<splash density="port-xxxhdpi" src="res/screens/android/drawable-port-xxxhdpi-screen.png" />
+	</platform>
+	
+	<platform name="ios">
+		
+	    <allow-intent href="tel:*" />
+	    
+	    <resource-file src="GoogleService-Info.plist" /> 	    
+	    <resource-file src="www/beep.wav" />
+	
+		<icon height="57" platform="ios" src="res/icons/ios/icon.png" width="57" />
+		<icon height="114" platform="ios" src="res/icons/ios/icon@2x.png" width="114" />
+		<icon height="40" platform="ios" src="res/icons/ios/icon-40.png" width="40" />
+		<icon height="80" platform="ios" src="res/icons/ios/icon-40@2x.png" width="80" />
+		<icon height="50" platform="ios" src="res/icons/ios/icon-50.png" width="50" />
+		<icon height="100" platform="ios" src="res/icons/ios/icon-50@2x.png" width="100" />
+		<icon height="60" platform="ios" src="res/icons/ios/icon-60.png" width="60" />
+		<icon height="120" platform="ios" src="res/icons/ios/icon-60@2x.png" width="120" />
+		<icon height="180" platform="ios" src="res/icons/ios/icon-60@3x.png" width="180" />
+		<icon height="72" platform="ios" src="res/icons/ios/icon-72.png" width="72" />
+		<icon height="144" platform="ios" src="res/icons/ios/icon-72@2x.png" width="144" />
+		<icon height="76" platform="ios" src="res/icons/ios/icon-76.png" width="76" />
+		<icon height="152" platform="ios" src="res/icons/ios/icon-76@2x.png" width="152" />
+		<icon height="167" platform="ios" src="res/icons/ios/icon-167.png" width="167" />
+		<icon height="29" platform="ios" src="res/icons/ios/icon-small.png" width="29" />
+		<icon height="58" platform="ios" src="res/icons/ios/icon-small@2x.png" width="58" />
+		<icon height="87" platform="ios" src="res/icons/ios/icon-small@3x.png" width="87" />
+		
+		<icon height="1024" platform="ios" src="res/icons/ios/icon-1024.png" width="1024" />
+		
+		<splash height="1136" platform="ios" src="res/screens/ios/Default-568h@2x~iphone.png" width="640" />
+		<splash height="1334" platform="ios" src="res/screens/ios/Default-667h.png" width="750" />
+		<splash height="2208" platform="ios" src="res/screens/ios/Default-736h.png" width="1242" />
+		<splash height="1242" platform="ios" src="res/screens/ios/Default-Landscape-736h.png" width="2208" />
+		<splash height="1536" platform="ios" src="res/screens/ios/Default-Landscape@2x~ipad.png" width="2048" />
+		<splash height="768" platform="ios" src="res/screens/ios/Default-Landscape~ipad.png" width="1024" />
+		<splash height="2048" platform="ios" src="res/screens/ios/Default-Portrait@2x~ipad.png" width="1536" />
+		<splash height="1024" platform="ios" src="res/screens/ios/Default-Portrait~ipad.png" width="768" />
+		<splash height="960" platform="ios" src="res/screens/ios/Default@2x~iphone.png" width="640" />
+		<splash height="480" platform="ios" src="res/screens/ios/Default~iphone.png" width="320" />
+		
+		<!--iPHONE X-->
+		<splash height="1334" platform="ios" src="res/screens/ios/Default@2x~iphone~anyany.png" width="1334" />
+		<splash height="1334" platform="ios" src="res/screens/ios/Default@2x~iphone~comany.png" width="750" />
+		<splash height="750" platform="ios" src="res/screens/ios/Default@2x~iphone~comcom.png" width="750" />
+		
+		<splash height="2436" platform="ios" src="res/screens/ios/Default@3x~iphone~anyany.png" width="2436"  />
+		<splash height="1242" platform="ios" src="res/screens/ios/Default@3x~iphone~anycom.png" width="2436" />
+		<splash height="2436" platform="ios" src="res/screens/ios/Default@3x~iphone~comany.png" width="1242" />
+		
+		<splash height="2732" platform="ios" src="res/screens/ios/Default@2x~ipad~anyany.png" width="2732" />
+		<splash height="2732" platform="ios" src="res/screens/ios/Default@2x~ipad~comany.png" width="1278"  />
+		
+        
+				
+	</platform>  
+ 	       
+</widget>

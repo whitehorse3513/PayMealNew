@@ -1,0 +1,15 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "com.cmackay.plugins.googleanalytics": {
+            "PACKAGE_NAME": "com.paymeal"
+        }
+    },
+    "dependent_plugins": {}
+}

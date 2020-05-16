@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "90629548670",
+    "firebase_url": "https://paymeal-8aff4.firebaseio.com",
+    "project_id": "paymeal",
+    "storage_bucket": "paymeal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:90629548670:android:885661b4526f6fbc93062f",
+        "android_client_info": {
+          "package_name": "com.paymeal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "90629548670-1knij5al2oh3ur9hut44v48nk4g3dsec.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDffnO204ofMDa26lE6z1o1lrcPgs0Kzp0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "90629548670-1knij5al2oh3ur9hut44v48nk4g3dsec.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
