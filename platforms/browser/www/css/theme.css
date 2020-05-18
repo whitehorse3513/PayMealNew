@@ -28,7 +28,7 @@
 
 #stic_app_name {margin: 0 0 20px;}
 
-h3 {text-shadow: 1px 0 #2E3B49;/* text-shadow: 0px 1px, 1px 0px, 1px 1px; */}
+h3 {text-shadow: 1px 0 #AD470A;/* text-shadow: 0px 1px, 1px 0px, 1px 1px; */}
 
 .stic-lateral-wrap {margin: 0 20px;}
 .stic-lateral-wrap-fix {margin: 0 15px;}
@@ -136,7 +136,7 @@ background: transparent;
 .stic-header-icon {
 margin-right: 25px;
 font-size: 18px;
-color: #2E3B49;
+color: #AD470A;
 }
 
 .search_wrap2 .form_wrapper ons-input {
@@ -156,11 +156,11 @@ padding-left: 20px;
 
 .stic-title {padding: 30px 20px 15px;display: flex;}
 
-.stic-title .main {font-size: 18px;font-weight: 700;color: #2E3B49;}
+.stic-title .main {font-size: 18px;font-weight: 700;color: #AD470A;}
 
 .stic-title .min {font-size: 13px;color: #626573;white-space: nowrap;}
 
-.stic-title ons-icon {margin-right: 25px;font-size: 16px;color: #2E3B49;}
+.stic-title ons-icon {margin-right: 25px;font-size: 16px;color: #AD470A;}
 
 .home-title {width: 100%; display: flex;}
 
@@ -211,7 +211,7 @@ margin-bottom: 0;
 .all_restaurant_wrapper .gold-color {padding: 0 5px 0 2px;}
 .all_restaurant_wrapper .green_tag.open {top: 20px;}
 
-.stic-score {display: inline-block;/* font-weight: bold; */font-size: 16px;letter-spacing: 1px;color: #2E3B49;margin-left: 5px;}
+.stic-score {display: inline-block;/* font-weight: bold; */font-size: 16px;letter-spacing: 1px;color: #AD470A;margin-left: 5px;}
 
 /*.logo-col {}*/
 
@@ -499,16 +499,16 @@ border-radius: 3px;
 .pb20 {padding-bottom: 20px;}
 .h70 {height: 70px;}
 
-ons-pull-hook {background: #f8f8f8; color: #2E3B49; font-size: 10px !important; letter-spacing: 1px; text-transform: uppercase;}
+ons-pull-hook {background: #f8f8f8; color: #AD470A; font-size: 10px !important; letter-spacing: 1px; text-transform: uppercase;}
 
-#home ons-toolbar {background: #2E3B49;/* height: 35px; */z-index: 1;overflow: visible;}
+#home ons-toolbar {background: #AD470A;/* height: 35px; */z-index: 1;overflow: visible;}
 #home ons-pull-hook {height: 40px !important;line-height: 40px !important; color: #fff;}
-#home .page--material__background {background: #2E3B49;}
+#home .page--material__background {background: #AD470A;}
 
 
 .reviews-qty {display: none;letter-spacing: 1px;font-size: 14px;}
 
-.home-search-section {background: #2E3B49;position: relative;height: 23px;}
+.home-search-section {background: #AD470A;position: relative;height: 23px;}
 
 .home-search-section ons-input {
     margin: 0 20px;
@@ -539,13 +539,13 @@ ons-pull-hook {background: #f8f8f8; color: #2E3B49; font-size: 10px !important; 
 .hatake {color:#40C15A;}
 
 .darkblue,
-.active .tabbar--material__button {color: #2E3B49;}
+.active .tabbar--material__button {color: #AD470A;}
 
-.darkblue-bg {background: #2E3B49;}
+.darkblue-bg {background: #AD470A;}
 
 .white {color: #fff;}
 
-.stic-reload {background: #2E3B49;color: #fff;border:none;font-size: 14px;}
+.stic-reload {background: #AD470A;color: #fff;border:none;font-size: 14px;}
 
 .address-line {
     margin-top: -1px;
@@ -612,7 +612,7 @@ opacity: 0.6;
 .no_order_wrap h4 {
     font-size: 20px;
     font-weight: bold;
-    color: #2E3B49;
+    color: #AD470A;
     margin: 20px auto 5px auto;
 }
 .no_order_wrap p {
@@ -620,7 +620,7 @@ opacity: 0.6;
 }
 
 .home-user-section {
-    background: #2E3B49;
+    background: #AD470A;
     padding: 20px 0 10px;
 }
 .home-user-section span {
@@ -666,7 +666,7 @@ padding: 0 20px;
     display: none;
 }
 
-.stic-profile-header h5 {margin: 0;font-size: 24px;font-weight: bold;text-shadow: 1px 0 #2E3B49;color: #2E3B49;letter-spacing: 0.5px;}
+.stic-profile-header h5 {margin: 0;font-size: 24px;font-weight: bold;text-shadow: 1px 0 #AD470A;color: #AD470A;letter-spacing: 0.5px;}
 
 .stic-profile-header p {
     padding: 0;
@@ -692,7 +692,7 @@ padding: 0 20px;
 .frm_profile .text-input--material {
     font-size: 22px;
     font-weight: bold;
-    color: #2E3B49;
+    color: #AD470A;
     text-shadow: 0px 0.5px, 0.5px 0px, 0.5px 0.5px;
 }
 
@@ -784,13 +784,13 @@ background: #fcfcfc;
     letter-spacing: 0;
 }
 
-.stic-date-header .dot {margin: 0 5px 0 0;font-size: 24px !important;text-shadow: 1px 0 #2E3B49;}
+.stic-date-header .dot {margin: 0 5px 0 0;font-size: 24px !important;text-shadow: 1px 0 #AD470A;}
 
 .stic-date-header .main{display: inline-block;}
 
 .stic-date-header .min{font-weight: normal;letter-spacing: 0.5px;font-size: 14px;margin: 3px 5px 0px;display: inline-block;}
 
-.stic-date-header .main p {display: inline;color: #2E3B49;font-size: 18px;}
+.stic-date-header .main p {display: inline;color: #AD470A;font-size: 18px;}
 
 .stic-date-header .min .at {}
 .stic-date-header .min .order-time {
@@ -819,7 +819,7 @@ background: #fcfcfc;
 
 .order_details_wrap ons-row ons-col:first-child {
 font-weight: bold;
-color: #2E3B49;
+color: #AD470A;
 }
 
 .order_details_wrap ons-row{padding: 5px 0;}
@@ -828,13 +828,13 @@ color: #2E3B49;
 .item-order-list {
 }
 .item-order-list p {
-    color: #2E3B49;
+    color: #AD470A;
 }
 
 .summary-wrap .row .text-right:first-child {
 text-align: left !important;
 font-weight: bold;
-color: #2E3B49;
+color: #AD470A;
 }
 
 .summary-wrap .row .text-right:nth-child(2) {
@@ -967,7 +967,7 @@ height: 50px;
 .search_type {position: absolute;top: 10px;right: 20px;}
 
 .fill-white .back-button--material__icon{fill: #fff;}
-.fill-black {fill: #2E3B49 !important;}
+.fill-black {fill: #AD470A !important;}
 
 .min-offers-carousel {}
 .min-offers-carousel .content{
@@ -1023,14 +1023,14 @@ color: #c2c4cc;
 .stic-restaurant-title {
 font-size: 24px !important;
 display: inline-block;
-text-shadow: 1px 0 #2E3B49;
+text-shadow: 1px 0 #AD470A;
 }
 
 .stic-item-title {
 font-size: 24px !important;
 display: inline-block;
-text-shadow: 1px 0 #2E3B49;
-color: #2E3B49;
+text-shadow: 1px 0 #AD470A;
+color: #AD470A;
 margin: 0 !important;
 font-weight: bold !important;
 }
@@ -1107,7 +1107,7 @@ display: inline-block;
 
 .stic-standart-bold {
 font-size: 18px;
-color: #2E3B49;
+color: #AD470A;
 font-weight: bold;
 letter-spacing: 0;
 }
@@ -1136,7 +1136,7 @@ margin: 0;
 }
 
 .stic-item price {
-color: #2E3B49;
+color: #AD470A;
 margin-right: 10px;   
 }
 
@@ -1177,7 +1177,7 @@ color: #c2c4cc;
 
 .item-list-header {
 font-size: 18px;
-color: #2E3B49 !important;
+color: #AD470A !important;
 background: none !important;
 border-bottom: .75px solid #edeefc;
 padding: 0;
@@ -1332,7 +1332,7 @@ margin: 25% auto auto;
 #contact_us_ty .small {margin: 0 50px !important;}
 
 .stic-item-wrap price {
-color: #2E3B49;
+color: #AD470A;
 font-weight: bold;
 margin-bottom: 15px;
 }
@@ -1340,7 +1340,7 @@ margin-bottom: 15px;
 .cart_merchant_name h3 {
 font-size: 24px;
 font-weight: bold;
-color: #2E3B49;
+color: #AD470A;
 }
 
 .item-details-row {
@@ -1506,7 +1506,7 @@ top: 5px;
 right: 20px;
 border: none;
 padding: 0; 
-color: #2E3B49; 
+color: #AD470A; 
 }
 
 .RTL .stic_rtl_right {
