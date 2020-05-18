@@ -75,7 +75,7 @@
     </plugin>
 	
 	<plugin name="com.cmackay.plugins.googleanalytics" source="npm" spec="1.0.4" >	
-	   <variable name="ANALYTICS_VERSION" value="11.0.1" /> 
+	   <variable name="ANALYTICS_VERSION" value="11.8.0" /> 
 	</plugin>
 	
 	<gap:plugin name="com-sarriaroman-photoviewer" source="npm"  /> 
