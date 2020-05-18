@@ -4,12 +4,13 @@
   <title></title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />  
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-
+  <!--<meta name="viewport" content="initial-scale=1, width=device-width, height=device-height, viewport-fit=cover">-->
   <link rel="stylesheet" href="lib/onsen/css/onsenui.min.css" />
   <link rel="stylesheet" href="lib/onsen/css/onsen-css-components.min.css" />  
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet" /> 
+  <link href="//fonts.googleapis.com/css?family=Merriweather:300,300i,400,400i,700,700i,900,900i" rel="stylesheet" />
   <link rel="stylesheet" href="lib/raty/jquery.raty.css" />
   <link rel="stylesheet" href="css/app.css?ver=1.0" />
-  <link rel="stylesheet" href="css/theme.css?ver=1.0" />
   
   <ons-if platform="ios">    
     <style type="text/css">
@@ -18,7 +19,7 @@
   </ons-if>
 
   <script src="lib/onsen/js/onsenui.min.js"></script>
-  <script src="lib/jquery-v3.4.1.js"></script>  
+  <script src="lib/jquery-v3.3.1.js"></script>  
   <script type="text/javascript" src="cordova.js"></script>   
     
   <script src="lib/raty/jquery.raty.js"></script>
@@ -35,6 +36,16 @@
   <script src="lib/snazzy-info-window/snazzy-info-window.min.js"></script>
   <link rel="stylesheet" href="lib/snazzy-info-window/snazzy-info-window.min.css">
   
+  
+  <script src="lib/leaflet/leaflet.js"></script>
+  <link href="lib/leaflet/leaflet.css" rel="stylesheet" type="text/css" />
+
+  <script src="lib/leaflet/plugin/routing/leaflet-routing-machine.min.js"></script>
+  <link href="lib/leaflet/plugin/routing/leaflet-routing-machine.css" rel="stylesheet" type="text/css" />
+
+  <script src="lib/leaflet/plugin/geocoder/mapbox-gl-geocoder.min.js"></script>
+  <link href="lib/leaflet/plugin/geocoder/mapbox-gl-geocoder.css" rel="stylesheet" type="text/css" />
+
   <link href="lib/skeleton.css" rel="stylesheet" type="text/css" />
     
   <script src="lib/jquery.webui-popover/jquery.webui-popover.min.js"></script>
@@ -48,10 +59,10 @@
 <body>
 
 <ons-modal id="default_loader" direction="up">
-  <div class="stic-loader" id="stic-loader-4">
-    <span></span>
-    <span></span>
-    <span></span>
+  <div style="text-align: center">
+    <p>
+      <ons-icon icon="md-spinner" size="28px" spin></ons-icon>
+    </p>
   </div>
 </ons-modal>
 
@@ -344,12 +355,12 @@
 
 
 <template id="page_startup.html">
-  <ons-page id="page_startup" modifier="food_bg is_rtl" >
+  <ons-page id="page_startup" modifier="food_bg" >
       
    <div class="dim_background">
    
-     <h2 class="app_title">KARENDERIA</h2>
-     <p class="to_text_white trn">Order food from local restaurant</p>
+     <h2 class="app_title">PayMeal</h2>
+     <p class="to_text_white trn">We bring the Caribbean food to you!</p>
  
       
 	<ons-bottom-toolbar modifier="bottom_toolbar1">
@@ -357,19 +368,9 @@
 	    <span class="trn">Let's Go</span>
 	  </ons-button>
 	  </p>
-	  
-	  <p>
 	  <ons-button modifier="quiet to_text_white" onclick="showPage('login.html')" >
 	  <span class="trn">Already a member? Sign in</span>
 	  </ons-button>
-	  </p>
-	  
-	  <p>
-	  <ons-button modifier="quiet to_text_white" onclick="skip('map_select_location.html');" >
-	  <span class="trn">SKIP</span>
-	  </ons-button>
-	  </p>
-	  
 	</ons-bottom-toolbar>
    
     
@@ -383,39 +384,38 @@
   <ons-page id="page_startup2" modifier="page_white" class="image_loaded" >
       
   
-   <input type="hidden" name="startup_banner_index" class="startup_banner_index" id="startup_banner_index" value="0">
-  
    <div class="startup_carousel">  
    </div> <!--startup_carousel-->
     
-   <div class="startup_carousel_text"></div>
+   <ons-bottom-toolbar modifier="bottom_toolbar1">    
+      <p class="small trn">Ready to order from restaurant?</p>
+       
+	  <p><ons-button modifier="large normal_large to_orange" onclick="showPage('create_account.html')" >
+	    <span class="trn">Let's Go</span>
+	  </ons-button>
+	  </p>
+	  <ons-button modifier="quiet grey_color" onclick="showPage('login.html')" >
+	  <span class="trn">Already a member? Sign in</span>
+	  </ons-button>
+   </ons-bottom-toolbar>
    
   </ons-page>
 </template>
 
 <template id="login.html">
-   <ons-page id="login" modifier="page_white is_rtl" >
+   <ons-page id="login" modifier="page_white" >
        
   <ons-back-button modifier="fixed_back_button">Back</ons-back-button> 
     
-   <div id="height_fix"></div>
-
+  
    <div class="cream_header">
-    <div class="stic-lateral-wrap">
-
-      <ons-row>
-         <ons-col class="stic-half-col float-l" width="80%">
-            <h3 class="trn">Sign In</h3>
-         </ons-col>
-         <ons-col class="stic-half-col float-r flex" width="55px">
-            <span class="stic-book stic-uppercase stic-login trn" onclick="replacePage('create_account.html')">Sign Up</span>
-         </ons-col>  
-      </ons-row>
-
+    <div class="wrap">
+     <h3 class="trn">SIGN IN</h3>  
      <p class="small trn">Log in using your email address or mobile</p>
      <ons-button modifier="skip_button quiet" onclick="skip('map_select_location.html')"  >
-       <span class="darkblue trn">Sign in later</span>
+       <span class="trn">Sign in later</span>
      </ons-button>
+     <img src="images/juice2.png">
     </div>
    </div>
    <!--cream_header-->
@@ -425,65 +425,64 @@
    
    <ons-list id="login_list">
     <ons-list-item>        
-      <div class="center">
-        <ons-input type="text" name="user_mobile" id="user_mobile" class="user_mobile" required modifier="transparent" placeholder="Mobile number or Email" float ></ons-input>
-        <img class="stic-icon" src="lib/icons/mail.svg" onerror="this.src='mail.png'">
-        </div>
+       <div class="center"><ons-input type="text" name="user_mobile" id="user_mobile" class="user_mobile" required modifier="transparent" placeholder="Mobile number or Email" float ></ons-input></div>
     </ons-list-item>
     
    <ons-list-item>        
-      <div class="center">
-        <ons-input type="password" name="password" id="password" required modifier="transparent" placeholder="Password" float ></ons-input>
-        <img class="stic-icon" src="lib/icons/lock.svg" onerror="this.src='lock.png'">
-      </div>
+       <div class="center"><ons-input type="password" name="password" id="password" required modifier="transparent" placeholder="Password" float ></ons-input></div>
     </ons-list-item>    
- 
-   <ons-button modifier="quiet to_text_orange margin_auto" onclick="showPage('forgot_password.html')"  >
-     <span class="trn">Forgot Password?</span>
-   </ons-button>       
-
-  </ons-list>   
-
+    
+    <ons-list-item modifier="nodivider">       
+       <ons-button modifier="quiet to_text_orange margin_auto" onclick="showPage('forgot_password.html')"  >
+         <span class="trn">Forgot Password?</span>
+       </ons-button>       
+    </ons-list-item>    
+    
+    <ons-list-item modifier="nodivider pad_right">     
+      <ons-button modifier="large to_orange no_shadow" onclick="submitForm('.frm_login','customerLogin')" >
+      <span class="trn">Sign in</span>
+      </ons-button>                                      
+    </ons-list-item>
+      
+  </ons-list>    
    
    </div>
    </form>
    
-    <ons-bottom-toolbar modifier="">    
-      <ons-button modifier="large to_orange no_shadow" onclick="submitForm('.frm_login','customerLogin')" >
-        <span class="trn">Sign in</span>
-      </ons-button>
-    </ons-bottom-toolbar>
-
+    <ons-bottom-toolbar modifier="bottom_toolbar_reg" class="bt_signup">	   
+      <div class="wrap">
+	    <span class="small_text trn">First time using app?</span>
+	    <br/>
+	    <ons-button modifier="quiet to_text_orange" style="padding-left:0;" onclick="replacePage('create_account.html')" >
+           <div class="equal_table">
+             <div class="col trn" style="vertical-align:top;">Sign up now</div>
+             <div class="col"><ons-icon icon="md-chevron-right" size="25px"></ons-icon></div>
+           </div>  
+        </ons-button>   
+        
+	  </div>
+    </ons-bottom-toolbar>  
+   
+    
    </ons-page>
 </template>
 
 
 <template id="create_account.html">
- <ons-page id="create_account" modifier="page_white is_rtl" >
+ <ons-page id="create_account" modifier="page_white" >
 
   
    <ons-back-button modifier="fixed_back_button">Back</ons-back-button>
-
-   <div id="height_fix"></div>
    
    <div class="cream_header">
-    <div class="stic-lateral-wrap">
-
-      <ons-row>
-         <ons-col class="stic-half-col float-l" width="80%">
-            <h3 class="trn mr6">Register</h3>
-         </ons-col>
-         <ons-col class="stic-half-col float-r flex" width="55px">
-            <span class="stic-book stic-uppercase stic-login trn" onclick="replacePage('login.html')">Sign In</span>
-         </ons-col>  
-      </ons-row>
-
-      <p class="small trn">Create an account with new email address</p>
-      <ons-button modifier="skip_button quiet" onclick="skip('map_select_location.html')"  >
-        <span class="darkblue trn">Sign up later</span>
-      </ons-button>
-     <!-- <img src="images/juice2.png"> -->
-    </div>
+   <div class="wrap">
+     <h3 class="trn">SIGN UP</h3>  
+     <p class="small trn">Create an account with new email address</p>
+     <ons-button modifier="skip_button quiet" onclick="skip('map_select_location.html')"  >
+       <span class="trn">Sign up later</span>
+     </ons-button>
+     <img src="images/juice2.png">
+  </div>
    </div>
    <!--cream_header-->
   
@@ -493,7 +492,37 @@
   
   <div class="form_wrapper">
   
-  <ons-list id="create_account_list">
+  <ons-list>
+    <ons-list-item>
+        <!--<div class="left"> <ons-icon icon="ion-android-contact" size="30px"></ons-icon> </div>-->
+       <div class="center"><ons-input name="first_name" id="first_name" required modifier="transparent" placeholder="First Name" float ></ons-input></div>
+    </ons-list-item>
+    
+    <ons-list-item>
+        <!--<div class="left">&nbsp;</div>-->
+       <div class="center"><ons-input name="last_name" id="last_name" required modifier="transparent" placeholder="Last Name" float></ons-input></div>
+    </ons-list-item>
+        
+    <ons-list-item>
+        <!--<div class="left"> <ons-icon icon="ion-android-phone-portrait" size="30px" ></ons-icon> </div>-->
+       <div class="center"><ons-input name="contact_phone" id="contact_phone" class="contact_phone" required modifier="transparent" placeholder="Mobile" float onclick="showPage('enter_phone.html')"></ons-input></div>
+    </ons-list-item>
+        
+    <ons-list-item>
+        <!--<div class="left"> <ons-icon icon="ion-ios-email-outline" size="30px"></ons-icon> </div>-->
+       <div class="center"><ons-input type="email" name="email_address" id="email_address" required modifier="transparent" placeholder="Email" float ></ons-input></div>
+    </ons-list-item>
+    
+    <ons-list-item>
+        <!--<div class="left"> <ons-icon icon="ion-ios-locked-outline" size="30px"></ons-icon> </div>-->
+       <div class="center"><ons-input type="password" name="password" id="password" required modifier="transparent" placeholder="Password" float ></ons-input></div>
+    </ons-list-item>
+    
+    <ons-list-item class="reg_last_row">
+        <!--<div class="left"> <ons-icon icon="ion-ios-locked" size="30px"></ons-icon> </div>-->
+       <div class="center"><ons-input type="password" name="cpassword" id="cpassword" required modifier="transparent" placeholder="Confirm Password" float ></ons-input></div>
+    </ons-list-item>
+    
   </ons-list>  
   
   </div>
@@ -503,7 +532,7 @@
    
   <ons-bottom-toolbar modifier="">	     	        	  
 	  <ons-button modifier="large to_orange no_shadow" onclick="submitForm('.frm_signup','createAccount','POST')" >
-	  <span class="trn">Register</span>
+	  <span class="trn">CONTINUE</span>
 	  </ons-button>	  
   </ons-bottom-toolbar>
  
@@ -513,7 +542,7 @@
 
 
 <template id="enter_phone.html">
-  <ons-page id="enter_phone" modifier="page_white is_rtl" >  
+  <ons-page id="enter_phone" modifier="page_white" >  
 
   <ons-toolbar modifier="no_shadow">
 	  <div class="left">
@@ -521,19 +550,24 @@
 	  </div>	  
   </ons-toolbar>
   
-  <form id="frm_setphone" class="frm_setphone" method="POST" onsubmit="return false;">
-  <div class="cream_header is_rtl_text_right">
-   <div class="stic-lateral-wrap">
+  <form id="frm_setphone" class="frm_setphone" method="POST">
+  <div class="container top15">     
+      <ons-icon icon="md-smartphone-android" size="60px" class="button--to_text_orange" ></ons-icon>
 	  <h3 class="trn">Enter your mobile no.</h3>
 	  <p class="trn small">We use it to make sure our deliveries reach you</p>
-   </div>
-  </div> 
 	  
-	<ons-list id="enter_phone_list"></ons-list>
+	<ons-list>
+    <ons-list-item>
+        <div class="left" style="width:60px;"> <ons-input type="text" name="moobile_prefix" id="moobile_prefix" class="moobile_prefix" required  placeholder="Prefix" float value="+1268" onclick="showMobileCode()" ></ons-input> </div>
+        <div class="center"> <ons-input type="number" value="" maxlength="15" name="mobile_no" id="mobile_no" required class="mobile_no"  placeholder="Mobile no." float ></ons-input> </div>
+    </ons-list-item>
+	<ons-list>
 	  
+  </div> <!--container-->  
+  
   <ons-bottom-toolbar modifier="transparent">	     	        	  
 	  <ons-button modifier="large to_orange no_shadow" onclick="setMobileNuber()" >
-	   <span class="trn">Apply</span>
+	   <span class="trn">APPLY</span>
 	  </ons-button>	  
   </ons-bottom-toolbar>
   
@@ -544,7 +578,7 @@
 
 
 <template id="verification_mobile.html">
-<ons-page id="verification_mobile" modifier="page_white is_rtl" >
+<ons-page id="verification_mobile" modifier="page_white" >
 
   <ons-toolbar modifier="no_shadow">
 	  <div class="left">
@@ -560,7 +594,7 @@
 
 
 <template id="verification.html">
-<ons-page id="verification" modifier="page_white is_rtl" >
+<ons-page id="verification" modifier="page_white" >
 
   <ons-toolbar modifier="no_shadow">
 	  <div class="left">
@@ -578,7 +612,7 @@
   <!--<input type="hidden" name="form_next_step" class="form_next_step">-->
   <input type="hidden" name="next_step" id="next_step" class="next_step" value="map_select_location">
   
-  <div class="container top15 is_rtl_text_right">     
+  <div class="container top15">     
       <div class="verify_icon"></div>
 	  <h3 class="trn">Enter your verification code</h3>	  
 	  <p class="small"><span class="trn">Did not receive code</span>? <ons-button modifier="quiet to_text_orange" onclick="resendCode()">
@@ -592,7 +626,7 @@
   
   <ons-bottom-toolbar modifier="transparent">	     	        	  
 	  <ons-button modifier="large to_orange no_shadow" onclick="submitForm('.frm_verify','verifyCode')" >
-	   <span class="trn">Send</span>
+	   <span class="trn">SEND</span>
 	  </ons-button>	  
   </ons-bottom-toolbar>
   
@@ -602,39 +636,37 @@
 </template>
 
 <template id="forgot_password.html">
-<ons-page id="forgot_password" modifier="page_white is_rtl" >
+<ons-page id="forgot_password" modifier="page_white" >
 
    <ons-toolbar modifier="no_shadow">
 	  <div class="left">
 	    <ons-back-button modifier="toolbar_button">Back</ons-back-button>
+	  </div>
+	  <div class="center">	    
+	  <span class="trn">Forgot password</span>
 	  </div>	  	  
   </ons-toolbar>
-
-  <div class="cream_header">
-   <div class="stic-lateral-wrap">
-    <h3 class="trn">Forgot password</h3>
-    <p class="trn small">We'll send you an email recovery code</p>
-   </div>
-  </div> 
     
   <form id="frm_forgotpass" class="frm_forgotpass" method="POST">
   <div class="form_wrapper">  
    <ons-list>
     <ons-list-item>
-      <div class="center">
-        <ons-input name="user_mobile" id="user_mobile" class="user_mobile" required modifier="transparent" placeholder="Enter your email or mobile" float ></ons-input>
-        <img class="stic-icon" src="lib/icons/mail.svg" onerror="this.src='mail.png'">
-      </div>
-    </ons-list-item> 
+        <div class="left"> <ons-icon icon="ion-ios-email-outline" size="30px"></ons-icon> </div>
+       <div class="center"><ons-input name="user_mobile" id="user_mobile" class="user_mobile" required modifier="transparent" placeholder="Enter your email or mobile" float ></ons-input></div>
+    </ons-list-item>
+    
+    <ons-list-item modifier="nodivider">       
+       
+    </ons-list-item>    
+    
+    <ons-list-item modifier="nodivider pad_right">     
+      <ons-button modifier="large to_orange no_shadow" onclick="submitForm('.frm_forgotpass','retrievePassword')" >
+        <span class="trn">Retrieve Password</span>
+      </ons-button>
+    </ons-list-item>            
   </ons-list>    
   </div>
   </form>
-
-  <ons-bottom-toolbar>
-    <ons-button modifier="large to_orange no_shadow" onclick="submitForm('.frm_forgotpass','retrievePassword')" >
-      <span class="trn">Retrieve Password</span>
-      </ons-button>
-  </ons-bottom-toolbar>
   
    
 </ons-page>
@@ -643,7 +675,7 @@
 
 
 <template id="map_select_location.html">
-<ons-page id="map_select_location" modifier="page_white is_rtl" >
+<ons-page id="map_select_location" modifier="page_white" >
 
 <div class="fixed_toolbar">
   <ons-row>
@@ -651,16 +683,16 @@
        <ons-back-button modifier="">Back</ons-back-button>
     </ons-col>
     <ons-col vertical-align="center" class="text-right">       
-       <ons-button class="loc-btn-position" modifier="quiet button_small">
-          <ons-icon class="location-btn rounded_white" icon="ion-android-locate"
-           size="26px" onclick="CurrentLocation();"></ons-icon>
+       <ons-button modifier="quiet button_small">
+          <ons-icon class="rounded_white" icon="ion-android-locate"
+           size="28px" onclick="CurrentLocation();"></ons-icon>
        </ons-button>
     </ons-col>
   </ons-row>
   
   <div class="identify_location_wrap">
     <ons-button modifier="rounded_button no_shadow" onclick="identifyLocation();">
-    <span class="trn">Identify Location</span>
+    <span class="trn">IDENTIFY LOCATION</span>
     </ons-button>
   </div>
 </div>  
@@ -679,50 +711,51 @@
 
 <ons-bottom-toolbar modifier="map_bootom_toolbar">
 
-<div class="search_wrap1 is_rtl">
+<div class="search_wrap1">
+<div class="header_grey">
+<h5 class="trn">Select Location</h5>
+</div>
 
-  <div class="header_grey flex">
-    <ons-col class="stic-half-col float-l" width="80%">
-      <ons-icon  icon="map-pin" class="stic-header-icon"></ons-icon>
-      <h5 class="trn">Select Location</h5>
-    </ons-col>
-    <ons-col class="stic-half-col float-r" width="55px">
-      <ons-button class="float-r pr0" id="location_change" modifier="quiet button_small trn" onclick="showPage('map_enter_address.html')" >
-        <span class="trn">CHANGE</span>
-      </ons-button>
-    </ons-col>
-  </div>
+<div class="inner">
 
-  <div class="inner">
-  	<ons-row>
-  	 <ons-col vertical-align="center" width="100%" >
-  	   <!-- <p class="small bold trn" style="margin-bottom:0;">Your location</p> -->
-  	   <p class="print_location_address"></p>
-  	 </ons-col>
-  	</ons-row>
-  		
-  	<div class="gap"></div>
-  	
-  	<ons-row>
-  	  <ons-col vertical-align="center" width="47.5%" >
-  	    <ons-button class="neutral-btn br5" id="location_add_details" onclick="showLocationDetails(true)"
-  	     modifier="large to_green no_shadow">
-  	      <span class="trn">Add Manually</span>
-  	     </ons-button>	  	     
-  	  </ons-col>
+	<ons-row>
+	 <ons-col vertical-align="center" width="50%" >
+	   <p class="small trn" style="margin-bottom:0;">YOUR LOCATION</p>
+	   <p class="print_location_address"></p>
+	 </ons-col>
+	 
+	 <ons-col vertical-align="center" class="text-right">
+	      <ons-button id="location_change" modifier="quiet button_small trn" onclick="showPage('map_enter_address.html')" >
+	      <span class="trn">CHANGE</span>
+	      </ons-button>
+	 </ons-col>
+	</ons-row>
+	
+	<div class="grey_line tickline"></div>
+	
+	<div class="gap"></div>
+	
+	<ons-row>
+	  <ons-col vertical-align="center" width="45%" >
+	    <ons-button id="location_add_details" onclick="showLocationDetails(true)"
+	     modifier="large to_green no_shadow">
+	      <span class="trn">Add Details</span>
+	     </ons-button>	  	     
+	  </ons-col>
+	  <ons-col vertical-align="center" width="5%" >
+	  </ons-col>
+	  
+	  <ons-col vertical-align="center" width="45%" >
+	    <ons-button id="confirm_location" 
+	    modifier="large to_orange no_shadow" 
+	    onclick="submitForm('.frm_searchbylat','SetLocation','POST')" >
+	      <span class="trn">Confirm location</span>
+	    </ons-button>	  	    
+	  </ons-col>	
+	</ons-row>
+	
+</div>
 
-  	  <ons-col vertical-align="center" width="5%" >
-  	  </ons-col>
-  	  
-  	  <ons-col vertical-align="center" width="47.5%" >
-  	    <ons-button class="br5" id="confirm_location" 
-  	    modifier="large to_orange no_shadow" 
-  	    onclick="submitForm('.frm_searchbylat','SetLocation','POST')" >
-  	      <span class="trn">Confirm</span>
-  	    </ons-button>	  	    
-  	  </ons-col>	
-  	</ons-row>
-  </div>
 </div> <!--search_wrap1-->
 
 <div class="search_wrap2">
@@ -730,12 +763,12 @@
 <div class="header_grey">
 <ons-row>
 	<ons-col vertical-align="center" width="50%" >
-     <ons-icon  icon="edit" class="stic-header-icon"></ons-icon>
-	   <h5 class="is_rtl_text_right trn">Add Details</h5>
+	   <h5 class="trn">Add Details</h5>
 	</ons-col>
 	<ons-col vertical-align="center" width="50%" class="text-right" >
-	   <ons-button class="stic-gray pd0" modifier="quiet button_small" onclick="showLocationDetails(false)" >
-	          <ons-icon  icon="ion-ios-close-empty" size="28px" onclick=""></ons-icon>
+	   <ons-button modifier="quiet button_small" onclick="showLocationDetails(false)" >
+	          <ons-icon  icon="ion-ios-close-empty"
+	           size="28px" onclick=""></ons-icon>
 	    </ons-button>
 	</ons-col>
 </ons-row>
@@ -755,23 +788,7 @@
        </div>
     </ons-list-item>
     
-    <ons-list-item>       
-       <div class="center">         
-         <ons-input type="text" name="state" id="state" class="state" required  modifier="transparent" placeholder="State" float></ons-input>
-       </div>
-    </ons-list-item>
     
-    <ons-list-item>       
-       <div class="center">         
-         <ons-input type="text" name="zipcode" id="zipcode" class="zipcode" required  modifier="transparent" placeholder="Zip Code" float></ons-input>
-       </div>
-    </ons-list-item>
-	
-	<ons-list-item>       
-       <div class="center">         
-         <ons-input type="text" name="location_name" id="location_name" class="location_name" required  modifier="transparent" placeholder="Floor/unit/Room #" float></ons-input>
-       </div>
-    </ons-list-item>
            
   <ons-list>
 </div><!-- form_wrapper-->   
@@ -786,7 +803,7 @@
 
 
 <template id="map_enter_address.html">
-<ons-page id="map_enter_address" modifier="page_white is_rtl" > 
+<ons-page id="map_enter_address" modifier="page_white" > 
 
 
 <ons-toolbar modifier="no_shadow">
@@ -800,24 +817,23 @@
 <span class="trn">Pull to refresh</span>
 </ons-pull-hook> 
 
- <div class="search_wrapper" id="stic_search">
+ <div class="search_wrapper" style="margin-top:10px;">
   
    <ons-search-input name="search_address" id="search_address" class="search_address" placeholder="Search for your location"></ons-search-input>
-   <div class="stic-icon">
-      <img src="lib/icons/search.svg" onerror="this.src='search.png'">
-   </div>
   
    <div id="mapbox_s_goecoder" class="mapbox_s_goecoder"></div>
    
   </div> <!--search_field_wrapper-->
   
-<ons-list modifier="list_style2 is_rtl">
+  <div class="bottom_gap"></div>
+
+<ons-list modifier="list_style2">
 <ons-list-item tappable onclick="ReCurrentLocation();" >
   <div class="left">
     <ons-icon icon="ion-android-locate" class="list-item__icon"></ons-icon>
   </div>
   <div class="center">
-      <span class="list-item__title bold trn">Current Location</span>
+      <span class="list-item__title trn">Current Location</span>
       <span class="list-item__subtitle trn">Using GPS</span>
   </div>
 </ons-list-item>
@@ -826,14 +842,14 @@
 <input type="hidden" name="paginate_total" class="paginate_total" value="0">
 <input type="hidden" name="paginate_page" id="paginate_page" class="paginate_page" value="1">
   
-<ons-list modifier="list_style2 is_rtl" id="recent_location_item">
+<ons-list modifier="list_style2" id="recent_location_item">
    <ons-list-header>
      <ons-row>
-        <ons-col vertical-align="center" class="trn" >Recent Location</ons-col>
+        <ons-col vertical-align="center" class="trn" >RECENT LOCATION</ons-col>
         <ons-col class="text-right delete_recent_loc_wrap" vertical-align="center" >
         
-        <ons-button class="pd0" id="location_change" modifier="quiet button_small trn" onclick="clear_RecentLocation()" >
-        <span class="pd0 trn">CLEAR</span>
+        <ons-button id="location_change" modifier="quiet button_small trn" onclick="clear_RecentLocation()" >
+        <span class="trn">CLEAR</span>
         </ons-button>
         
         </ons-col>
@@ -868,238 +884,216 @@
 <template id="home.html">
 <ons-page id="home" modifier="" class="image_loaded"  >
 
-   <ons-toolbar modifier="no_shadow is_rtl">      
+   <ons-toolbar modifier="no_shadow">      
       <div class="center">                
         <ons-row>
-          <ons-col class="f14 darkblue-bg hatake" width="70px"><span class="trn tooltip_home">Deliver to</span>:</ons-col>
-        </br>
-          <ons-col class="concat_text orange_color address-line">
+          <ons-col width="70px"><span class="trn tooltip_home">Deliver to</span>:</ons-col>
+          <ons-col class="concat_text orange_color">
              <ons-toolbar-button onclick="ReSelectLocation();" style="display:inline;">
-              <span class="white print_location_address"></span>
+              <span class="print_location_address"></span>
               </ons-toolbar-button>              
           </ons-col>
         </ons-row>
       </div>
+      <!--<div class="right">
+       right
+      </div>-->
     </ons-toolbar>
     
-  <ons-pull-hook id="home_pull_hook" class="stic-reload">
+  <ons-pull-hook id="home_pull_hook">
     <span class="trn">Pull to refresh</span>
-  </ons-pull-hook>
-
-  <div class="stic-gray-bg">
-    <div class="home-user-section">
-      <div class="home-user-lateral">
-        <span class="print_username"></span>
-        <!-- <ons-icon onclick="resetToPage('profile.html')" icon="user-circle"></ons-icon> -->
-      </div>
-    </div>
-
-    <div class="home-search-section">
-      <div class="center">
-        <ons-input type="text" name="home_search" id="home_search" class="home_search" required modifier="transparent" placeholder="What are you looking for?" onclick="showPage('search_form.html');" float ></ons-input>
-        <img class="stic-icon" src="lib/icons/search.svg" onerror="this.src='search.png'">
-      </div> 
-    </div>
-
-    <div class="stic-home-gap"></div>
-
-    <!--HOME BANNER-->
-    <div class="home_banner" id="home_banner_wrapper">
-      <div class="stic-home-gap"></div>
-      <div class="home_banner_wrapper stic-lateral-wrap"></div>
-    </div>
-    <!--HOME BANNER-->
-
-    <!--CUISINE LIST--> 
-    <div class="white_list_wrapper" id="cuisine_list_wrapper">
-
-      <div class="stic-title">
-         <ons-icon icon="align-left"></ons-icon>
-         <div class="home-title">
-           <ons-col class="stic-half-col float-l" width="80%">
-              <span class="main trn">What do you wish?</span>
-              <br>
-              <span class="min trn">A wide range of options for you</span>
-           </ons-col>
-           <ons-col class="stic-half-col float-r" width="55px">
-              <span class="stic-book stic-uppercase trn" onclick="showPage('cuisine_list.html')">SEE ALL</span>
-           </ons-col>
-         </div>
-      </div>
+  </ons-pull-hook>  
+  
+   
+  <!--RESTAURANT LIST--> 
+  <div class="white_list_wrapper" style="margin-top:10px;">
+    
+  
+    <ons-row>
+      <ons-col vertical-align="center" width="80%" >      
+        <h3 class="search_total_number_found"></h3>
+      </ons-col>
+      <ons-col vertical-align="center">                      
       
-      <div class="cuisine_list_wrapper stic-lateral-wrap-fix"></div>
-    
-    </div>
-    <!--CUISINE LIST-->   
-     
-    <!--RESTAURANT LIST--> 
-    <div class="white_list_wrapper" id="search_results_wrapper">    
-
-      <div class="stic-title">
-         <ons-icon icon="map-marker-alt"></ons-icon>
-         <div class="home-title">
-           <ons-col class="stic-half-col float-l" width="80%">
-              <span class="search_total_number_found main trn"></span>
-              <br>
-              <span class="min trn">The nearest restaurants to your location</span>
-           </ons-col>
-           <ons-col class="stic-half-col float-r" width="55px">
-              <span class="stic-book stic-uppercase trn" onclick="showRestaurantList('byLatLong')">SEE ALL</span>
-           </ons-col>
-         </div>
-      </div>
+       <p class="right">
+         <ons-button modifier="quiet to_text_orange" onclick="showRestaurantList('byLatLong')">          
+          <ons-icon icon="ion-ios-arrow-right" size="17px" class="button--to_text_orange" ></ons-icon>
+          <!--see all <ons-icon icon="ion-android-arrow-dropright-circle" size="17px" class="button--to_text_orange" ></ons-icon>-->
+        </ons-button>
+       </p>  
       
-      <div class="search_results_wrapper stic-lateral-wrap"></div>
+      </ons-col>
+    </ons-row>
     
-    </div>
-    <!--RESTAURANT LIST--> 
-    
-    <!--FAVORITE LIST--> 
-    <div class="white_list_wrapper" id="favorite_restaurant_wrapper">
-
-      <div class="stic-title">
-         <ons-icon icon="heart"></ons-icon>
-         <div class="home-title">
-           <ons-col class="stic-half-col float-l" width="80%">
-              <span class="main trn">Favorites Restaurants</span>
-              <br>
-              <span class="min trn">These ones have a special place in your heart</span>
-           </ons-col>
-           <ons-col class="stic-half-col float-r" width="55px">
-              <span class="stic-book stic-uppercase trn" onclick="showRestaurantList('favorites')">SEE ALL</span>
-           </ons-col>
-         </div>
-      </div>
-
-      <div class="favorite_restaurant_wrapper stic-lateral-wrap"></div>
-    
-    </div>
-    <!--FAVORITE LIST--> 
-    
-    <!-- SPECIAL OFFERS LIST--> 
-    <div class="white_list_wrapper" id="special_offers_wrapper"> 
-
-      <div class="stic-title">
-         <ons-icon icon="magic"></ons-icon>
-         <div class="home-title">
-           <ons-col class="stic-half-col float-l" width="80%">
-              <span class="main trn">Special offers</span>
-              <br>
-              <span class="min trn">Enjoy it before it's over</span>
-           </ons-col>
-           <ons-col class="stic-half-col float-r" width="55px">
-              <span class="stic-book stic-uppercase trn" onclick="showRestaurantList('special_Offers')">SEE ALL</span>
-           </ons-col>
-         </div>
-      </div>
-      
-      <div class="special_offers_wrapper stic-lateral-wrap"></div>
-    </div>
-    <!-- SPECIAL OFFERS LIST--> 
-    
-    <!--FEATURED LIST--> 
-    <div class="white_list_wrapper" id="featured_list_wrapper">
-    
-      <div class="stic-title">
-         <ons-icon icon="chart-line"></ons-icon>
-         <div class="home-title">
-           <ons-col class="stic-half-col float-l" width="80%">
-              <span class="main trn">Featured Restaurants</span>
-              <br>
-              <span class="min trn">Our suggestions to you</span>
-           </ons-col>
-           <ons-col class="stic-half-col float-r" width="55px">
-              <span class="stic-book stic-uppercase trn" onclick="showRestaurantList('featuredMerchant')">SEE ALL</span>
-           </ons-col>
-         </div>
-      </div>
-      
-      <div class="featured_list_wrapper stic-lateral-wrap"></div>
-    
-    </div>
-    <!--FEATURED LIST--> 
-    
-    <!--ALL LIST--> 
-    <div class="white_list_wrapper" id="all_restaurant_wrapper">
-    
-      <div class="stic-title">
-         <ons-icon icon="align-left"></ons-icon>
-         <div class="home-title">
-           <ons-col class="stic-half-col float-l" width="80%">
-              <span class="main trn">All Restaurants</span>
-              <br>
-              <span class="min trn">Choose what you wish</span>
-           </ons-col>
-           <ons-col class="stic-half-col float-r" width="55px">
-              <span class="stic-book stic-uppercase trn" onclick="showRestaurantList('allMerchant')">SEE ALL</span>
-           </ons-col>
-         </div>
-      </div>
-      
-      <div class="all_restaurant_wrapper"></div>
-    
-    </div>
-    <!--ALL LIST--> 
+    <div class="search_results_wrapper"></div>
+  
   </div>
+  <!--RESTAURANT LIST--> 
+  
+  
+  <!-- SPECIAL OFFERS LIST--> 
+  <div class="white_list_wrapper" id="special_offers_wrapper">
+  
+    <ons-row>
+      <ons-col vertical-align="center" width="80%">
+        <h3 class="trn">Special offers</h3>
+      </ons-col>
+      <ons-col vertical-align="center">                      
+      
+       <p class="right">
+         <ons-button modifier="quiet to_text_orange" onclick="showRestaurantList('special_Offers')" >          
+          <ons-icon icon="ion-ios-arrow-right" size="17px" class="button--to_text_orange" ></ons-icon>
+        </ons-button>
+       </p>  
+      
+      </ons-col>
+    </ons-row>
+    
+    <div class="special_offers_wrapper"></div>
+  
+  </div>
+  <!-- SPECIAL OFFERS LIST--> 
+  
+  <!--FEATURED LIST--> 
+  <div class="white_list_wrapper" id="featured_list_wrapper">
+  
+    <ons-row>
+      <ons-col vertical-align="center" width="80%">
+        <h3 class="trn">Featured Restaurants</h3>
+      </ons-col>
+      <ons-col vertical-align="center">                      
+      
+       <p class="right">
+         <ons-button modifier="quiet to_text_orange" onclick="showRestaurantList('featuredMerchant')" >          
+          <ons-icon icon="ion-ios-arrow-right" size="17px" class="button--to_text_orange" ></ons-icon>
+        </ons-button>
+       </p>  
+      
+      </ons-col>
+    </ons-row>
+    
+    <div class="featured_list_wrapper"></div>
+  
+  </div>
+  <!--FEATURED LIST--> 
+  
+  
+ <!--CUISINE LIST--> 
+  <div class="white_list_wrapper" id="cuisine_list_wrapper">
+  
+    <ons-row>
+      <ons-col vertical-align="center" width="80%">
+        <h3 class="trn">Browse by cuisine</h3>
+      </ons-col>
+      <ons-col vertical-align="center">                      
+      
+       <p class="right">
+         <ons-button modifier="quiet to_text_orange" onclick="showPage('cuisine_list.html')" >          
+          <ons-icon icon="ion-ios-arrow-right" size="17px" class="button--to_text_orange" ></ons-icon>
+        </ons-button>
+       </p>  
+      
+      </ons-col>
+    </ons-row>
+    
+    <div class="cuisine_list_wrapper"></div>
+  
+  </div>
+  <!--CUISINE LIST-->   
+  
+  
+   <!--FAVORITE LIST--> 
+  <div class="white_list_wrapper" id="favorite_restaurant_wrapper">
+  
+    <ons-row>
+      <ons-col vertical-align="center" width="80%">
+        <h3 class="trn">Favorites Restaurants</h3>
+      </ons-col>
+      <ons-col vertical-align="center">                      
+      
+       <p class="right">
+         <ons-button modifier="quiet to_text_orange" onclick="showRestaurantList('favorites')">          
+          <ons-icon icon="ion-ios-arrow-right" size="17px" class="button--to_text_orange" ></ons-icon>
+        </ons-button>
+       </p>  
+      
+      </ons-col>
+    </ons-row>
+    
+    <div class="favorite_restaurant_wrapper"></div>
+  
+  </div>
+  <!--FAVORITE LIST--> 
+  
+  <!--ALL LIST--> 
+  <div class="white_list_wrapper" id="all_restaurant_wrapper">
+  
+    <ons-row>
+      <ons-col vertical-align="center" width="80%">
+        <h3 class="trn">All Restaurants</h3>
+      </ons-col>
+      <ons-col vertical-align="center">                      
+      
+       <p class="right">
+         <ons-button modifier="quiet to_text_orange" onclick="showRestaurantList('allMerchant')">          
+          <ons-icon icon="ion-ios-arrow-right" size="17px" class="button--to_text_orange" ></ons-icon>
+        </ons-button>
+       </p>  
+      
+      </ons-col>
+    </ons-row>
+    
+    <div class="all_restaurant_wrapper"></div>
+  
+  </div>
+  <!--ALL LIST--> 
+  
+  <div class="bottom_gap"></div>
+ 
 
 </ons-page>
 </template>
 
 
 <template id="restaurant_list.html">
-<ons-page id="restaurant_list" modifier="page_white is_rtl" class="image_loaded" >
+<ons-page id="restaurant_list" modifier="page_white" class="image_loaded" >
 
-  <ons-toolbar class="darkblue-bg" modifier="no_shadow">
-     <div class="left">
-       <ons-back-button class="fill-white" modifier="toolbar_button">Back</ons-back-button>
-     </div>         
-     <div class="center">                
-       <ons-row>
-         <ons-col class="f14 hatake" width="70px"><span class="trn tooltip_home">Deliver to</span>:</ons-col>
-       </br>
-         <ons-col class="concat_text orange_color address-line">
-            <ons-toolbar-button onclick="ReSelectLocation();" style="display:inline;">
-             <span class="white print_location_address"></span>
-             </ons-toolbar-button>              
-         </ons-col>
-       </ons-row>
-     </div>
-   </ons-toolbar>
+  <ons-toolbar modifier="no_shadow">
+	  <div class="left">
+	    <ons-back-button modifier="toolbar_button">Back</ons-back-button>
+	  </div>	  
+	  <div class="center">
+	     
+	    <ons-row>
+          <ons-col width="70px"><span class="trn">Deliver to</span>:</ons-col>
+          <ons-col class="concat_text orange_color">
+             <ons-toolbar-button onclick="ReSelectLocation();" style="display:inline;">
+              <span class="print_location_address"></span>
+              </ons-toolbar-button>
+          </ons-col>
+        </ons-row>  
+	  
+	  </div>
+  </ons-toolbar>
     
   <ons-pull-hook id="restaurant_list_pull_hook">
     <span class="trn">Pull to refresh</span>
-  </ons-pull-hook>
-
-  <ons-row class="mt20">
-   <ons-col width="70%"  vertical-align="center">
-     <div class="search_wrapper relative" id="stic_search">
-       <ons-search-input id="search" class="search_for_restaurant" placeholder="Search for restaurant" onclick="showPage('search_merchant.html','none')" ></ons-search-input>
-       <div class="stic-icon">
-         <div>
-           <img src="lib/icons/search.svg" onerror="this.src='search.png'">
-         </div>
-       </div>
-     </div>
-   </ons-col>
-   <ons-col vertical-align="center" id="stic_search" class="filter text-right" onclick="showSheet('filter.html','filter')">
-     <ons-button modifier="quiet" disabled="true">
-       <div class="stic-icon">
-         <div>
-           <img src="lib/icons/filter.svg" onerror="this.src='filter.png'">
-         </div>
-       </div>
-     </ons-button>
-   </ons-col>
-   <ons-col vertical-align="center" id="stic_search" class="map text-right" onclick="showPage('restaurant_list_map.html','none')">
-     <ons-button modifier="quiet" disabled="true">
-       <div class="stic-icon">
-         <div>
-           <img src="lib/icons/location.svg" onerror="this.src='location.png'">
-         </div>
-       </div>
-     </ons-button>
-   </ons-col>
+  </ons-pull-hook> 
+    
+  <div class="search_wrapper">
+  <ons-row>
+    <ons-col width="83%"  vertical-align="center"  >    
+      <ons-search-input id="search" class="search_for_restaurant" placeholder="Search for restaurant" onclick="showPage('search_merchant.html','none')" ></ons-search-input>    
+    </ons-col>
+    <ons-col vertical-align="center" class="text-right">
+       <ons-button modifier="quiet" onclick="showSheet('filter.html','filter')">
+         <ons-icon icon="ion-android-options" size="20px" class="orange_color"></ons-icon>
+       </ons-button>
+    </ons-col>
   </ons-row>
+  </div>
+  <!--search_wrapper-->
+
     
   <div class="white_list_wrapper">  
   <input type="hidden" name="search_type" id="search_type" class="search_type">
@@ -1108,30 +1102,40 @@
   <input type="hidden" name="paginate_page" id="paginate_page" class="paginate_page" value="1">  
   <input type="hidden" name="cuisine_id" id="cuisine_id" class="cuisine_id" value="">
   
-  <ons-row class="stic-lateral-wrap auto">
-    <ons-col width="55%"  vertical-align="center"> 
-      <h5 class="nomargin rest_qty total_number_found"></h5>
+  <div class="top_search">
+  <ons-row>
+    <ons-col width="60%"  vertical-align="center"> 
+      <h5 class="nomargin total_number_found"></h5>
     </ons-col>
-
-    <ons-col  vertical-align="center" class="text-right"> 
-      <span class="bold darkblue f14"><span class="trn">Sort by</span>: <ons-button modifier="quiet sort_btn" class="sort_btn" onclick="showSheet('sortbyresto.html','sort_cuisine')" > 
-      <span class="sortby_selected trn"></span> </ons-button></span>
+    <ons-col  vertical-align="center"> 
+      
+      <ons-row>
+        <ons-col vertical-align="center" width="50px" ><span class="trn">Sort by</span>:</ons-col>
+        <ons-col vertical-align="top">
+        
+         <ons-button modifier="quiet sort_btn" class="sort_btn" 
+         onclick="showSheet('sortbyresto.html','sortbyresto')" > 
+          <div class="sortby_selected concat_text"></div> 
+         </ons-button>
+          
+        </ons-col>
+      </ons-row>
+      
     </ons-col>
   </ons-row>
+  </div>
   
-    <ons-list id="list_restaurant" class="stic-all-rest" modifier="list_grey_bg">       
+    <ons-list id="list_restaurant" modifier="list_grey_bg">       
     </ons-list>
     
     <div class="restaurant_list_loader bottom_loader bottom_gap"></div>
     
   </div> 
   <!--white_list_wrapper-->
-
-<!--   <ons-bottom-toolbar modifier="">                    
-    <ons-button modifier="large to_orange no_shadow" onclick="showPage('restaurant_list_map.html')" >
-      <span class="trn">View On Map</span>
-    </ons-button>   
-  </ons-bottom-toolbar> -->
+  
+  <ons-fab position="bottom right" onclick="showPage('restaurant_list_map.html')"> 
+    <ons-icon icon="md-gps-dot" class="color_green"></ons-icon>     
+  </ons-fab>
 
 </ons-page>
 </template>
@@ -1191,27 +1195,28 @@
 
 
 <template id="search_merchant.html">
-<ons-page id="search_merchant" modifier="page_white is_rtl" class="image_loaded" >
+<ons-page id="search_merchant" modifier="page_white" class="image_loaded" >
 
-  <ons-toolbar class="darkblue-bg" modifier="no_shadow">
-     <div class="left">
-       <ons-back-button class="fill-white" modifier="toolbar_button">Back</ons-back-button>
-     </div>         
-     <div class="center">                
-       <ons-row>
-         <ons-col class="f14 hatake" width="70px"><span class="trn tooltip_home">Deliver to</span>:</ons-col>
-       </br>
-         <ons-col class="concat_text orange_color address-line">
-            <ons-toolbar-button onclick="ReSelectLocation();" style="display:inline;">
-             <span class="white print_location_address"></span>
-             </ons-toolbar-button>              
-         </ons-col>
-       </ons-row>
-     </div>
-   </ons-toolbar>
+  <ons-toolbar modifier="no_shadow">
+	  <div class="left">
+	    <ons-back-button modifier="toolbar_button">Back</ons-back-button>
+	  </div>	  
+	  <div class="center">
+	     
+	    <ons-row>
+          <ons-col width="70px"><span class="trn">Deliver to</span>:</ons-col>
+          <ons-col class="concat_text orange_color">
+             <ons-toolbar-button onclick="ReSelectLocation();" style="display:inline;">
+              <span class="print_location_address"></span>
+              </ons-toolbar-button>
+          </ons-col>
+        </ons-row>  
+	  
+	  </div>
+  </ons-toolbar>
     
     
-  <div class="search_wrapper">
+  <div class="search_wrapper iphonex_margin">
   <ons-row>
     <ons-col width="83%"  vertical-align="center"  >   
       <ons-search-input id="search_field_by_name" class="search_field_by_name" placeholder="Search for restaurant"  ></ons-search-input>    
@@ -1236,42 +1241,34 @@
 
 
 <template id="cuisine_list.html">
-<ons-page id="cuisine_list" modifier="page_white is_rtl" class="image_loaded" >
+<ons-page id="cuisine_list" modifier="page_white" class="image_loaded" >
 
   <ons-toolbar modifier="no_shadow">
 	  <div class="left">
 	    <ons-back-button modifier="toolbar_button">Back</ons-back-button>
 	  </div>	  
 	  <div class="center">
-	    <!-- <span class="trn">Browse by cuisine</span>	     	     -->
+	    <span class="trn">Browse by cuisine</span>	     	    
 	  </div>
   </ons-toolbar>
   
    <ons-pull-hook id="cuisine_list_pull_hook">
     <span class="trn">Pull to refresh</span>
   </ons-pull-hook> 
-
+    
+  <div class="search_wrapper">
   <ons-row>
-    <ons-col width="83%"  vertical-align="center">
-      <div class="search_wrapper relative" id="stic_search">
-        <ons-search-input id="search" class="search_for_cuisine" placeholder="Search for cuisine" onclick="showPage('search_cuisine.html','none')" ></ons-search-input>
-        <div class="stic-icon">
-          <div>
-            <img src="lib/icons/search.svg" onerror="this.src='search.png'">
-          </div>
-        </div>
-      </div>
+    <ons-col width="83%"  vertical-align="center"  >    
+      <ons-search-input id="search" class="search_for_cuisine" placeholder="Search for cuisine" onclick="showPage('search_cuisine.html','none')" ></ons-search-input>    
     </ons-col>
-    <ons-col vertical-align="center" id="stic_search" class="filter text-right" onclick="showSheet('filter.html','filter')">
-      <ons-button modifier="quiet" disabled="true">
-        <div class="stic-icon">
-          <div>
-            <img src="lib/icons/filter.svg" onerror="this.src='filter.png'">
-          </div>
-        </div>
-      </ons-button>
+    <ons-col vertical-align="center" class="text-right">
+       <ons-button modifier="quiet" disabled="true" onclick="showSheet('filter.html','filter')">
+         <ons-icon icon="ion-android-options" size="20px" class=""></ons-icon>
+       </ons-button>
     </ons-col>
   </ons-row>
+  </div>
+  <!--search_wrapper-->
   
   <div class="white_list_wrapper">  
   
@@ -1285,15 +1282,16 @@
   <div class="top_search">
   <ons-row>
     <ons-col width="50%"  vertical-align="center"> 
+      <h5 class="nomargin total_number_found"><!--10 cuisine found--></h5>
     </ons-col>
-    <ons-col  vertical-align="center" class="stic-lateral-wrap text-right is_rtl_text_left"> 
-      <span class="bold darkblue"><span class="trn">Sort by</span>: <ons-button modifier="quiet sort_btn" class="sort_btn" onclick="showSheet('sort_cuisine.html','sort_cuisine')" > 
+    <ons-col  vertical-align="center"> 
+      <span><span class="trn">Sort by</span>: <ons-button modifier="quiet sort_btn" class="sort_btn" onclick="showSheet('sort_cuisine.html','sort_cuisine')" > 
       <span class="sortby_selected trn"></span> </ons-button></span>
     </ons-col>
   </ons-row>
   </div>
   
-    <ons-list id="list_cuisine" class="stic-list-cuisine" modifier="list_cuisine_style">      
+    <ons-list id="list_cuisine" modifier="list_cuisine_style">      
     </ons-list>
     
     <div class="cuisine_loader bottom_loader bottom_gap"></div>
@@ -1307,7 +1305,7 @@
 
 <template id="sort_cuisine.html">
   <ons-action-sheet id="sort_cuisine" cancelable title="Sort by" modifier="hide_sheet_title" >
-     <ons-list modifier="light_grey_menu" id="cuisine_sortlist" class="mb20">
+     <ons-list modifier="light_grey_menu" id="cuisine_sortlist">
        
        <ons-list-header modifier="list_header_border_bottom">
          <ons-row>
@@ -1339,38 +1337,30 @@
 </template>
 
 <template id="search_cuisine.html">
-<ons-page id="search_cuisine" modifier="page_white is_rtl" class="image_loaded" >
+<ons-page id="search_cuisine" modifier="page_white" class="image_loaded" >
 
 <ons-toolbar modifier="no_shadow">
 	  <div class="left">
 	    <ons-back-button modifier="toolbar_button">Back</ons-back-button>
 	  </div>	  
 	  <div class="center">
-	  <!-- <span class="trn">Browse by cuisine</span> -->
+	  <span class="trn">Browse by cuisine</span>
 	  </div>
   </ons-toolbar>
-
+  
+   <div class="search_wrapper">
   <ons-row>
-    <ons-col width="83%"  vertical-align="center">
-      <div class="search_wrapper relative" id="stic_search">
-        <ons-search-input id="search_field_by_name" class="search_for_cuisine" placeholder="Search for cuisine"></ons-search-input>
-        <div class="stic-icon">
-          <div>
-            <img src="lib/icons/search.svg" onerror="this.src='search.png'">
-          </div>
-        </div>
-      </div>
+    <ons-col width="83%"  vertical-align="center"  >   
+      <ons-search-input id="search_field_by_name" class="search_for_cuisine" placeholder="Search for cuisine"  ></ons-search-input>    
     </ons-col>
-    <ons-col vertical-align="center" id="stic_search" class="filter text-right" onclick="showSheet('filter.html','filter')">
-      <ons-button modifier="quiet" disabled="true">
-        <div class="stic-icon">
-          <div>
-            <img src="lib/icons/filter.svg" onerror="this.src='filter.png'">
-          </div>
-        </div>
-      </ons-button>
+    <ons-col vertical-align="center" class="text-right" >
+       <ons-button modifier="quiet" disabled="true" onclick="showSheet('filter.html','filter')">
+         <ons-icon icon="ion-android-options" size="20px" class=""></ons-icon>
+       </ons-button>
     </ons-col>
   </ons-row>
+  </div>
+  <!--search_wrapper-->
   
   <div class="search_field_by_cuisine_result search_result_small"></div>
     <ons-list id="search_field_by_cuisine_result" modifier="list_small">
@@ -1383,14 +1373,43 @@
 <template id="restaurant_page.html">
 <ons-page id="restaurant_page" modifier="page_white" class="image_loaded" >
 
+<ons-toolbar modifier="no_shadow">
+	  <div class="left">
+	    <ons-back-button modifier="toolbar_button">Back</ons-back-button>
+	  </div>	  
+	  <div class="center">
+	  <span class="trn">Menu</span>
+	  </div>
+	  <div class="right">
+	  
+	  <ons-row>
+	     <ons-col vertical-align="center">
+	       <ons-toolbar-button onclick="showPage('search_category.html','none')" >
+            <ons-icon icon="ion-ios-search" size="25px"></ons-icon>
+           </ons-toolbar-button>  
+	     </ons-col>
+	     
+	     <ons-col vertical-align="center">
+	        <ons-toolbar-button onclick="socialShare('merchant')" >
+              <ons-icon icon="ion-android-share-alt"  size="22px" ></ons-icon>
+           </ons-toolbar-button>  
+	     </ons-col>
+	     
+	     <ons-col vertical-align="center" class="favorite_toolbar_wrap">
+	        <!--<ons-toolbar-button onclick="AddFavorite()" modifier="to_text_orange">
+              <ons-icon icon="ion-android-favorite"  size="22px"></ons-icon>
+           </ons-toolbar-button>  -->
+	     </ons-col>
+	     
+	  </ons-row>	  
+	    
+	  </div>
+</ons-toolbar>
 
 <ons-pull-hook id="restaurant_page_pull_hook">
 <span class="trn">Pull to refresh</span>
 </ons-pull-hook>
 
-<ons-back-button modifier="fixed_back_button button_white">Back</ons-back-button> 
-
-<input type="hidden" name="merchant_open_status" id="merchant_open_status" class="merchant_open_status">
 <input type="hidden" name="merchant_id" id="merchant_id" class="merchant_id">
 <input type="hidden" name="paginate_total" class="paginate_total" value="0">
 <input type="hidden" name="paginate_page" id="paginate_page" class="paginate_page" value="1">
@@ -1400,88 +1419,26 @@
 <input type="hidden" name="merchant_adddress" id="merchant_adddress" class="merchant_adddress" value="1">
 <input type="hidden" name="merchant_name" id="merchant_name" class="merchant_name" value="1">
 
-<!-- </div class="stic-fake-header">     -->
-  <div class="stic-share-position">
-    <div class="stic-share" onclick="socialShare('merchant')">
-      <div>    
-        <img src="lib/icons/share.svg" style="padding-right: 2px;" onerror="this.src='share.png'">
-      </div>    
-    </div>
-
-    <div vertical-align="center" class="inline favorite_toolbar_wrap"></div>
-  </div>	  
-<!-- </div>     -->
-
 <div class="carousel_banner"></div>
 
-<div class="white_list_wrapper add-border-bottom is_rtl">
+<div class="white_list_wrapper add-border-bottom">
 </div> <!--white_list_wrapper-->
 
 
-<!-- <div class="carousel_resto_menu"></div> -->
-
-<div class="search_wrapper search_item_wrap rounded-search" id="stic_search">
-  <ons-search-input id="looking_for" name="looking_for" class="looking_for" placeholder="Looking for something?" onclick="showPage('search_category.html','none')"></ons-search-input>
-  <div class="stic-icon">
-    <div>
-      <img src="lib/icons/search.svg" onerror="this.src='search.png'">
-    </div>
-  </div>
-</div>
+<div class="carousel_resto_menu"></div>
 
 
-<ons-list id="resto_list_category" modifier="item_big_thumbnail is_rtl" >   
+<ons-list id="resto_list_category" modifier="item_big_thumbnail" >   
 </ons-list>
 
 <div class="menu_loader bottom_loader bottom_gap"></div>
 
 <div class="bottom_gap"></div>
 
-<ons-fab class="cart_fab" position="bottom right" onclick="showCart();">
+<ons-fab position="bottom right" onclick="showCart();">
  <div class="cart_count notification"></div>
  <ons-icon icon="md-shopping-cart" class="color_green"></ons-icon>     
 </ons-fab>
-
-<!-- <ons-fab modifier="floating_category" class="fab_floating_category" position="bottom right" onclick="showFloatingCategory();" > 
-<div class="fab_inner">
- <ons-row>
-   <ons-col width="30px" vertical-align="center"><ons-icon icon="fa-utensils" size="16px" ></ons-icon></ons-col>
-   <ons-col width="30px" vertical-align="center"><span class="trn">MENU</span></ons-col>
- </ons-row>
- </div>
-</ons-fab> -->
-
-<!-- <ons-bottom-toolbar class="basket_toolbar">   
-    <ons-button modifier="large to_orange no_shadow basket_button" class="is_rtl" onclick="showCart();"  >
-      <ons-row>
-        <ons-col width="60px"><span class="basket_count"></span></ons-col>
-        <ons-col width="2px">|</ons-col>
-        <ons-col width="60px"><span class="basket_total"></span></ons-col>
-        <ons-col width="90px" ></ons-col>
-        <ons-col ><span class="trn">VIEW CART</span></ons-col>
-      </ons-row>
-    </ons-button>   
-</ons-bottom-toolbar> -->
-
-
-
-<ons-bottom-toolbar class="basket_toolbar cart-btn"> 
-  <ons-button modifier="large to_orange no_shadow" onclick="showCart()" >
-    <ons-row>
-      <ons-col class="center text-right" width="50px" vertical-align="center" style="margin-left: -43px;">
-        <span class="basket_count"></span>
-      </ons-col>
-      <ons-col class="mlat10" width="10px">|</ons-col>
-      <ons-col class="center" width="50px" vertical-align="center">
-        <span class="basket_total"></span>
-      </ons-col>
-      <ons-col class="right text-right" vertical-align="right">
-        <span class="trn">View cart</span>
-        <ons-icon class="ml10" icon="chevron-right" size="12px" ></ons-icon>
-      </ons-col>
-    </ons-row>  
-  </ons-button>                     
-</ons-bottom-toolbar>
 
 </ons-page>
 </template>	  
@@ -1492,7 +1449,7 @@
 <template id="item_page.html">
 <ons-page id="item_page" modifier="page_white" class="image_loaded" >
 
-<ons-toolbar modifier="no_shadow is_rtl">
+<ons-toolbar modifier="no_shadow">
 	  <div class="left">
 	    <ons-back-button modifier="toolbar_button">Back</ons-back-button>
 	  </div>	  
@@ -1528,7 +1485,7 @@
 <div class="cat_carousel_wrap">
 </div>
 
-<ons-list id="resto_list_item" modifier="item_big_thumbnail is_rtl">
+<ons-list id="resto_list_item" modifier="item_big_thumbnail">
 </ons-list>
 
 <div class="item_loader bottom_loader bottom_gap"></div>
@@ -1546,38 +1503,44 @@
 
 
 <template id="profile.html">
-<ons-page id="profile" modifier="is_rtl" >
+<ons-page id="profile" >
 
-  <div class="fake-toolbar"></div>
 
-  <div class="cream_header">
-    <div class="stic-lateral-wrap">
-      <h3 class="trn">Account</h3>
-      <p class="small trn">Manage your profile, orders, adresses etc.</p>  
-    </div>
-  </div>
+<!--<div class="container">
+<h4>Account</h4>    
+</div>-->
 
-  <ons-list id="account_menu"></ons-list>
+<div class="cream_header">
+<div class="wrap">
+ <h3 class="trn">ACCOUNT</h3>  
+ <p class="small trn">manage your profile, orders etc.</p>     
+ <img src="images/profile.png" class="profile">
+</div>
+</div>
+<!--cream_header-->
 
-  </ons-page>
+<ons-list id="account_menu">
+</ons-list>
+
+<div class="bottom_gap"></div>
+
+</ons-page>
 </template>	  
 
 
 <template id="search.html">
-<ons-page id="search" modifier="page_white is_rtl" >
+<ons-page id="search" modifier="page_white" >
 
 <ons-pull-hook id="recent_search_item_pull_hook">
 <span class="trn">Pull to refresh</span>
-</ons-pull-hook>
+</ons-pull-hook> 
 
-<div class="fake-toolbar"></div> 
-
-<div class="search_wrapper" id="stic_search">
-  <ons-search-input id="xx" class="xx" placeholder="Search for restaurant, cuisine or food" onclick="showPage('search_form.html','none')" ></ons-search-input>
-  <div class="stic-icon">
-    <img src="lib/icons/search.svg" onerror="this.src='search.png'">
-  </div>
+<div class="search_wrapper" style="padding-top:15px;">
+<ons-search-input id="xx" class="xx"  
+placeholder="Search for restaurant,food and cuisine" onclick="showPage('search_form.html','none')" ></ons-search-input>    
 </div>
+
+<div class="bottom_gap"></div>
 
 <input type="hidden" name="paginate_total" class="paginate_total" value="0">
 <input type="hidden" name="paginate_page" id="paginate_page" class="paginate_page" value="1">				  
@@ -1587,7 +1550,7 @@
    
    <ons-list-header>
    <ons-row>
-        <ons-col vertical-align="center" class="is_rtl_text_right"><span class="trn">Recent Searches</span></ons-col>
+        <ons-col vertical-align="center" ><span class="trn">RECENT SEARCHES</span></ons-col>
         <ons-col class="text-right delete_recent_searches_wrap" vertical-align="center" >        
         <ons-button id="" modifier="quiet button_small trn" onclick="clear_RecentSearches()" >
           <span class="trn">CLEAR</span>
@@ -1606,7 +1569,7 @@
 
 
 <template id="cart.html">
-<ons-page id="cart" modifier="page_white is_rtl" class="image_loaded" >
+<ons-page id="cart" modifier="page_white" class="image_loaded" >
 
 <!--<ons-toolbar modifier="no_shadow">
   <div class="left">
@@ -1622,13 +1585,14 @@
  <div class="fixed_toolbar">
       <ons-row>
         <ons-col vertical-align="center">
-           <ons-back-button modifier="button_white">Back</ons-back-button>
+           <ons-back-button modifier="">Back</ons-back-button>
         </ons-col>
         <ons-col vertical-align="center">
            
         </ons-col>
       </ons-row>
   </div>
+
 
 <form class="frm_cart" id="frm_cart" method="POST">
 <input type="hidden" name="transaction_type" id="transaction_type" class="transaction_type">
@@ -1660,7 +1624,6 @@
 </form>
 
  <div class="no_order_wrap">
-  <div class="fake-toolbar"></div>
    <div class="center"> 
    <img src="">
     <h4 class="trn">Make your first order</h4>
@@ -1668,9 +1631,13 @@
    </div>
  </div>
  
+
   <ons-bottom-toolbar modifier="" class="bottom_toolbar_checkout" >	     	        	  
 	  <ons-button modifier="large to_orange no_shadow" onclick="checkout()" class="checkout_action" >
-	      <span class="trn">Place Order</span>
+	    <ons-row>
+	      <ons-col><span class="trn">PLACE ORDER</span></ons-col>
+	      <ons-col width="80px" ><span class="cart_total"></span></ons-col>
+	    </ons-row>
 	  </ons-button>	  
   </ons-bottom-toolbar>
 
@@ -1680,7 +1647,7 @@
 
 
 <template id="search_item.html">
-<ons-page id="search_item" modifier="page_white is_rtl" class="image_loaded" >
+<ons-page id="search_item" modifier="page_white" class="image_loaded" >
 
 <ons-toolbar modifier="no_shadow">
   <div class="left">
@@ -1691,12 +1658,12 @@
   </div>	  
 </ons-toolbar>
 
-<div class="search_wrapper search_item_wrap">
+<div class="search_wrapper search_item_wrap iphonex_margin">
 <ons-search-input id="search_item_name" class="search_item_name"  placeholder="Search" ></ons-search-input>    
 </div>
 
 <div class="search_item_name_result"></div>
-  <ons-list id="search_item_name_result" modifier="list_small is_rtl">
+  <ons-list id="search_item_name_result" modifier="list_small">
   </ons-list>	
 
 </ons-page>
@@ -1705,7 +1672,7 @@
 
 
 <template id="item_details.html" >  
-  <ons-page id="item_details" modifier="page_white is_rtl" class="image_loaded" >    
+  <ons-page id="item_details" modifier="page_white" class="image_loaded" >    
   
   <ons-back-button modifier="fixed_back_button button_white">Back</ons-back-button> 
     
@@ -1714,30 +1681,31 @@
   <div class="item_details_wrap"></div>
   </form> 
   
-     <div class="wrap mb20"> 
-         <ons-row class="quantity_wrap">
-           <ons-col class="minus" width="80px">           
-             <ons-button modifier="quiet" class="full_width" onclick="minusQty( $(this) )" >
-               <ons-icon icon="md-minus" size="20px" ></ons-icon>
-             </ons-button>
-           </ons-col>
-           
-           <ons-col class="stic-lateral-wrap">
-              <ons-input name="qty" id="qty" modifier="transparent" value="1" class="numeric_only item_qty" ></ons-input>            
-           </ons-col>
-           
-           <ons-col width="80px">
-             <ons-button modifier="quiet" class="full_width"  onclick="addQty( $(this) )"  >
-               <ons-icon icon="md-plus" size="20px"></ons-icon>
-             </ons-button>
-           </ons-col>
-         </ons-row>  
-  	 </div> 
+  <ons-bottom-toolbar modifier="bottom_toolbar">
+     <div class="wrap">
+             
+       <ons-row class="quantity_wrap">
+         <ons-col width="80px">           
+           <ons-button modifier="quiet" class="full_width" onclick="minusQty( $(this) )" >
+             <ons-icon icon="md-minus" size="25px" ></ons-icon>
+           </ons-button>
+         </ons-col>
+         
+         <ons-col>
+            <ons-input name="qty" id="qty" modifier="transparent" value="1" class="numeric_only item_qty" ></ons-input>            
+         </ons-col>
+         
+         <ons-col width="80px">
+           <ons-button modifier="quiet" class="full_width"  onclick="addQty( $(this) )"  >
+             <ons-icon icon="md-plus" size="25px"></ons-icon>
+           </ons-button>
+         </ons-col>
+       </ons-row>  
      
-  <ons-bottom-toolbar modifier="">
-	   <ons-button modifier="large to_orange no_shadow" class="add_to_cart" onclick="addToCart()" >
-	     <span class="trn">Add to Cart</span>
+	   <ons-button modifier="green_button" class="full_width add_to_cart" onclick="addToCart()" >
+	    <span class="trn">ADD TO CART</span>
 	   </ons-button>
+	 </div> <!--wrap-->
   </ons-bottom-toolbar>
    
     
@@ -1795,9 +1763,30 @@
 
 
 <template id="address_form.html">
-  <ons-page id="address_form" modifier="is_rtl" >  
+  <ons-page id="address_form" modifier="page_white" >  
 
-  <ons-back-button>Back</ons-back-button>
+ <div class="fixed_toolbar">
+  <ons-row>
+    <ons-col vertical-align="center">
+       <ons-back-button modifier="">Back</ons-back-button>
+    </ons-col>
+    <ons-col vertical-align="center" class="text-right">       
+       <ons-button modifier="quiet button_small">
+          <ons-icon class="rounded_white" icon="ion-android-locate"
+           size="28px" onclick="CurrentLocation();"></ons-icon>
+       </ons-button>
+    </ons-col>
+  </ons-row>
+  
+  <div class="identify_location_wrap">
+    <ons-button modifier="rounded_button no_shadow" onclick="identifyLocation();">
+    <span class="trn">IDENTIFY LOCATION</span>
+    </ons-button>
+  </div>
+</div> 
+	  
+
+	  
   <div class="map_half" id="map_address"></div>
 
   <form method="POST" id="frm_address" class="frm_address">  
@@ -1807,9 +1796,9 @@
   <input type="hidden" name="mapbox_drag_map" class="mapbox_drag_map" id="mapbox_drag_map">
   <input type="hidden" name="mapbox_drag_end" class="mapbox_drag_end" id="mapbox_drag_end">
   
-  <div class="header_grey text-right">
-    <ons-button class="pd0" id="location_change" modifier="quiet button_small trn" onclick="showPage('map_enter_address.html')" >
-      <span class="trn">CHANGE</span>
+  <div class="header_grey">
+    <ons-button id="location_change" modifier="quiet button_small trn" onclick="showPage('map_enter_address.html')" >
+    <span class="trn">CHANGE</span>
     </ons-button>
   </div>
   
@@ -1819,76 +1808,52 @@
   
     <ons-list-item>       
        <div class="center">         
-         <ons-input type="text" name="street" id="street" class="street" required  modifier="transparent" placeholder="Street" float>
-         </ons-input>
-         <img class="stic-icon" src="lib/icons/pin.svg" onerror="this.src='pin.png'">
+         <ons-input type="text" name="street" id="street" class="street" required  modifier="transparent" placeholder="Street" float></ons-input>
        </div>
     </ons-list-item>
     
     <ons-list-item>       
        <div class="center">         
-         <ons-input type="text" name="city" id="city" class="city" required  modifier="transparent" placeholder="City" float>
-         </ons-input>
-         <img class="stic-icon" src="lib/icons/pin.svg" onerror="this.src='pin.png'">
+         <ons-input type="text" name="city" id="city" class="city" required  modifier="transparent" placeholder="City" float></ons-input>
        </div>
     </ons-list-item>
     
-    <ons-list-item>       
-       <div class="center">         
-         <ons-input type="text" name="state" id="state" class="state" required  modifier="transparent" placeholder="State" float>
-         </ons-input>
-         <img class="stic-icon" src="lib/icons/pin.svg" onerror="this.src='pin.png'">
-       </div>
-    </ons-list-item>
-    
-    <ons-list-item>       
-       <div class="center">         
-         <ons-input type="text" name="zipcode" id="zipcode" class="zipcode" required  modifier="transparent" placeholder="Zip Code" float></ons-input>
-         <img class="stic-icon" src="lib/icons/pin.svg" onerror="this.src='pin.png'">
-       </div>
-    </ons-list-item>
-    
+       
     <ons-list-item>       
        <div class="center country_list_wrap">         
          
        </div>
     </ons-list-item>
-    
+           
     <ons-list-item>       
        <div class="center">         
-         <ons-input type="text" name="location_name" id="location_name" class="location_name" required  modifier="transparent" placeholder="Floor/unit/Room #" float>
-         </ons-input>
-         <img class="stic-icon" src="lib/icons/booking-history.svg" onerror="this.src='booking-history.png'">
-       </div>
-    </ons-list-item>
-    
-    <ons-list-item>       
-       <div class="center">         
-         <ons-input type="text" name="contact_phone" id="contact_phone" class="contact_phone" required modifier="transparent" placeholder="Contact Number" float onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')">
-          </ons-input>
-         <img class="stic-icon" src="lib/icons/mobile.svg" onerror="this.src='mobile.png'">
+         <ons-input type="text" name="contact_phone" id="contact_phone" class="contact_phone" required 
+          modifier="transparent" placeholder="Contact Number" float
+          onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')"
+          ></ons-input>
        </div>
     </ons-list-item>
     
    <ons-list-item>       
-     <div class="center">         
-         <ons-input type="text" name="delivery_instruction"  class="delivery_instruction" modifier="transparent" placeholder="Delivery instructions" float>
-         </ons-input>
-         <img class="stic-icon" src="lib/icons/edit.svg" onerror="this.src='edit.png'">
+       <div class="center">         
+           <ons-input type="text" name="delivery_instruction"  class="delivery_instruction" modifier="transparent" placeholder="Delivery instructions" float></ons-input>
        </div>
     </ons-list-item> 
     
-     <ons-list-item class="mt20 mb20">       
-       <label class="left min34">
+     <ons-list-item>       
+       <label class="left">
         <ons-checkbox name="save_address" class="save_address"  input-id="save_address" value="1"></ons-checkbox>
       </label>
       <label for="save_address" class="center">
         <span class="trn">Save to my address book</span> 
       </label>
     </ons-list-item> 
-
-  <ons-list>   
-     
+    
+    <ons-list-item>   
+    </ons-list-item> 
+  
+  <ons-list>  
+	  
   </div>   <!--form_wrapper-->
   
   </form>
@@ -1896,7 +1861,7 @@
   
    <ons-bottom-toolbar modifier="transparent" >    
        <ons-button modifier="large to_orange no_shadow" onclick="setDeliveryAddress()" >     
-         <span class="trn">Apply</span>
+         <span class="trn">APPLY</span>
        </ons-button>           
   </ons-bottom-toolbar>
 
@@ -1905,57 +1870,53 @@
 
 
 <template id="address_form_select.html">
-  <ons-page id="address_form_select" modifier="is_rtl" >  
+  <ons-page id="address_form_select" modifier="" >  
 
      <ons-toolbar modifier="no_shadow" >
 	  <div class="left">
 	    <ons-back-button>Back</ons-back-button>
 	  </div>
 	  <div class="center">
-	    <!-- <span class="trn">Select address</span> -->
+	    <span class="trn">Select address</span>
 	  </div>
   </ons-toolbar>
-
-  <div class="cream_header">
-    <div class="stic-lateral-wrap">
-      <h3 class="trn">Delivery Address</h3>
-      <p class="trn small">What address would you like to receive?</p>
-    </div>
-  </div>
+  
+  
   
   <form id="frm_address_form_select" class="frm_address_form_select" method="POST">
   <div class="form_wrapper">
       <ons-list>
       
       <ons-list-item>
-        <div class="address_book_wrap stic-lateral-wrap"></div>
+        <div class="address_book_wrap"></div>
       </ons-list-item>     
       
       <ons-list-item>       
        <div class="center">         
-         <ons-input type="text" name="contact_phone" id="contact_phone" class="contact_phone" required modifier="transparent" placeholder="Contact Number" float onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')"></ons-input>
-         <img class="stic-icon" src="lib/icons/mobile.svg" onerror="this.src='mobile.png'">
+         <ons-input type="text" name="contact_phone" id="contact_phone" class="contact_phone" required 
+          modifier="transparent" placeholder="Contact Number" float
+          onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')"
+          ></ons-input>       
        </div>
       </ons-list-item>
       
        <ons-list-item>       
        <div class="center">         
            <ons-input type="text" name="delivery_instruction"  class="delivery_instruction" modifier="transparent" placeholder="Delivery instructions" float></ons-input>
-           <img class="stic-icon" src="lib/icons/edit.svg" onerror="this.src='edit.png'">
        </div>
        </ons-list-item> 
     
       </ons-list>
   </div> <!--form_wrapper-->
   </form>
-
-   <ons-button class="stic-grey-btn" modifier="quiet to_text_orange margin_auto" onclick="replacePage('address_form.html')"  >
-     <span class="trn">Add New Address</span>
-   </ons-button>
+  
+   <ons-fab position="bottom right" modifier="mini">
+    <ons-icon icon="md-plus" class="color_green" onclick="replacePage('address_form.html');"></ons-icon>
+   </ons-fab>
  
   <ons-bottom-toolbar modifier="transparent" >    
        <ons-button modifier="large to_orange no_shadow" onclick="setAddressBook()" >     
-         <span class="trn">Apply</span>
+         <span class="trn">APPLY</span>
        </ons-button>           
   </ons-bottom-toolbar>
   
@@ -1964,20 +1925,17 @@
 
 
 <template id="payment_option.html">
-  <ons-page id="payment_option" modifier="page_white is_rtl" >  
+  <ons-page id="payment_option" modifier="page_white" >  
 
   <ons-toolbar modifier="no_shadow" >
 	  <div class="left">
 	    <ons-back-button>Back</ons-back-button>
 	  </div>
-	  <!-- <div class="center"><span class="trn">PAYMENT</span></div> -->
+	  <div class="center"><span class="trn">PAYMENT</span></div>
   </ons-toolbar>
-
-  <div class="cream_header">
-    <div class="stic-lateral-wrap">
-      <h3 class="trn">Payment method</h3>
-      <p class="trn small">We use it to make sure our deliveries reach you</p>
-    </div>
+  
+  <div class="wrap">
+    <h3 class="trn">Select payment</h3>
   </div>
   
   <div class="payment_list_wrap"></div>
@@ -2001,26 +1959,26 @@
 	  </div>
 	  <div class="center"></div>
   </ons-toolbar>
-      
-    <div class="cream_header">
-      <div class="stic-lateral-wrap">
-        <h3 class="trn">Need change?</h3>
-        <p class="trn small">For how much?</p>
-      </div>
-    </div>
-
-    <form id="frm_cod_forms" class="frm_cod_forms" method="POST" onsubmit="return false;">
+  
+  <div class="wrap" style="padding-top:40px;">
+    <h3 class="trn">Change? For how much?</h3>
+    
+    
+    <form id="frm_cod_forms" class="frm_cod_forms" method="POST">
     <div class="form_wrapper">
     <ons-list>
     <ons-list-item>        
        <div class="center">
-       <ons-input type="number" name="order_change" id="order_change" required class="order_change" modifier="underbar" placeholder="Enter amount" float ></ons-input>
+       <ons-input type="number" name="order_change" id="order_change" class="order_change" modifier="underbar" placeholder="Enter amount" float ></ons-input>
        </div>
     </ons-list-item>
     <ons-list>
     </div>
+    <!--<div class="grey_line tickline"></div>-->
     </form>
-        
+    
+  </div>
+    
   <ons-bottom-toolbar modifier="transparent" >    
        <ons-button modifier="large to_orange no_shadow" onclick="submitCOD()" >     
          <span class="pay_now_label"></span>
@@ -2032,44 +1990,49 @@
 
 
 <template id="receipt.html">
-  <ons-page id="receipt" modifier="page_white is_rtl" > 
-   
-   <input type="hidden" name="receipt_order_id" id="receipt_order_id" class="receipt_order_id">
-
-   <div class="content-wrap">
-      <img class="stic-successful" src="lib/icons/successful.svg" onerror="this.src='successful.png'">
-   </div>
-   
-   <div class="cream_header text-center">
-    <div class="stic-lateral-wrap">
-     <h3 class="trn">Order Success</h3>  
-     <p class="order_place_label small"></p>
+  <ons-page id="receipt" modifier="page_white" > 
+  
+   <div class="cream_header">
+    <div class="wrap">
+     <h3 class="trn">PAYMENT SUCCESS</h3>  
+     <p class="small trn">Your order is on its way</p>     
+     <img src="images/juice2.png">
     </div>
    </div>
    <!--cream_header-->
-
-   <ons-button class="stic-grey-btn" modifier="quiet to_text_orange margin_auto" onclick="showTrackOrder()"  >
-     <span class="trn">Track Order</span>
-   </ons-button>
-
-   <ons-bottom-toolbar modifier="">                    
-     <ons-button modifier="large to_orange no_shadow" onclick="resetToPage('tabbar.html','none');" >
-     <span class="trn">Back to Home</span>
-     </ons-button>   
-   </ons-bottom-toolbar>
+   
+   <input type="hidden" name="receipt_order_id" id="receipt_order_id" class="receipt_order_id">
+   
+   <div class="content-wrap">
+      <ons-icon icon="md-check-circle" size="80px" class="color_green"></ons-icon>
+      
+      <p class="order_place_label small"></p>
+      
+      <ons-button modifier="large to_orange no_shadow" onclick="showTrackOrder()"> 
+       <span class="trn">TRACK ORDER</span>
+      </ons-button>	  
+           
+      <div class="center_line"><h6 class="trn">Or</h6></div>
+       
+      <ons-button modifier="quiet to_text_orange" onclick="resetToPage('tabbar.html','none');"  >
+      <span class="trn">BACK TO HOME</span>
+      </ons-button>      
+   </div>
+   <!--content-wrap-->
+                  
   
   </ons-page>
 </template>
 
 <template id="settings.html">
-  <ons-page id="settings" modifier="page_white is_rtl" > 
+  <ons-page id="settings" modifier="page_white" > 
   
   <ons-toolbar modifier="no_shadow" >
 	  <div class="left">
 	    <ons-back-button>Back</ons-back-button>
 	  </div>
 	  <div class="center">
-	   <!-- <span class="trn">SETTINGS</span> -->
+	   <span class="trn">SETTINGS</span>
 	  </div>
   </ons-toolbar>
   
@@ -2087,13 +2050,13 @@
 
 
 <template id="about.html">
-<ons-page id="about" modifier="page_white is_rtl" class="image_loaded" > 
+<ons-page id="about" modifier="page_white" class="image_loaded" > 
 
  
   <div class="fixed_toolbar">
       <ons-row>
         <ons-col vertical-align="center">
-           <ons-back-button modifier="">Back</ons-back-button>
+           <ons-back-button modifier="button_white">Back</ons-back-button>
         </ons-col>
         <ons-col vertical-align="center">
            
@@ -2108,14 +2071,14 @@
 
  
 <template id="reviews.html">
-<ons-page id="reviews"  class="image_loaded" modifier="is_rtl"  > 
+<ons-page id="reviews"  class="image_loaded"  > 
 
 <ons-toolbar modifier="no_shadow" >
   <div class="left">
     <ons-back-button>Back</ons-back-button>
   </div>
   <div class="center">
-   <!-- <span class="trn">REVIEWS</span> -->
+   <span class="trn">REVIEWS</span>
   </div>
 </ons-toolbar>
 
@@ -2127,31 +2090,26 @@
 <input type="hidden" name="paginate_total" class="paginate_total" value="0">
 <input type="hidden" name="paginate_page" id="paginate_page" class="paginate_page" value="1">
 
-<div class="cream_header" style="margin-bottom: 0;">
- <div class="stic-lateral-wrap">
-  <h3 class="trn">Reviews</h3>  
- </div>
-</div>
 
- <ons-list id="reviews_list_item"></ons-list>
- <div class="reviews_loader bottom_loader"></div>
+ <ons-list id="reviews_list_item">
+ </ons-list>
+ <div class="reviews_loader bottom_loader bottom_gap"></div>
   
 </ons-page>
 </template>
 
 
 <template id="location.html">
-<ons-page id="location" modifier="page_white is_rtl" > 
+<ons-page id="location" modifier="page_white" > 
 
 <ons-back-button modifier="fixed_back_button">Back</ons-back-button>
-
-<div class="fake-toolbar"></div>
    
   <div class="cream_header">
-     <div class="wrap">
-       <h3 class="print_merchant_name"></h3>  
-       <p class="small print_merchant_address"></p>     
-    </div>
+   <div class="wrap">
+     <h3 class="print_merchant_name"></h3>  
+     <p class="small print_merchant_address"></p>     
+     <img src="images/location.png">
+  </div>
    </div>
    <!--cream_header-->		
 
@@ -2186,7 +2144,7 @@
 
 
 <template id="book_table.html">
-<ons-page id="book_table" modifier="is_rtl"  > 
+<ons-page id="book_table" > 
 
 
 <ons-toolbar modifier="no_shadow" >
@@ -2194,16 +2152,9 @@
     <ons-back-button>Back</ons-back-button>
   </div>
   <div class="center">
-   <!-- <span class="trn">BOOKING INFORMATION</span> -->
+   <span class="trn">BOOKING INFORMATION</span>
   </div>
 </ons-toolbar>
-
-<div class="cream_header" style="margin-bottom: 0">
-   <div class="wrap">
-     <h3 class="trn">Booking Info</h3>  
-     <!-- <p class="small trn"></p>      -->
-  </div>
- </div>
 
  <form id="frm_book" class="frm_book iphonex_margin" method="POST">
 <input type="hidden" name="book_merchant_id" id="book_merchant_id" class="book_merchant_id">
@@ -2211,45 +2162,48 @@
     <ons-list>
        <ons-list-item>       
          <div class="center">
-            <ons-input name="number_guest" id="number_guest" required modifier="transparent" placeholder="Number Of Guests" float ></ons-input>
-            <img class="stic-icon" src="lib/icons/group.svg" onerror="this.src='group.png'">
-       </div>
+         <ons-input name="number_guest" id="number_guest" required modifier="transparent" 
+         placeholder="Number Of Guests" float ></ons-input></div>
       </ons-list-item>    
       
-      <ons-list-item class="stic-lateral-wrap" style="margin-top: -5px;">       
-         <div class="center date_select_wrap bborder"></div>
+      <ons-list-item>       
+         <div class="center date_select_wrap">
+         <!--<ons-input name="date_booking" id="date_booking" required modifier="transparent" 
+         placeholder="Date Of Booking" float ></ons-input>-->
+         
+         </div>
       </ons-list-item>    
       
-      <ons-list-item class="stic-lateral-wrap">       
-         <div class="center time_select_wrap bborder"></div>
+      <ons-list-item>       
+         <div class="center time_select_wrap">
+         <!--<ons-input name="booking_time" id="booking_time" required modifier="transparent" 
+         placeholder="Time" float ></ons-input>-->
+  
+         </div>
       </ons-list-item>   
       
        <ons-list-item>       
          <div class="center">
-            <ons-input name="booking_name" id="booking_name" required modifier="transparent" placeholder="Name" float ></ons-input>
-            <img class="stic-icon" src="lib/icons/user.svg" onerror="this.src='user.png'">
-       </div>
-      </ons-list-item>  
-      
-      <ons-list-item>       
-        <div class="center">
-            <ons-input name="email" id="email" required modifier="transparent" placeholder="Email" float ></ons-input>
-            <img class="stic-icon" src="lib/icons/mail.svg" onerror="this.src='mail.png'">
-        </div>
+         <ons-input name="booking_name" id="booking_name" required modifier="transparent" 
+         placeholder="Name" float ></ons-input></div>
       </ons-list-item>  
       
         <ons-list-item>       
          <div class="center">
-            <ons-input name="mobile" id="mobile" required modifier="transparent" placeholder="Mobile" float ></ons-input>
-            <img class="stic-icon" src="lib/icons/mobile.svg" onerror="this.src='mobile.png'">
-          </div>
-        </ons-list-item>  
+         <ons-input name="email" id="email" required modifier="transparent" 
+         placeholder="Email" float ></ons-input></div>
+      </ons-list-item>  
       
         <ons-list-item>       
-          <div class="center">
-            <ons-input name="booking_notes" id="booking_notes" modifier="transparent" placeholder="Your Instructions" float ></ons-input>
-            <img class="stic-icon" src="lib/icons/edit.svg" onerror="this.src='edit.png'">
-          </div>
+         <div class="center">
+         <ons-input name="mobile" id="mobile" required modifier="transparent" 
+         placeholder="Mobile" float ></ons-input></div>
+      </ons-list-item>  
+      
+        <ons-list-item>       
+         <div class="center">
+         <ons-input name="booking_notes" id="booking_notes" modifier="transparent" 
+         placeholder="Your Instructions" float ></ons-input></div>
       </ons-list-item>  
       
     </ons-list>
@@ -2260,7 +2214,7 @@
  
  <ons-bottom-toolbar modifier="">	     	        	  
 	  <ons-button modifier="large to_orange no_shadow" onclick="submitForm('.frm_book','SaveBooking','POST')" >
-	   <span class="trn">Continue</span>
+	   <span class="trn">CONTINUE</span>
 	  </ons-button>	  
   </ons-bottom-toolbar>
 
@@ -2268,14 +2222,14 @@
 </template>
 
 <template id="photo_gallery.html">
-<ons-page id="photo_gallery"  class="image_loaded" modifier="is_rtl"  > 
+<ons-page id="photo_gallery"  class="image_loaded" > 
 
 <ons-toolbar modifier="no_shadow" >
   <div class="left">
     <ons-back-button>Back</ons-back-button>
   </div>
   <div class="center">
-   <!-- <span class="trn">GALLERY</span> -->
+   <span class="trn">GALLERY</span>
   </div>
 </ons-toolbar>
 
@@ -2297,7 +2251,7 @@
 </template>
 
 <template id="information.html">
-<ons-page id="information" modifier="page_white is_rtl" class="image_loaded" > 
+<ons-page id="information" modifier="page_white" class="image_loaded" > 
 
 <ons-pull-hook id="information_pull_hook">
 <span class="trn">Pull to refresh</span>
@@ -2323,7 +2277,7 @@
 </template>
 
 <template id="promos.html">
-<ons-page id="promos" modifier="is_rtl"  > 
+<ons-page id="promos" > 
 
 
 <ons-toolbar modifier="no_shadow" >
@@ -2340,7 +2294,7 @@
 </ons-pull-hook>
 
 
-<ons-list id="promo_list_item" modifier="is_rtl" >  
+<ons-list id="promo_list_item">  
 </ons-list>
 
 <div class="promos_loader bottom_loader bottom_gap"></div>
@@ -2351,14 +2305,14 @@
 
 
 <template id="creditcard_list.html">
-<ons-page id="creditcard_list"  modifier="is_rtl" > 
+<ons-page id="creditcard_list" > 
 
 <ons-toolbar modifier="no_shadow" >
   <div class="left">
     <ons-back-button>Back</ons-back-button>
   </div>
   <div class="center">
-   <!-- <span class="trn">CARDS</span> -->
+   <span class="trn">CARDS</span>
   </div>
 </ons-toolbar>
 
@@ -2370,29 +2324,21 @@
 <span class="trn">Pull to refresh</span>
 </ons-pull-hook>
 
-<div class="cream_header">
- <div class="stic-lateral-wrap">
-  <h3 class="trn">Credit Cards</h3>  
-  <p class="small trn">Manage your list of saved cards</p>
- </div>
-</div>
 
-<ons-list id="creditcard_list_item" modifier="list_style1 is_rtl">   
+<ons-list id="creditcard_list_item" modifier="list_style1">   
 </ons-list>  
 
 <div class="creditcard_loader bottom_loader bottom_gap"></div>
 
-<ons-bottom-toolbar modifier="">                    
-  <ons-button modifier="large to_orange no_shadow" onclick="showPage('creditcard_add.html');">
-    <span class="trn">Add New Card</span>
-  </ons-button>   
-</ons-bottom-toolbar>
+<ons-fab position="bottom right" modifier="mini">
+<ons-icon icon="md-plus" class="color_green" onclick="showPage('creditcard_add.html');"></ons-icon>
+</ons-fab>
 
 </ons-page>
 </template>
 
 <template id="addressbook_list.html">
-<ons-page id="addressbook_list" modifier="is_rtl"  > 
+<ons-page id="addressbook_list" > 
 
 
 <ons-toolbar modifier="no_shadow" >
@@ -2400,7 +2346,7 @@
     <ons-back-button>Back</ons-back-button>
   </div>
   <div class="center">
-    <!-- <span class="trn">ADDRESS BOOK</span> -->
+    <span class="trn">ADDRESS BOOK</span>
   </div>
 </ons-toolbar>
 
@@ -2411,23 +2357,15 @@
 <span class="trn">Pull to refresh</span>
 </ons-pull-hook>
 
-<div class="cream_header">
- <div class="stic-lateral-wrap">
-  <h3 class="trn">Address Book</h3>  
-  <p class="small trn">Manage your list of saved addresses</p>
- </div>
-</div>
 
-<ons-list id="addressbook_list_item" modifier="list_style1 is_rtl">   
+<ons-list id="addressbook_list_item" modifier="list_style1">   
 </ons-list>  
 
 <div class="addressbook_loader bottom_loader bottom_gap"></div>
 
-<ons-bottom-toolbar modifier="">                    
-  <ons-button modifier="large to_orange no_shadow" onclick="switchAddressBook();">
-    <span class="trn">Add New Address</span>
-  </ons-button>   
-</ons-bottom-toolbar>
+<ons-fab position="bottom right" modifier="mini">
+  <ons-icon icon="md-plus" class="color_green" onclick="showPage('address_book.html');"></ons-icon>
+</ons-fab>
 
 </ons-page>
 </template>
@@ -2436,32 +2374,23 @@
 <template id="booking_history.html">
 <ons-page id="booking_history" class="image_loaded" > 
 
-<ons-toolbar modifier="no_shadow is_rtl" >
+<ons-toolbar modifier="no_shadow" >
   <div class="left">
     <ons-back-button>Back</ons-back-button>
   </div>
   <div class="center">
-    <!-- <span class="trn">BOOKING HISTORY</span> -->
+    <span class="trn">BOOKING HISTORY</span>
   </div>
-<!--   <div class="right">
+  <div class="right">
       <ons-toolbar-button onclick="showPage('booking_search.html','none')" >
         <ons-icon icon="ion-search"></ons-icon>
       </ons-toolbar-button>  
-  </div> -->
+  </div>
 </ons-toolbar>
 
 <ons-pull-hook id="booking_history_pull_hook">
 <span class="trn">Pull to refresh</span>
 </ons-pull-hook>
-
-<div class="search_wrapper" id="stic_search">
-  <ons-search-input id="xx" class="xx" placeholder="Enter booking ID or Restaurant Name" onclick="showPage('booking_search.html','none')" ></ons-search-input>
-  <div class="stic-icon">
-    <div>
-      <img src="lib/icons/search.svg" onerror="this.src='search.png'">
-    </div>
-  </div>
-</div>
 
 <ons-carousel id="booking_tabs" class="carousel_small carousel_white" swipeable auto-scroll overscrollable direction="horizontal" item-width="30%" >
 </ons-carousel>
@@ -2471,7 +2400,7 @@
 <input type="hidden" name="paginate_page" id="paginate_page" class="paginate_page" value="1">
 
 
- <ons-list id="booking_history_item" modifier="transparent is_rtl is_rtl_nopad">    
+ <ons-list id="booking_history_item" modifier="transparent">    
  </ons-list>
  
  <div class="booking_loader bottom_loader bottom_gap"></div>
@@ -2488,18 +2417,12 @@
     <ons-back-button>Back</ons-back-button>
   </div>
   <div class="center">
-    <!-- <span class="trn">TABLE BOOKING</span> -->
+    <span class="trn">TABLE BOOKING</span>
   </div>  
 </ons-toolbar>
 
-
-<div class="search_wrapper search_item_wrap" id="stic_search">
-  <ons-search-input id="search_field_by_name" class="search_field_by_name" placeholder="Enter booking ID or Restaurant Name"></ons-search-input>
-  <div class="stic-icon">
-    <div>
-      <img src="lib/icons/search.svg" onerror="this.src='search.png'">
-    </div>
-  </div>
+<div class="search_wrapper search_item_wrap iphonex_margin">
+<ons-search-input id="search_field_by_name" class="search_field_by_name"  placeholder="Search" ></ons-search-input>    
 </div>
 
 <ons-list id="booking_search_result" modifier="list_small">
@@ -2511,14 +2434,14 @@
 
 
 <template id="booking_details.html">
-<ons-page id="booking_details" modifier="page_white is_rtl" > 
+<ons-page id="booking_details" modifier="page_white" > 
 
 <ons-toolbar modifier="no_shadow" >
   <div class="left">
     <ons-back-button>Back</ons-back-button>
   </div>
   <div class="center">
-    <!-- <span class="trn">BOOKING INFORMATION</span> -->
+    <span class="trn">BOOKING INFORMATION</span>
   </div>  
 </ons-toolbar>
 
@@ -2526,7 +2449,7 @@
 <span class="trn">Pull to refresh</span>
 </ons-pull-hook>
 
-<ons-list id="booking_details_list" modifier="list_style1 is_rtl">      
+<ons-list id="booking_details_list" modifier="list_style1">      
 </ons-list>  
 <div class="booking_details_loader"></div>      
   
@@ -2537,29 +2460,23 @@
 <template id="order_list.html">
 <ons-page id="order_list" class="image_loaded" > 
 
-<ons-toolbar modifier="no_shadow is_rtl" style="border-bottom:0px;" >
+<ons-toolbar modifier="no_shadow" style="border-bottom:0px;" >
   <div class="left">
     <ons-back-button>Back</ons-back-button>
   </div>
   <div class="center">
-    <!-- <span class="trn">ORDER HISTORY</span> -->
+    <span class="trn">ORDER HISTORY</span>
   </div>
-  <div class="right"> 
+  <div class="right">
+      <ons-toolbar-button onclick="showPage('order_search.html','none')" >
+        <ons-icon icon="ion-search"></ons-icon>
+      </ons-toolbar-button>  
   </div>
 </ons-toolbar>
 
 <ons-pull-hook id="order_list_pull_hook">
 <span class="trn">Pull to refresh</span>
 </ons-pull-hook>
-
-<div class="search_wrapper" id="stic_search">
-  <ons-search-input id="xx" class="xx" placeholder="Enter Order ID or Restaurant Name" onclick="showPage('order_search.html','none')" ></ons-search-input>
-  <div class="stic-icon">
-    <div>
-      <img src="lib/icons/search.svg" onerror="this.src='search.png'">
-    </div>
-  </div>
-</div>
 
 <ons-carousel id="order_tabs" class="carousel_small carousel_white" swipeable auto-scroll overscrollable direction="horizontal" item-width="30%" >
 </ons-carousel>
@@ -2569,7 +2486,7 @@
 <input type="hidden" name="paginate_page" id="paginate_page" class="paginate_page" value="1">
 
 
- <ons-list id="order_list_item" modifier="transparent is_rtl is_rtl_nopad" >    
+ <ons-list id="order_list_item" modifier="transparent" >    
  </ons-list>
  
  <div class="order_loader bottom_loader bottom_gap"></div>
@@ -2579,7 +2496,7 @@
 
 
 <template id="favorite_list.html">
-<ons-page id="favorite_list" class="image_loaded" modifier="is_rtl"  > 
+<ons-page id="favorite_list" class="image_loaded" > 
 
 
 <ons-toolbar modifier="no_shadow" >
@@ -2587,12 +2504,12 @@
     <ons-back-button>Back</ons-back-button>
   </div>
   <div class="center">
-    <!-- <span class="trn">FAVORITES</span> -->
+    <span class="trn">FAVORITES</span>
   </div>
   <div class="right">
-<!--       <ons-toolbar-button onclick="showPage('favorite_search.html','none')" >
+      <ons-toolbar-button onclick="showPage('favorite_search.html','none')" >
         <ons-icon icon="ion-search"></ons-icon>
-      </ons-toolbar-button>  --> 
+      </ons-toolbar-button>  
   </div>
 </ons-toolbar>
 
@@ -2604,16 +2521,7 @@
 <span class="trn">Pull to refresh</span>
 </ons-pull-hook>
 
-<div class="search_wrapper search_item_wrap" id="stic_search">
-  <ons-search-input id="xx" class="xx" placeholder="Enter Restaurant Name" onclick="showPage('favorite_search.html','none')"></ons-search-input>
-  <div class="stic-icon">
-    <div>
-      <img src="lib/icons/search.svg" onerror="this.src='search.png'">
-    </div>
-  </div>
-</div>
-
-<ons-list id="favorite_list_item" class="stic-all-rest" modifier="transparent">    
+<ons-list id="favorite_list_item" modifier="transparent">    
 </ons-list>
 
 <div class="favorite_loader bottom_loader bottom_gap"></div>
@@ -2623,7 +2531,7 @@
 
 
 <template id="points_list.html">
-<ons-page id="points_list" modifier="is_rtl" > 
+<ons-page id="points_list" > 
 
 <ons-toolbar modifier="no_shadow" >
   <div class="left">
@@ -2638,7 +2546,7 @@
 <span class="trn">Pull to refresh</span>
 </ons-pull-hook>
 
-<ons-list id="points_list_item" modifier="is_rtl"  >
+<ons-list id="points_list_item">
 </ons-list>
 
 <div class="points_list_loader bottom_loader bottom_gap"></div>
@@ -2649,7 +2557,7 @@
 
 
 <template id="points_details.html">
-<ons-page id="points_details" modifier="is_rtl"  > 
+<ons-page id="points_details" > 
 
 <ons-toolbar modifier="no_shadow" >
   <div class="left">
@@ -2665,7 +2573,7 @@
 <span class="trn">Pull to refresh</span>
 </ons-pull-hook>
 
-<ons-list id="points_details_item" modifier="is_rtl" >  
+<ons-list id="points_details_item">  
 </ons-list>
 
 <div class="points_details_loader bottom_loader bottom_gap"></div>
@@ -2675,139 +2583,130 @@
 
 
 <template id="edit_profile.html">
-<ons-page id="edit_profile" class="image_loaded" modifier="is_rtl" > 
+<ons-page id="edit_profile" class="image_loaded" > 
 
-    <div class="fixed_toolbar">
-        <ons-row>
-          <ons-col vertical-align="center">
-             <ons-back-button>Back</ons-back-button>
-          </ons-col>
-          <ons-col vertical-align="center">
-             
-          </ons-col>
-        </ons-row>
-    </div>
-
-    <div class="stic-profile-header">
+ <div class="fixed_toolbar">
       <ons-row>
-        <ons-col width="70px" vertical-align="center" style="height: 60px;">
-          <div class="is-loading xsmall-loader">
-            <div class="spinner"></div>
-            <img src="" class="small_avatar">
-          </div>
-        </ons-col>
-
         <ons-col vertical-align="center">
-          <h5 class="print_customer_name"></h5>
-          <p class="small print_customer_email"></p>
+           <ons-back-button modifier="button_white">Back</ons-back-button>
         </ons-col>
-
-        <ons-col width="30px" vertical-align="center" onclick="browseCamera();">
-          <img class="stic-profile-icon" src="lib/icons/camera.svg" onerror="this.src='camera.png'">
+        <ons-col vertical-align="center">
+           
         </ons-col>
+      </ons-row>
+  </div>
+ 
+ <div class="fixed_header header_about" >
+ 
+   <!--<div class="is-loading large-loader">
+     <div class="spinner"></div>
+     <img class="hide header_about_img" src="">
+   </div>-->
+ 
+   <div class="dim_background absolute" >
+     <div class="inner_wrap">
+           
+      <ons-row>
+          <ons-col width="70px" vertical-align="center" >
+             <div class="is-loading xsmall-loader">
+               <div class="spinner"></div>
+               <img src="" class="small_avatar">
+             </div>
+          </ons-col >
+          
+          <ons-col vertical-align="center" >
+           <h5 class="print_customer_name"></h5>
+           <p class="small print_customer_email"></p>
+          </ons-col >
+          
       </ons-row>            
-    </div>
+     </div><!-- inner_wrap-->     
+   </div> <!--dim_background-->
+ </div> <!--fixed_header-->
+ 
+  <ons-fab position="top right" onclick="browseCamera();" modifier="mini">     
+     <ons-icon icon="md-camera"></ons-icon>     
+  </ons-fab>
+  
+ <div class="progress_wrapper white_wrapper">
+    <ons-progress-bar value="0" secondary-value="100"></ons-progress-bar>
+ </div>
 
-   <div class="progress_wrapper white_wrapper hide_all">
-      <ons-progress-bar value="0" secondary-value="100"></ons-progress-bar>
-   </div>
+ <form id="frm_profile" class="frm_profile" method="POST">
+ <div class="form_wrapper">
+    <ons-list>
+       <ons-list-item>       
+         <div class="center">
+         <ons-input name="first_name" id="first_name" required modifier="transparent" 
+         placeholder="First Name" float ></ons-input></div>
+      </ons-list-item>     
+      
+      <ons-list-item>       
+         <div class="center">
+         <ons-input name="last_name" id="last_name" required modifier="transparent" 
+         placeholder="Last Name" float ></ons-input></div>
+      </ons-list-item>   
+      
+      <ons-list-item>       
+         <div class="center">
+         <ons-input name="contact_phone" id="contact_phone" class="contact_phone" required modifier="transparent" 
+         placeholder="Mobile no." float  onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')" >
+         </ons-input></div>
+      </ons-list-item>   
+      
+    <ons-list>
+</div>      
+</form>
 
-    <form id="frm_profile" class="frm_profile" method="POST">
-      <div class="form_wrapper">
-        <ons-list>
-          <ons-list-item>       
-            <div class="center">
-              <div>
-                <ons-input name="first_name" id="first_name" required modifier="transparent" 
-              placeholder="First Name" float ></ons-input>
-                <img class="stic-icon" src="lib/icons/edit.svg" onerror="this.src='edit.png'">
-              </div>
-            </div>
-          </ons-list-item>     
-
-          <ons-list-item>       
-            <div class="center">
-              <div>
-                <ons-input name="last_name" id="last_name" required modifier="transparent" 
-              placeholder="Last Name" float ></ons-input>
-                <img class="stic-icon" src="lib/icons/edit.svg" onerror="this.src='edit.png'">
-              </div>
-            </div>
-          </ons-list-item>   
-
-          <ons-list-item>       
-            <div class="center">
-              <div>
-                <ons-input name="contact_phone" id="contact_phone" class="contact_phone" required modifier="transparent" placeholder="Mobile no." float  onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')"></ons-input>
-                <img class="stic-icon" src="lib/icons/mobile.svg" onerror="this.src='mobile.png'">
-              </div>    
-            </div>    
-          </ons-list-item> 
-
-          <ons-list-item>       
-            <div class="center">
-              <div>
-                <ons-input name="email_address" id="email_address" email type="email" class="email_address" disabled placeholder="Email address" float></ons-input>
-                <img class="stic-icon" src="lib/icons/mail.svg" onerror="this.src='mail.png'">
-              </div>
-            </div>
-          </ons-list-item>
-        </ons-list>
-      </div>
-    </form>
-
-    <ons-button class="stic-grey-btn" modifier="quiet to_text_orange margin_auto" onclick="showPage('change_password.html')"  >
-      <span class="trn">Change Password</span>
-    </ons-button>
-   
-    <ons-bottom-toolbar modifier="">	     	        	  
-      <ons-button id="save_profile_button" modifier="large to_orange no_shadow" onclick="submitForm('.frm_profile','UpdateProfile','POST')" >
-        <span class="trn">Save</span>
-      </ons-button>	  
-    </ons-bottom-toolbar>
-   
-  </ons-page>
+<div class="bottom_gap"></div>
+ 
+ <ons-bottom-toolbar modifier="">	     	        	  
+	  <ons-button id="save_profile_button" modifier="large to_orange no_shadow" onclick="submitForm('.frm_profile','UpdateProfile','POST')" >
+	  <span class="trn">Save</span>
+	  </ons-button>	  
+  </ons-bottom-toolbar>
+ 
+</ons-page>
 </template>
 
 
 <template id="change_password.html">
-<ons-page id="change_password"  modifier="is_rtl" > 
+<ons-page id="change_password"  > 
 
 <ons-toolbar modifier="no_shadow" >
   <div class="left">
     <ons-back-button>Back</ons-back-button>
   </div>
   <div class="center">
-    <!-- <span class="trn">CHANGE PASSWORD</span> -->
+    <span class="trn">CHANGE PASSWORD</span>
   </div>  
 </ons-toolbar>
 
-  <form id="frm_changepass" class="frm_changepass" method="POST">
-    <div class="form_wrapper">
-      <ons-list>
-        <ons-list-item>       
-          <div class="center">
-            <ons-input type="password" name="current_password" id="current_password" required modifier="transparent" placeholder="Enter Current Password" float ></ons-input>
-            <img class="stic-icon" src="lib/icons/lock.svg" onerror="this.src='lock.png'">
-          </div>
-        </ons-list-item>     
 
-        <ons-list-item>       
-          <div class="center">
-            <ons-input type="password" name="new_password" id="new_password" required modifier="transparent" placeholder="Enter New Password" float ></ons-input>
-            <img class="stic-icon" src="lib/icons/unlock.svg" onerror="this.src='lock.png'">
-          </div>
-        </ons-list-item>   
-
-        <ons-list-item>       
-          <div class="center">
-            <ons-input type="password" name="cnew_password" id="cnew_password" class="cnew_password" required modifier="transparent" placeholder="Confirm New Password" float ></ons-input>
-            <img class="stic-icon" src="lib/icons/unlock.svg" onerror="this.src='lock.png'">
-          </div>
-        </ons-list-item>
-      <ons-list>
-    </div>      
-  </form>
+ <form id="frm_changepass" class="frm_changepass" method="POST">
+ <div class="form_wrapper">
+    <ons-list>
+       <ons-list-item>       
+         <div class="center">
+         <ons-input type="password" name="current_password" id="current_password" required modifier="transparent" 
+         placeholder="Enter Current Password" float ></ons-input></div>
+      </ons-list-item>     
+      
+      <ons-list-item>       
+         <div class="center">
+         <ons-input type="password" name="new_password" id="new_password" required modifier="transparent" 
+         placeholder="Enter New Password" float ></ons-input></div>
+      </ons-list-item>   
+      
+      <ons-list-item>       
+         <div class="center">
+         <ons-input type="password" name="cnew_password" id="cnew_password" class="cnew_password" required modifier="transparent" 
+         placeholder="Confirm New Password" float ></ons-input></div>
+      </ons-list-item>   
+      
+    <ons-list>
+</div>      
+</form>
 
 <div class="bottom_gap"></div>
  
@@ -2823,27 +2722,20 @@
 
 
 <template id="language_list.html">
-<ons-page id="language_list" modifier="page_white is_rtl" > 
+<ons-page id="language_list" modifier="page_white" > 
 
 <ons-toolbar modifier="no_shadow" >
   <div class="left">
     <ons-back-button>Back</ons-back-button>
   </div>
   <div class="center">
-    <!-- <span class="trn">LANGUAGE</span> -->
+    <span class="trn">LANGUAGE</span>
   </div>  
 </ons-toolbar>
 
 <ons-pull-hook id="language_list_pull_hook">
 <span class="trn">Pull to refresh</span>
 </ons-pull-hook>
-
-<div class="cream_header">
- <div class="stic-lateral-wrap">
-  <h3 class="trn">Select language</h3>  
-  <p class="small trn">Choose the language you prefer</p>
- </div>
-</div>
 
 <ons-list id="language_list_item"></ons-list>  
 
@@ -2854,22 +2746,22 @@
 
 
 <template id="add_review.html">
-<ons-page id="add_review" class="image_loaded" modifier="is_rtl"  > 
+<ons-page id="add_review" class="image_loaded" > 
 
 <ons-toolbar modifier="no_shadow" >
   <div class="left">
     <ons-back-button>Back</ons-back-button>
   </div>
   <div class="center ">
-    <!-- <span class="trn">WRITE REVIEW</span> -->
+    <span class="trn">WRITE REVIEW</span>
   </div>  
 </ons-toolbar>
 
 
 <div class="white_wrapper iphonex_margin">
-<div class="stic-lateral-wrap">
+<div class="wrap">
 	<ons-row>
-	   <ons-col width="65px" vertical-align="top" >
+	   <ons-col width="58px" vertical-align="center" >
 	      <div class="is-loading">
 	       <div class="spinner"></div> 
 	       <img class="thumbnail" src="">
@@ -2877,8 +2769,8 @@
 	   </ons-col>
 	   <ons-col width="50%" vertical-align="center" >
 	    <h5></h5>
-	    <p class="capitalize small print_trans"></p>
-	    <p class="capitalize small print_order_status"></p>
+	    <p class="small print_trans"></p>
+	    <p class="small print_payment_type"></p>
 	   </ons-col>
 	   
 	   <ons-col vertical-align="center" >
@@ -2886,6 +2778,9 @@
 	   </ons-col>
 	</ons-row>
 </div>
+
+<div class="grey_line tickline"></div>
+
 
 <form id="frm_review" class="frm_review" method="POST">
 
@@ -2897,23 +2792,27 @@
    <ons-list>
     <ons-list-item>        
        <div class="center">         
-         <textarea name="review" class="review textarea full_width textarea--transparent" 
+         <textarea name="review" class="review textarea textarea--transparent" 
           rows="3" required placeholder="What do you think of your order?"></textarea>
       </div>
     </ons-list-item>
     
     <ons-list-item> 
      <ons-row>
+       <ons-col width="50%" vertical-align="center" > 
+         <span class="review_as"></span>
+       </ons-col>
        <ons-col vertical-align="center" > 
-	      
-        <label class="left mr10">
-          <ons-checkbox name="as_anonymous" input-id="check_anonymous" value="1"></ons-checkbox>
-	      </label>
        
-        <label for="check_anonymous" class="center">
-	        <span class="trn">Review anonymously</span>
+         <label for="check_anonymous" class="center">
+	        <span class="trn">Anonymous</span>
 	      </label>
 	      
+          <label class="left">
+             <ons-checkbox name="as_anonymous" input-id="check_anonymous" value="1"></ons-checkbox>
+	      </label>
+	      
+       
        </ons-col>
      </ons-row>
     </ons-list-item>
@@ -2957,14 +2856,14 @@
 
 
 <template id="track_history.html">
-<ons-page id="track_history" class="image_loaded" modifier="is_rtl"  > 
+<ons-page id="track_history" class="image_loaded" > 
 
 <ons-toolbar modifier="no_shadow" >
   <div class="left">
     <ons-back-button>Back</ons-back-button>
   </div>
   <div class="center">
-    <!-- <span class="trn">TRACK ORDER</span> -->
+    <span class="trn">TRACK ORDER</span>
   </div>  
 </ons-toolbar>
 
@@ -2977,7 +2876,7 @@
 
 <input type="hidden" name="track_order_id" class="track_order_id" name="track_order_id">
 
-<ons-list id="track_history_item" modifier="list_style1 is_rtl">   
+<ons-list id="track_history_item" modifier="list_style1">   
 </ons-list> 
 
 <div class="track_history_loader bottom_loader bottom_gap"></div>
@@ -2994,23 +2893,16 @@
 
 
 <template id="view_order.html">
-<ons-page id="view_order" modifier="is_rtl"  > 
+<ons-page id="view_order" > 
 
 <ons-toolbar modifier="no_shadow" >
   <div class="left">
     <ons-back-button>Back</ons-back-button>
   </div>
   <div class="center">
-    <!-- <span class="trn">VIEW ORDER</span> -->
+    <span class="trn">VIEW ORDER</span>
   </div>  
 </ons-toolbar>
-
-<div class="cream_header">
- <div class="stic-lateral-wrap">
-  <h3 class="trn">Order Receipt</h3>  
-  <p class="order_id small trn"></p>
- </div>
-</div>
 
 <div class="order_details_wrap iphonex_margin"></div>
 <div class="order_details_html"></div>
@@ -3020,22 +2912,19 @@
 
 
 <template id="order_search.html">
-<ons-page id="order_search" modifier="page_white is_rtl" > 
+<ons-page id="order_search" modifier="page_white" > 
 
 <ons-toolbar modifier="no_shadow" >
   <div class="left">
     <ons-back-button>Back</ons-back-button>
   </div>
   <div class="center">
-    <!-- <span class="trn">SEARCH ORDER</span> -->
+    <span class="trn">SEARCH ORDER</span>
   </div>  
 </ons-toolbar>
 
-<div class="search_wrapper search_item_wrap" id="stic_search">
-  <ons-search-input id="search_field_by_name" class="search_field_by_name" placeholder="Search"></ons-search-input>
-  <div class="stic-icon">
-    <img src="lib/icons/search.svg" onerror="this.src='search.png'">
-  </div>
+<div class="search_wrapper search_item_wrap iphonex_margin">
+<ons-search-input id="search_field_by_name" class="search_field_by_name"  placeholder="Search" ></ons-search-input>    
 </div>
 
 <div class="search_order_result resp_small"></div>
@@ -3055,15 +2944,12 @@
     <ons-back-button>Back</ons-back-button>
   </div>
   <div class="center">
-   <!-- <span class="trn">SEARCH FAVORITE</span> -->
+   <span class="trn">SEARCH FAVORITE</span>
   </div>  
 </ons-toolbar>
 
-<div class="search_wrapper search_item_wrap" id="stic_search">
-  <ons-search-input id="search_field_by_name" class="search_field_by_name" placeholder="Enter Restaurant Name"></ons-search-input>
-  <div class="stic-icon">
-    <img src="lib/icons/search.svg" onerror="this.src='search.png'">
-  </div>
+<div class="search_wrapper search_item_wrap iphonex_margin">
+<ons-search-input id="search_field_by_name" class="search_field_by_name"  placeholder="Enter restaurant name" ></ons-search-input>    
 </div>
 
 <div class="favorite_search_result resp_small"></div>
@@ -3074,14 +2960,14 @@
 </template>
 
 <template id="creditcard_add.html">
-<ons-page id="creditcard_add"  modifier="is_rtl"  > 
+<ons-page id="creditcard_add"  > 
 
 <ons-toolbar modifier="no_shadow" >
   <div class="left">
     <ons-back-button>Back</ons-back-button>
   </div>
   <div class="center">
-   <!-- <span class="trn">CREDIT CARD</span> -->
+   <span class="trn">CREDIT CARD</span>
   </div>  
 </ons-toolbar>
 
@@ -3103,10 +2989,10 @@
       <ons-list-item> 
         <ons-row>
         
-          <ons-col width="25%" vertical-align="center" class="expiration_month_wrap mr20">
+          <ons-col width="30%" class="expiration_month_wrap">
           </ons-col>
           
-          <ons-col width="25%" vertical-align="center" class="expiration_yr_wrap">            
+          <ons-col width="30%" class="expiration_yr_wrap">            
           </ons-col>
           
            <ons-col style="padding-left:20px;">
@@ -3139,10 +3025,16 @@
 </template>
 
 <template id="address_book.html">
-<ons-page id="address_book" modifier="is_rtl"  >  
+<ons-page id="address_book"  >  
 
 <ons-back-button modifier="fixed_back_button">Back</ons-back-button> 
 <div class="map_half" id="map_address"></div>
+
+  <div class="header_grey">
+    <ons-button id="location_change" modifier="quiet button_small trn" onclick="showPage('map_enter_address.html')" >
+    <span class="trn">CHANGE</span>
+    </ons-button>
+  </div>
   
  <form method="POST" id="frm_address_book" class="frm_address_book">  
   <input type="hidden" name="lat" id="lat" class="lat">
@@ -3167,29 +3059,13 @@
        </div>
     </ons-list-item>
     
-    <ons-list-item>       
-       <div class="center">         
-         <ons-input type="text" name="state" id="state" class="state" required  modifier="transparent" placeholder="State" float></ons-input>
-       </div>
-    </ons-list-item>
-    
-    <ons-list-item>       
-       <div class="center">         
-         <ons-input type="text" name="zipcode" id="zipcode" class="zipcode" required  modifier="transparent" placeholder="Zip Code" float></ons-input>
-       </div>
-    </ons-list-item>
-    
+   
     <ons-list-item>       
        <div class="center country_list_wrap">         
          
        </div>
     </ons-list-item>
-    
-    <ons-list-item>       
-       <div class="center">         
-         <ons-input type="text" name="location_name" id="location_name" class="location_name" required  modifier="transparent" placeholder="Floor/unit/Room #" float></ons-input>
-       </div>
-    </ons-list-item>
+ 
     
     
    <ons-list-item>       
@@ -3212,14 +3088,12 @@
   </div>   <!--form_wrapper-->
   
   </form>
-
-  <ons-button class="stic-grey-btn" modifier="quiet to_text_orange margin_auto" onclick="showPage('map_enter_address.html')"  >
-    <span class="trn">Search New Address</span>
-  </ons-button>   
-
+  
+  <div class="bottom_gap"></div>
+  
    <ons-bottom-toolbar modifier="transparent" >    
        <ons-button modifier="large to_orange no_shadow" onclick="submitForm('.frm_address_book','saveAddressBook','POST')" >     
-         <span class="trn">Save</span>
+         <span class="trn">SAVE</span>
        </ons-button>           
   </ons-bottom-toolbar>
 
@@ -3228,7 +3102,7 @@
 
 
 <template id="device_id.html">
-<ons-page id="device_id" modifier="is_rtl" > 
+<ons-page id="device_id"  > 
 
 <ons-toolbar modifier="no_shadow" >
   <div class="left">
@@ -3267,26 +3141,28 @@
 
 
 <template id="booking_receipt.html">
-  <ons-page id="booking_receipt" modifier="page_white is_rtl" > 
-   
-   <div class="content-wrap">
-      <img class="stic-successful" src="lib/icons/successful.svg" onerror="this.src='successful.png'">
-   </div>
+  <ons-page id="booking_receipt" modifier="page_white" > 
   
-   <div class="cream_header text-center">
-    <div class="stic-lateral-wrap">
-     <h3 class="trn">Booking Success</h3>  
-     <p class="print_booking_message small"></p>
+   <div class="cream_header">
+    <div class="wrap">
+     <h3 class="trn">BOOKING SUCCESS</h3>  
+     <p class="small trn">Your booking has been receive</p>     
+     <img src="images/juice2.png">
     </div>
    </div>
    <!--cream_header-->
-
-   <ons-bottom-toolbar modifier="">                    
-     <ons-button modifier="large to_orange no_shadow" onclick="popPage()" >
-     <span class="trn">Back to Merchant Menu</span>
-     </ons-button>   
-   </ons-bottom-toolbar>
-
+   
+   
+   <div class="content-wrap">
+      <ons-icon icon="md-check-circle" size="80px" class="color_green"></ons-icon>
+      
+      <p class="print_booking_message small"></p>
+      
+      <ons-button modifier="large to_orange no_shadow" class="trn" onclick="popPage()">
+      BACK TO MERCHANT MENU
+      </ons-button>	  
+                 
+   </div>
    <!--content-wrap-->
                   
   
@@ -3295,28 +3171,23 @@
 
 
 <template id="search_category.html">
-<ons-page id="search_category" modifier="page_white is_rtl" class="image_loaded" >
+<ons-page id="search_category" modifier="page_white" class="image_loaded" >
 
 <ons-toolbar modifier="no_shadow">
   <div class="left">
     <ons-back-button modifier="toolbar_button">Back</ons-back-button>
   </div>	  
   <div class="center">
-    <!-- <span class="trn">Search for category</span> -->
+    <span class="trn">Search for category</span>
   </div>	  
 </ons-toolbar>
 
-<div class="search_wrapper search_item_wrap" id="stic_search">
-  <ons-search-input id="search_category_name" class="search_category_name" placeholder="Search for category"></ons-search-input>
-  <div class="stic-icon">
-    <div>
-      <img src="lib/icons/search.svg" onerror="this.src='search.png'">
-    </div>
-  </div>
+<div class="search_wrapper search_item_wrap iphonex_margin">
+<ons-search-input id="search_category_name" class="search_category_name"  placeholder="Search" ></ons-search-input>    
 </div>
 
 <div class="search_category_name_result"></div>
-  <ons-list id="search_category_name_result" modifier="list_small is_rtl">
+  <ons-list id="search_category_name_result" modifier="list_small">
   </ons-list>	
 
 </ons-page>
@@ -3324,22 +3195,21 @@
 
 
 <template id="search_form.html">
-<ons-page id="search_form" modifier="page_white is_rtl" >
+<ons-page id="search_form" modifier="page_white" >
 
 <ons-toolbar modifier="no_shadow">
-  <div class="left">
-    <ons-back-button modifier="toolbar_button">Back</ons-back-button>
-  </div>	  
-  <div class="center">	 	
-    <!-- <span class="trn">Search</span> -->
-  </div>
-</ons-toolbar>
+	  <div class="left">
+	    <ons-back-button modifier="toolbar_button">Back</ons-back-button>
+	  </div>	  
+	  <div class="center">	 	
+	    <span class="trn">Search</span>
+	  </div>
+  </ons-toolbar>
+  
 
-<div class="search_wrapper search_item_wrap" id="stic_search">
-  <ons-search-input id="search_restaurant_name" class="search_restaurant_name" placeholder="Search for restaurant, cuisine or food"></ons-search-input>
-  <div class="stic-icon">
-    <img src="lib/icons/search.svg" onerror="this.src='search.png'">
-  </div>
+<div class="search_wrapper search_item_wrap iphonex_margin">
+<ons-search-input id="search_restaurant_name" class="search_restaurant_name"  
+placeholder="Search for restaurant,food and cuisine" ></ons-search-input>    
 </div>
 
 <div class="search_form_result resp_small"></div>
@@ -3352,23 +3222,16 @@
 
 
 <template id="driver_signup.html">
-<ons-page id="driver_signup" modifier="is_rtl" >
+<ons-page id="driver_signup" >
 
 <ons-toolbar modifier="no_shadow">
   <div class="left">
     <ons-back-button>Back</ons-back-button>
   </div>	  
   <div class="center">
-    <!-- <span class="trn">DRIVER SIGNUP</span> -->
+    <span class="trn">DRIVER SIGNUP</span>
   </div>
 </ons-toolbar>
-
-<div class="cream_header">
- <div class="stic-lateral-wrap">
-  <h3 class="trn">Be a deliveyman</h3>  
-  <p class="small trn">Start earning today</p>
- </div>
-</div>
 
 <form id="frm_driver" class="frm_driver iphonex_margin" method="POST">
 <div class="form_wrapper">
@@ -3376,86 +3239,67 @@
        <ons-list-item>       
          <div class="center">
          <ons-input name="first_name" id="first_name" class="first_name" required modifier="transparent" 
-         placeholder="First Name" float ></ons-input>
-         <img class="stic-icon" src="lib/icons/user.svg" onerror="this.src='user.png'">
-       </div>
+         placeholder="First Name" float ></ons-input></div>
       </ons-list-item>     
       
       <ons-list-item>       
          <div class="center">
          <ons-input name="last_name" id="last_name" class="last_name" required modifier="transparent" 
-         placeholder="Last Name" float ></ons-input>
-         <img class="stic-icon" src="lib/icons/user.svg" onerror="this.src='user.png'">
-      </div>
+         placeholder="Last Name" float ></ons-input></div>
       </ons-list-item>   
       
       <ons-list-item>       
-        <div class="center">
+         <div class="center">
          <ons-input name="email" id="email" class="email" required modifier="transparent" 
-         placeholder="Email address" float ></ons-input>
-         <img class="stic-icon" src="lib/icons/mail.svg" onerror="this.src='mail.png'">
-       </div>
+         placeholder="Email address" float ></ons-input></div>
       </ons-list-item>   
       
        <ons-list-item>       
          <div class="center">
          <ons-input name="phone" id="phone" class="phone" required modifier="transparent" 
-         placeholder="Phone" float ></ons-input>
-        <img class="stic-icon" src="lib/icons/mobile.svg" onerror="this.src='mobile.png'">
-       </div>
+         placeholder="Phone" float ></ons-input></div>
       </ons-list-item>    
       
        <ons-list-item>       
          <div class="center">
          <ons-input name="username" id="username" required modifier="transparent" 
-         placeholder="Username" float ></ons-input>
-        <img class="stic-icon" src="lib/icons/user.svg" onerror="this.src='user.png'">
-       </div>
+         placeholder="Username" float ></ons-input></div>
       </ons-list-item>  
       
         <ons-list-item>       
          <div class="center">
          <ons-input type="password" name="password" id="password" required modifier="transparent" 
-         placeholder="Password" float ></ons-input>
-        <img class="stic-icon" src="lib/icons/lock.svg" onerror="this.src='lock.png'">
-       </div>
+         placeholder="Password" float ></ons-input></div>
       </ons-list-item>
       
        <ons-list-item>       
          <div class="center">
          <ons-input type="password" name="cpassword" id="cpassword" required modifier="transparent" 
-         placeholder="Confirm Password" float ></ons-input>
-        <img class="stic-icon" src="lib/icons/lock.svg" onerror="this.src='lock.png'">
-       </div>
+         placeholder="Confirm Password" float ></ons-input></div>
       </ons-list-item>  
             
       <ons-list-item>       
          <div class="center transportation_wrap">
+         
          </div>
       </ons-list-item>  
       
       <ons-list-item>       
          <div class="center">
          <ons-input name="transport_description" id="transport_description" required modifier="transparent" 
-         placeholder="Transport Description (Year, Model)" float ></ons-input>
-        <img class="stic-icon" src="lib/icons/car.svg" onerror="this.src='car.png'">
-       </div>
+         placeholder="Transport Description (Year,Model)" float ></ons-input></div>
       </ons-list-item>  
       
        <ons-list-item>       
          <div class="center">
          <ons-input name="licence_plate" id="licence_plate" required modifier="transparent" 
-         placeholder="License Plate" float ></ons-input>
-        <img class="stic-icon" src="lib/icons/license.svg" onerror="this.src='license.png'">
-       </div>
+         placeholder="License Plate" float ></ons-input></div>
       </ons-list-item> 
       
        <ons-list-item>       
          <div class="center">
          <ons-input name="color" id="color" required modifier="transparent" 
-         placeholder="Color" float ></ons-input>
-        <img class="stic-icon" src="lib/icons/color.svg" onerror="this.src='color.png'">
-       </div>
+         placeholder="Color" float ></ons-input></div>
       </ons-list-item> 
       
     <ons-list>
@@ -3478,30 +3322,31 @@
 <template id="driver_ty.html">
 <ons-page id="driver_ty" modifier="page_white" >
 
-   <div class="content-wrap">
-      <img class="stic-successful" src="lib/icons/successful.svg" onerror="this.src='successful.png'">
-   </div>
-   
-   <div class="cream_header text-center">
-    <div class="stic-lateral-wrap">
-     <h3 class="trn">Registration Success</h3>  
-     <p class="small trn">Thanks for signing up. Your request is under review now. We'll get back to you as soon as we can</p>
+  <div class="cream_header">
+    <div class="wrap">
+     <h3 class="trn">REGISTRATION SUCCESS</h3>  
+     <p class="small trn">thank you for signing up</p>     
+     <img src="images/rider-ty.png" style="max-width:50px;top:20px;">
     </div>
    </div>
    <!--cream_header-->
-
-   <ons-bottom-toolbar modifier="">                    
-     <ons-button modifier="large to_orange no_shadow" onclick="resetToPage('tabbar.html','none');" >
-     <span class="trn">Back to Home</span>
-     </ons-button>   
-   </ons-bottom-toolbar>
+   
+    <div class="content-wrap">
+      <ons-icon icon="md-check-circle" size="80px" class="color_green"></ons-icon>
+      
+      <p class="small"></p>
+            
+      <ons-button modifier="quiet to_text_orange" onclick="resetToPage('tabbar.html','none');" class="trn" >
+      BACK TO HOME</ons-button>      
+   </div>
+   <!--content-wrap-->
 
 </ons-page>
 </template>	  
 
 
 <template id="restaurant_list_map.html">
-<ons-page id="restaurant_list_map" modifier="is_rtl" class="image_loaded" >
+<ons-page id="restaurant_list_map" modifier="" >
 
 <div class="fixed_toolbar">
   <ons-row>
@@ -3522,10 +3367,7 @@
  
 </div>  
 
-<div class="map_wrapper" id="map_list"></div>
-
-<ons-bottom-toolbar modifier="bottom_toolbar_carousel">  
-</ons-bottom-toolbar>  
+<div class="map_wrapper" id="map_list"></div> 
 
 </ons-page>
 </template>	  
@@ -3572,8 +3414,8 @@
 <div class="bottom_gap"></div>
    
   <ons-bottom-toolbar modifier="">	     	        	  
-	  <ons-button modifier="large to_orange no_shadow" onclick="ContinueCheckout()" >
-	   <span class="trn">Continue</span>
+	  <ons-button modifier="large to_orange no_shadow" onclick="continueCheckout()" >
+	   <span class="trn">CONTINUE</span>
 	  </ons-button>	  
   </ons-bottom-toolbar>
 
@@ -3582,7 +3424,7 @@
 
 
 <template id="order_verification.html">
-<ons-page id="order_verification" modifier="is_rtl" >
+<ons-page id="order_verification" modifier="" >
 
 <ons-toolbar modifier="no_shadow">
   <div class="left">
@@ -3598,21 +3440,18 @@
 <div class="form_wrapper">
   <ons-list>
 
-     <ons-list-item class="wrap" modifier="is_rtl" >
+     <ons-list-item class="wrap">
       <h3 style="margin:0;" class="trn">SMS Verification</h3>
       <p class="small">
-        <span class="trn">This merchant has required SMS verification before you can place your order.</span>
-        <ons-button modifier="quiet quiet_green" onclick="sendOrderSMSCode()">
-          <span class="trn">Click here</span>
-        </ons-button>
-        <span class="trn">to receive your order sms code</span>
+      <span class="trn">This merchant has required SMS verification before you can place your order.</span>
+      <ons-button modifier="quiet quiet_green" onclick="sendOrderSMSCode()">Click here</ons-button> <span class="trn">to receive your order sms code</span>
       </p>
     </ons-list-item>
     
      <ons-list-item>
        <div class="center">
-       <ons-input type="text" name="order_sms_code" id="order_sms_code" class="order_sms_code" 
-       required modifier="underbar" placeholder="Enter Code" float ></ons-input>
+       <ons-input type="number" name="order_sms_code" id="order_sms_code" class="order_sms_code" 
+       required modifier="underbar" placeholder="Ente Code" float ></ons-input>
        </div>
     </ons-list-item>
   
@@ -3624,7 +3463,7 @@
    
   <ons-bottom-toolbar modifier="">	     	        	  
 	  <ons-button modifier="large to_orange no_shadow" onclick="submitForm('.frm_order_sms','verifyOrderSMScode','POST')" >
-	   <span class="trn">Continue</span>
+	   <span class="trn">CONTINUE</span>
 	  </ons-button>	  
   </ons-bottom-toolbar>
 
@@ -3639,7 +3478,7 @@
     <ons-back-button>Back</ons-back-button>
   </div>	  
   <div class="center">
-   <!-- <span class="trn">SELECT CREDIT CARD</span> -->
+   <span class="trn">SELECT CREDIT CARD</span>
   </div>
 </ons-toolbar>
 
@@ -3647,21 +3486,16 @@
 <span class="trn">Pull to refresh</span>
 </ons-pull-hook>
 
-<div class="cream_header">
-  <div class="stic-lateral-wrap">
-    <h3 class="trn">Select Credit Card</h3>
-    <p class="trn small">What one would you like to use?</p>
-  </div>
-</div>
 
 <ons-list id="creditcard_list_item" modifier="list_style1">   
 </ons-list>  
 
 <div class="select_creditcards_loader bottom_loader bottom_gap"></div>
 
-<ons-button class="stic-grey-btn" modifier="quiet to_text_orange margin_auto" onclick="showPage('creditcard_add.html')"  >
-  <span class="trn">Add New Card</span>
-</ons-button>
+<ons-fab position="bottom right" modifier="mini">
+<ons-icon icon="md-plus" class="color_green" onclick="showPage('creditcard_add.html');"></ons-icon>
+</ons-fab>
+
 
 <ons-bottom-toolbar modifier="">	     	        	  
 	  <ons-button modifier="large to_orange no_shadow" onclick="checkSelectedCreditCard();" >
@@ -3681,7 +3515,7 @@
     <ons-back-button>Back</ons-back-button>
   </div>	  
   <div class="center">
-    <!-- <span class="trn">PAY ON DELIVERY</span> -->
+    <span class="trn">PAY ON DELIVERY</span>
   </div>
 </ons-toolbar>
 
@@ -3690,12 +3524,6 @@
 <span class="trn">Pull to refresh</span>
 </ons-pull-hook>
 
-<div class="cream_header">
-  <div class="stic-lateral-wrap">
-    <h3 class="trn">Pay on Delivery</h3>
-    <p class="trn small">What one would you like to use?</p>
-  </div>
-</div>
 
 <ons-list id="payondelivery_list_item" modifier="list_style1">   
 </ons-list>  
@@ -3814,7 +3642,7 @@
 
 
 <template id="custom_page.html">
-<ons-page id="custom_page" modifier="is_rtl" >
+<ons-page id="custom_page" modifier="" >
 
 <ons-toolbar modifier="no_shadow" >
   <div class="left">
@@ -3840,7 +3668,7 @@
 
 
 <template id="track_driver.html">
-<ons-page id="track_driver" modifier="is_rtl" >
+<ons-page id="track_driver" modifier="" >
 
 <div class="fixed_toolbar">
   <ons-row>
@@ -3865,14 +3693,14 @@
 <div class="track_loader"></div>
 
 
-<!-- <ons-bottom-toolbar modifier="bottom_track">
+<ons-bottom-toolbar modifier="bottom_track">
 
 <ons-progress-bar value="0" secondary-value="100"></ons-progress-bar>
 
 <ons-list id="list_track" modifier="list_style1">   
 </ons-list> 
 
-</ons-bottom-toolbar> -->
+</ons-bottom-toolbar>
 
 </ons-page>
 </template>
@@ -3889,7 +3717,7 @@
 
 
 <template id="driver_info.html">
-<ons-page id="driver_info" modifier="is_rtl" >
+<ons-page id="driver_info" modifier="" >
 
 <ons-toolbar modifier="no_shadow">
   <div class="left">
@@ -3906,7 +3734,7 @@
 
 <div class="driver_details"></div>
 
-<ons-list id="driver_list_details" modifier="list_style1 is_rtl">   
+<ons-list id="driver_list_details" modifier="list_style1">   
 </ons-list> 
 <div class="driver_details_loader bottom_loader bottom_gap"></div>
 
@@ -3944,6 +3772,10 @@
 	   </ons-col>
 	</ons-row>
 </div>
+
+
+<div class="grey_line tickline"></div>
+
 
 <form id="frm_task_review" class="frm_task_review" method="POST">
 
@@ -3999,33 +3831,38 @@
 
 
 <template id="cancel_order_form.html">
-<ons-page id="cancel_order_form" class="image_loaded" modifier="is_rtl"  > 
+<ons-page id="cancel_order_form" class="image_loaded" > 
 
 <ons-toolbar modifier="no_shadow" >
   <div class="left">
     <ons-back-button>Back</ons-back-button>
   </div>
   <div class="center ">
-    <!-- <span class="trn">REASON</span> -->
+    <span class="trn">REASON</span>
   </div>  
 </ons-toolbar>
 
+
 <div class="white_wrapper iphonex_margin">
-<div class="stic-lateral-wrap">
-  <ons-row>
-     <ons-col width="65px" vertical-align="top" >
-        <div class="is-loading">
-         <div class="spinner"></div> 
-         <img class="thumbnail" src="">
-        </div>
-     </ons-col>
-     <ons-col width="50%" vertical-align="center" >
-      <h5></h5>
-      <p class="capitalize small print_trans"></p>
-      <p class="capitalize small print_order_status"></p>
-     </ons-col>
-  </ons-row>
+<div class="wrap">
+	<ons-row>
+	   <ons-col width="58px" vertical-align="center" >
+	      <div class="is-loading">
+	       <div class="spinner"></div> 
+	       <img class="thumbnail" src="">
+	      </div>
+	   </ons-col>
+	   <ons-col width="50%" vertical-align="center" >
+	    <h5></h5>
+	    <p class="small print_trans"></p>
+	    <p class="small print_payment_type"></p>
+	   </ons-col>
+	   	   
+	</ons-row>
 </div>
+
+<div class="grey_line tickline"></div>
+
 
 <form id="frm_cancel_order_form" class="frm_cancel_order_form" method="POST">
    
@@ -4036,8 +3873,8 @@
    <ons-list>
     <ons-list-item>        
        <div class="center">         
-         <textarea name="cancel_reason" class="cancel_reason textarea full_width textarea--transparent" 
-          rows="3" required placeholder="Why whould you like to cancel the order?"></textarea>
+         <textarea name="cancel_reason" class="cancel_reason textarea textarea--transparent" 
+          rows="3" required placeholder="state your reason for cancellation"></textarea>
       </div>
     </ons-list-item>        
     
@@ -4060,14 +3897,14 @@
 
 
 <template id="notifications.html">
-<ons-page id="notifications" class="image_loaded" modifier="is_rtl" > 
+<ons-page id="notifications" class="image_loaded" > 
 
 <ons-toolbar modifier="no_shadow" >
   <div class="left">
     <ons-back-button>Back</ons-back-button>
   </div>
   <div class="center ">
-    <!-- <span class="trn">NOTIFICATIONS</span> -->
+    <span class="trn">NOTIFICATIONS</span>
   </div>  
   
   <div class="right">
@@ -4087,40 +3924,35 @@
 <ons-list id="notifications_list_item" modifier="list_style1">   
 </ons-list>  
 
-<div class="notifications_loader bottom_loader"></div>
+<div class="notifications_loader bottom_loader bottom_gap"></div>
 
 </ons-page>
 </template>
 
 
 <template id="page_startup_select_language.html">
-<ons-page id="page_startup_select_language" modifier="page_white is_rtl" > 
+<ons-page id="page_startup_select_language" modifier="page_white" > 
 
-  <ons-toolbar modifier="no_shadow" >
-  </ons-toolbar>
-
-  <ons-pull-hook id="language2_list_pull_hook">
-  <span class="trn">Pull to refresh</span>
-  </ons-pull-hook>
-
-  <div class="cream_header">
-   <div class="stic-lateral-wrap">
-    <h3 class="trn">Select language</h3>  
-    <p class="small trn">Choose the language you prefer</p>
-   </div>
+<ons-toolbar modifier="no_shadow" >  
+  <div class="center">
+    <span class="trn">SELECT LANGUAGE</span>
+  </div>  
+  <div class="right">
+     <ons-toolbar-button onclick="setStartupLanguage('');">
+        <span class="trn">SKIP</span>
+      </ons-toolbar-button>
   </div>
+</ons-toolbar>
 
-  <ons-list id="language2_list_item"></ons-list>  
+<ons-pull-hook id="language2_list_pull_hook">
+<span class="trn">Pull to refresh</span>
+</ons-pull-hook>
 
-  <div class="language2_list_loader bottom_loader bottom_gap"></div>
+<ons-list id="language2_list_item"></ons-list>  
 
-  <ons-bottom-toolbar modifier="">                    
-    <ons-button modifier="large to_orange no_shadow" onclick="setStartupLanguage()" >
-    <span class="trn">Skip</span>
-    </ons-button>   
-  </ons-bottom-toolbar>
+<div class="language2_list_loader bottom_loader bottom_gap"></div>
 
-  </ons-page>
+</ons-page>
 </template>
 
 
@@ -4145,573 +3977,6 @@
   </ons-action-sheet>
 </template>
 
-<!--LOCATION STARTS HERE-->
-
-<template id="select_location.html">
-<ons-page id="select_location" modifier="page_white is_rtl" >
-
-<ons-toolbar modifier="no_shadow" >
-  <div class="left">
-    <ons-back-button>Back</ons-back-button>
-  </div>
-  <!-- <div class="center trn">SELECT LOCATION</div>   -->
-</ons-toolbar>
-
-  <form id="frm_location" class="frm_location" method="POST">
-
-    <input type="hidden" name="state_id" id="state_id" class="state_id">
-    <input type="hidden" name="city_id" id="city_id" class="city_id">
-    <input type="hidden" name="area_id" id="area_id" class="area_id">
-
-    <div class="cream_header">
-     <div class="stic-lateral-wrap">
-
-       <h3 class="trn">Select Location</h3>
-       <p class="small trn">Define your location to find restaurants nearby</p>
-
-     </div>
-    </div>
-    <div class="search_wrapper"></div>
-
-  </form>
-  
-  <div class="bottom_gap"></div>
-   
-  <ons-bottom-toolbar modifier="">                    
-    <ons-button modifier="large to_orange no_shadow" onclick="setLocationData();" >
-    <span class="trn">Confirm Location</span>
-    </ons-button>   
-  </ons-bottom-toolbar>
-
-</ons-page>
-</template>
-
-
-<template id="location_state.html">
-<ons-page id="location_state" modifier="page_white is_rtl" >
-
-<ons-toolbar modifier="no_shadow" >
-  <div class="left">
-    <ons-back-button>Back</ons-back-button>
-  </div>
-  <!-- <div class="center trn">SELECT STATE</div>   -->
-</ons-toolbar>
-
-<ons-pull-hook id="location_state_pull_hook">
-<span class="trn">Pull to refresh</span>
-</ons-pull-hook>
-
-<input type="hidden" name="paginate_total" class="paginate_total" value="0">
-<input type="hidden" name="paginate_page" id="paginate_page" class="paginate_page" value="1">
-<input type="hidden" name="is_address_book" id="is_address_book" class="is_address_book" value="0">
-
-  <ons-list-header>
-    <ons-row>
-       <ons-col vertical-align="center"><span class="trn">State List</span></ons-col>
-    </ons-row>
-  </ons-list-header>  
-
-  <div id="stic_search" class="search_wrapper">     
-   <div class="content_wrapper">
-     <ons-row>
-       <ons-col vertical-align="center"  >
-         <ons-search-input id="field_location_state" class="field_location_state" required placeholder="" ></ons-search-input>
-         <div class="stic-icon">
-            <img src="lib/icons/search.svg" onerror="this.src='search.png'">
-         </div>
-       </ons-col>
-     </ons-row>
-   </div>  <!--content_wrapper-->      
-  </div> <!--search_wrapper-->  
-
-   <ons-list id="location_state_result" modifier="list_small is_rtl">     
- 
-  <div class="location_state_result_loader bottom_loader bottom_gap resp_small text_left"></div>
-  
-
-</ons-page>
-</template>
-
-<template id="location_city.html">
-<ons-page id="location_city" modifier="page_white is_rtl" >
-
-<ons-toolbar modifier="no_shadow" >
-  <div class="left">
-    <ons-back-button>Back</ons-back-button>
-  </div>
-  <!-- <div class="center trn">SELECT CITY</div>   -->
-</ons-toolbar>
-
-<ons-pull-hook id="location_city_pull_hook">
-<span class="trn">Pull to refresh</span>
-</ons-pull-hook>
-
-<input type="hidden" name="paginate_total" class="paginate_total" value="0">
-<input type="hidden" name="paginate_page" id="paginate_page" class="paginate_page" value="1">
-<input type="hidden" name="is_address_book" id="is_address_book" class="is_address_book" value="0">
-  
-  <ons-list-header>
-    <ons-row>
-       <ons-col vertical-align="center"><span class="trn">City List</span></ons-col>
-    </ons-row>
-  </ons-list-header>  
-
-  <div id="stic_search" class="search_wrapper">     
-   <div class="content_wrapper">
-     <ons-row>
-       <ons-col vertical-align="center"  >
-         <ons-search-input id="field_location_city" class="location_city" required placeholder="" ></ons-search-input>
-         <div class="stic-icon">
-            <img src="lib/icons/search.svg" onerror="this.src='search.png'">
-         </div>
-       </ons-col>
-     </ons-row>
-   </div>  <!--content_wrapper-->      
-  </div> <!--search_wrapper-->  
-
-   <ons-list id="location_city_result" modifier="list_small is_rtl">     
- 
-  <div class="location_city_result_loader bottom_loader bottom_gap resp_small text_left"></div>
-  
-
-</ons-page>
-</template>
-
-
-<template id="location_area.html">
-<ons-page id="location_area" modifier="page_white is_rtl" >
-
-<ons-toolbar modifier="no_shadow" >
-  <div class="left">
-    <ons-back-button>Back</ons-back-button>
-  </div>
-  <!-- <div class="center trn">SELECT AREA</div>   -->
-</ons-toolbar>
-
-<ons-pull-hook id="location_area_pull_hook">
-<span class="trn">Pull to refresh</span>
-</ons-pull-hook>
-
-<input type="hidden" name="paginate_total" class="paginate_total" value="0">
-<input type="hidden" name="paginate_page" id="paginate_page" class="paginate_page" value="1">
-<input type="hidden" name="is_address_book" id="is_address_book" class="is_address_book" value="0">
-
-  <ons-list-header>
-    <ons-row>
-       <ons-col vertical-align="center"><span class="trn">District List</span></ons-col>
-    </ons-row>
-  </ons-list-header>  
-
-  <div id="stic_search" class="search_wrapper">     
-   <div class="content_wrapper">
-     <ons-row>
-       <ons-col vertical-align="center"  >
-         <ons-search-input id="field_location_area" class="field_location_area" required placeholder="" ></ons-search-input>
-         <div class="stic-icon">
-            <img src="lib/icons/search.svg" onerror="this.src='search.png'">
-         </div>
-       </ons-col>
-     </ons-row>
-   </div>  <!--content_wrapper-->      
-  </div> <!--search_wrapper-->  
-
-   <ons-list id="location_area_result" modifier="list_small is_rtl">     
-
-  <div class="location_area_result_loader bottom_loader bottom_gap resp_small text_left"></div>
-
-</ons-page>
-</template>
-
-
-<template id="address_book_location.html">
-<ons-page id="address_book_location" modifier="is_rtl"  >  
-
-<ons-back-button modifier="fixed_back_button">Back</ons-back-button> 
-<div class="map_half" id="map_address"></div>
-
-  <div class="header_grey">
-    <ons-button id="location_change" modifier="quiet button_small trn" onclick="showPage('map_enter_address.html')" >
-    <span class="trn">CHANGE</span>
-    </ons-button>
-  </div>
-  
-  
-<form method="POST" id="frm_address_book_location" class="frm_address_book_location">  
-  <input type="hidden" name="id" id="id" class="id">
-  <input type="hidden" name="lat" id="lat" class="lat">
-  <input type="hidden" name="lng" id="lng" class="lng">
-  
-  <input type="hidden" name="mapbox_drag_map" class="mapbox_drag_map" id="mapbox_drag_map">
-  <input type="hidden" name="mapbox_drag_end" class="mapbox_drag_end" id="mapbox_drag_end">
-  
-  <input type="hidden" name="state_id" class="state_id" id="state_id">
-  <input type="hidden" name="city_id" class="city_id" id="city_id">
-  <input type="hidden" name="area_id" class="area_id" id="area_id">
-  
-  <div class="form_wrapper">
-  
-   <ons-list>
-   
-     <ons-list-item>       
-       <div class="center">         
-         <ons-input type="text" name="street" id="street" class="street" required  modifier="transparent" placeholder="Street" float></ons-input>
-       </div>
-    </ons-list-item>
-    
-    <ons-list-item>       
-       <div class="center">         
-         <ons-input type="text" name="state_name" id="state_name" class="state_name" required  modifier="transparent" 
-         onclick="showPage('location_state.html','none',{'address_book':1})"
-           float></ons-input>
-       </div>
-    </ons-list-item>
-    
-    <ons-list-item>       
-       <div class="center">         
-         <ons-input type="text" name="city_name" id="city_name" class="city_name" required  modifier="transparent" 
-         onclick="showLocationCity();";
-          float></ons-input>
-       </div>
-    </ons-list-item>
-    
-    <ons-list-item>       
-       <div class="center">         
-         <ons-input type="text" name="area_name" id="area_name" class="area_name" required  modifier="transparent"
-         onclick="showLocationArea();"
-          float></ons-input>
-       </div>
-    </ons-list-item>
-    
-    <ons-list-item>       
-       <div class="center">         
-         <ons-input type="text" name="location_name" id="location_name" class="location_name" required  modifier="transparent" placeholder="Floor/unit/Room #" float></ons-input>
-       </div>
-    </ons-list-item>
-    
-    
-   <!--<ons-list-item>       
-       <div class="center">         
-           <ons-input type="text" name="delivery_instruction"  class="delivery_instruction" modifier="transparent" placeholder="Delivery instructions" float></ons-input>
-       </div>
-    </ons-list-item> -->
-    
-     <ons-list-item>       
-       <label class="left">
-        <ons-checkbox name="as_default" class="as_default"  input-id="as_default" value="1"></ons-checkbox>
-      </label>
-      <label for="as_default" class="center">
-        <span class="trn">Set as default</span> 
-      </label>
-    </ons-list-item> 
-    
-   </ons-list>
-  
-  </div> 
-  <!--form_wrapper-->
-
- </form> 
-
-<div class="bottom_gap"></div>
-
-<ons-bottom-toolbar modifier="transparent" >    
-   <ons-button modifier="large to_orange no_shadow" onclick="submitForm('.frm_address_book_location','saveAddressBookLocation','POST')" >     
-     <span class="trn">SAVE</span>
-   </ons-button>           
-</ons-bottom-toolbar>  
-
-</ons-page>
-</template>
-
-
-
-<template id="address_form_location.html">
-<ons-page id="address_form_location" modifier="is_rtl"   >  
-
-<ons-back-button modifier="fixed_back_button">Back</ons-back-button> 
-<div class="map_half" id="map_address"></div>
-
-  <div class="header_grey">
-    <ons-button id="location_change" modifier="quiet button_small trn" onclick="showPage('map_enter_address.html')" >
-    <span class="trn">CHANGE</span>
-    </ons-button>
-  </div>
-  
-  
-<form method="POST" id="frm_address_form_location" class="frm_address_form_location">   
-  <input type="hidden" name="lat" id="lat" class="lat">
-  <input type="hidden" name="lng" id="lng" class="lng">
-  
-  <input type="hidden" name="mapbox_drag_map" class="mapbox_drag_map" id="mapbox_drag_map">
-  <input type="hidden" name="mapbox_drag_end" class="mapbox_drag_end" id="mapbox_drag_end">
-  
-  <input type="hidden" name="state_id" class="state_id" id="state_id">
-  <input type="hidden" name="city_id" class="city_id" id="city_id">
-  <input type="hidden" name="area_id" class="area_id" id="area_id">
-  
-  <div class="form_wrapper">
-  
-   <ons-list>
-   
-     <ons-list-item>       
-       <div class="center">         
-         <ons-input type="text" name="street" id="street" class="street" required  modifier="transparent" placeholder="Street" float></ons-input>
-       </div>
-    </ons-list-item>
-    
-    <ons-list-item>       
-       <div class="center">         
-         <ons-input type="text" name="state_name" id="state_name" class="state_name" required  modifier="transparent" 
-         onclick="showPage('location_state.html','none',{'address_book':1})"
-           float></ons-input>
-       </div>
-    </ons-list-item>
-    
-    <ons-list-item>       
-       <div class="center">         
-         <ons-input type="text" name="city_name" id="city_name" class="city_name" required  modifier="transparent" 
-         onclick="showLocationCity();";
-          float></ons-input>
-       </div>
-    </ons-list-item>
-    
-    <ons-list-item>       
-       <div class="center">         
-         <ons-input type="text" name="area_name" id="area_name" class="area_name" required  modifier="transparent"
-         onclick="showLocationArea();"
-          float></ons-input>
-       </div>
-    </ons-list-item>
-    
-    <ons-list-item>       
-       <div class="center">         
-         <ons-input type="text" name="location_name" id="location_name" class="location_name" required  modifier="transparent" placeholder="Floor/unit/Room #" float></ons-input>
-       </div>
-    </ons-list-item>
-    
-     <ons-list-item>       
-       <div class="center">         
-         <ons-input type="text" name="contact_phone" id="contact_phone" class="contact_phone" required 
-          modifier="transparent" placeholder="Contact Number" float
-          onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')"
-          ></ons-input>
-       </div>
-    </ons-list-item>
-    
-    
-     <ons-list-item>       
-       <div class="center">         
-           <ons-input type="text" name="delivery_instruction"  class="delivery_instruction" modifier="transparent" placeholder="Delivery instructions" float></ons-input>
-       </div>
-    </ons-list-item> 
-    
-    <ons-list-item>       
-       <label class="left">
-        <ons-checkbox name="save_address" class="save_address"  input-id="save_address" value="1"></ons-checkbox>
-      </label>
-      <label for="save_address" class="center">
-        <span class="trn">Save to my address book</span> 
-      </label>
-    </ons-list-item> 
-    
-   </ons-list>
-  
-  </div> 
-  <!--form_wrapper-->
-
- </form> 
-
-<div class="bottom_gap"></div>
-
-<ons-bottom-toolbar modifier="transparent" >    
-   <ons-button modifier="large to_orange no_shadow" onclick="setDeliveryLocation()" >     
-     <span class="trn">APPLY</span>
-   </ons-button>           
-</ons-bottom-toolbar>  
-
-</ons-page>
-</template>
-
-
-<template id="address_form_select_location.html">
-  <ons-page id="address_form_select_location" modifier="" >  
-
-     <ons-toolbar modifier="no_shadow" >
-    <div class="left">
-      <ons-back-button>Back</ons-back-button>
-    </div>
-    <div class="center">
-      <span class="trn">Select address</span>
-    </div>
-  </ons-toolbar>
-  
-  
-  
-  <form id="frm_address_form_select_location" class="frm_address_form_select_location" method="POST">
-  <div class="form_wrapper">
-      <ons-list>
-      
-      <ons-list-item>
-        <div class="address_book_wrap"></div>
-      </ons-list-item>     
-      
-      <ons-list-item>       
-       <div class="center">         
-         <ons-input type="text" name="contact_phone" id="contact_phone" class="contact_phone" required 
-          modifier="transparent" placeholder="Contact Number" float
-          onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')"
-          ></ons-input>       
-       </div>
-      </ons-list-item>
-      
-       <ons-list-item>       
-       <div class="center">         
-           <ons-input type="text" name="delivery_instruction"  class="delivery_instruction"
-            modifier="transparent" placeholder="Delivery instructions" float></ons-input>
-       </div>
-       </ons-list-item> 
-    
-      </ons-list>
-  </div> <!--form_wrapper-->
-  </form>
-  
-   <ons-fab position="bottom right" modifier="mini">
-    <ons-icon icon="md-plus" class="color_green" onclick="replacePage('address_form_location.html');"></ons-icon>
-   </ons-fab>
- 
-  <ons-bottom-toolbar modifier="transparent" >    
-       <ons-button modifier="large to_orange no_shadow" onclick="setAddressBookLocation()" >     
-         <span class="trn">APPLY</span>
-       </ons-button>           
-  </ons-bottom-toolbar>
-  
-</ons-page>
-</template>
-
-
-<template id="location_postal_code.html">
-<ons-page id="location_postal_code" modifier="page_white" >
-
-<ons-toolbar modifier="no_shadow" >
-  <div class="left">
-    <ons-back-button>Back</ons-back-button>
-  </div>
-  <div class="center trn">SELECT POSTAL/ZIP CODE</div>  
-</ons-toolbar>
-
-<ons-pull-hook id="location_postal_code_pull_hook">
-<span class="trn">Pull to refresh</span>
-</ons-pull-hook>
-
-<input type="hidden" name="paginate_total" class="paginate_total" value="0">
-<input type="hidden" name="paginate_page" id="paginate_page" class="paginate_page" value="1">
-<input type="hidden" name="is_address_book" id="is_address_book" class="is_address_book" value="0">
-
-  <ons-list-header>
-    <ons-row>
-       <ons-col vertical-align="center"><span class="trn">Postal Code List</span></ons-col>
-    </ons-row>
-  </ons-list-header>  
-
-  <div id="stic_search" class="search_wrapper">     
-   <div class="content_wrapper">
-     <ons-row>
-       <ons-col vertical-align="center"  >
-         <ons-search-input id="field_location_postal_code" class="field_location_postal_code" required placeholder="" ></ons-search-input>
-         <div class="stic-icon">
-            <img src="lib/icons/search.svg" onerror="this.src='search.png'">
-         </div>
-       </ons-col>
-     </ons-row>
-   </div>  <!--content_wrapper-->      
-  </div> <!--search_wrapper-->  
-
-  <ons-list id="location_postal_code_result"></ons-list> 
-  
-  <div class="location_postal_code_result_loader bottom_loader bottom_gap resp_small text_left"></div>
-  
-
-</ons-page>
-</template>
-
-<template id="floating_category.html">
-  <ons-dialog id="floating_category" cancelable modifier="floating_category" >
-
-  <ons-list id="floating_category_list" modifier="list_style1 floating_category is_rtl">   
-  
-  <!--<ons-list-item modifier="longdivider full_list"   tappable >
-     <div class="center">
-      <span class="list-item__title">Cutest kitty</span>
-      <span class="list-item__subtitle">1 item</span>
-    </div>
-  </ons-list-item>--> 
-  
-  </ons-list>   
-  
-  </ons-dialog>
-</template>
-
-<template id="contact_us.html">
-  <ons-page id="contact_us" modifier="is_rtl" >  
-
-    <div class="fixed_toolbar">
-      <ons-row>
-        <ons-col vertical-align="center">
-           <ons-back-button>Back</ons-back-button>
-        </ons-col>
-        <ons-col vertical-align="center">
-           
-        </ons-col>
-      </ons-row>
-    </div>
-
-    <div class="cream_header">
-      <div class="stic-lateral-wrap">
-        <h3 class="trn">Contact Us</h3>
-        <p class="contact_us_desc small trn"></p>  
-      </div>
-    </div>
-         
-    <form id="frm_contact" class="frm_contact" method="POST">
-       <div class="form_wrapper">
-        <ons-list id="contact_field_list">              
-        <ons-list>
-      </div>      
-    </form>
-
-    <div class="bottom_gap"></div>
-   
-    <ons-bottom-toolbar modifier="">                   
-      <ons-button  modifier="large to_orange no_shadow" onclick="submitForm('.frm_contact','ContactSubmit','POST')" >
-        <span class="trn">Submit</span>
-      </ons-button>   
-    </ons-bottom-toolbar>
-
-  </ons-page>
-</template>
-
-
-<template id="contact_us_ty.html">
-  <ons-page id="contact_us_ty" modifier="page_white" class="as_receipt" > 
-
-   <div class="content-wrap">
-      <img class="stic-successful" src="lib/icons/successful.svg" onerror="this.src='successful.png'">
-   </div>
-   
-   <div class="cream_header text-center">
-    <div class="stic-lateral-wrap">
-     <h3 class="trn">Message received</h3>  
-     <p class="contact_us_message small"></p>
-    </div>
-   </div>
-
-   <ons-bottom-toolbar modifier="">                    
-     <ons-button modifier="large to_orange no_shadow" onclick="resetToPage('tabbar.html','none');" >
-     <span class="trn">Back to Home</span>
-     </ons-button>   
-   </ons-bottom-toolbar>
-  
-  </ons-page>
-</template>
 
 </body>
 </html>

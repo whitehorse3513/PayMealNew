@@ -14,13 +14,13 @@ tabbarMenu = function(){
 	
 	var html='';
 	html+='<ons-tabbar position="bottom" animation="none" modifier="is_rtl" >';
-	    html+='<ons-tab page="home.html" label="'+ t("Near Me") +'" icon="ion-ios-location-outline" active  active-icon="ion-ios-location" >';
+	    html+='<ons-tab id="tab-home" page="home.html" label="'+ t("Home") +'" icon="home" active  active-icon="home" >';
 	    html+='</ons-tab>';
-	    html+='<ons-tab page="search.html" label="'+ t("Search") +'" icon="ion-ios-search" active-icon="ion-search" >';
+	    html+='<ons-tab id="tab-search" page="search.html" label="'+ t("Search") +'" icon="search" active-icon="search" >';
 	    html+='</ons-tab>';	    
-	    html+='<ons-tab page="profile.html" label="'+ t("Account") +'" icon="ion-android-contact" active-icon="ion-android-contact" >';
+	    html+='<ons-tab id="tab-profile" page="profile.html" label="'+ t("Profile") +'" icon="user-alt" active-icon="user-alt" >';
 	    html+='</ons-tab>';	    
-	    html+='<ons-tab page="cart_temp.html" label="'+ t("Cart") +'" icon="ion-ios-cart-outline" active-icon="ion-android-cart" badge="" >';
+	    html+='<ons-tab id="tab-cart" page="cart_temp.html" label="'+ t("Cart") +'" icon="shopping-cart" active-icon="shopping-cart" badge="" >';
 	    html+='</ons-tab>';
     html+='</ons-tabbar>';	
 	
@@ -44,25 +44,405 @@ fillMobilePrefix = function(data){
 
 
 MerchantCarousel = function(data){
-	html = '<ons-carousel fullscreen swipeable auto-scroll overscrollable id="carousel" direction="horizontal" item-width="50%" >';	
+	html = '<ons-carousel class="stic-carousel rtlMerchantCarousel" swipeable auto-scroll auto-scroll-ratio="0.1" overscrollable id="carousel" direction="horizontal" item-width="70%" >';	
+
+		$.each(data, function(key, val){		
+			html +='<ons-carousel-item class="width" onclick="loadMerchant('+ val.merchant_id+')"  >';
+				html +='<div class="carousel-content">';
+			    	html +='<ons-ripple modifier="material"></ons-ripple>';
+				    html +='<div class="banner">';
+					    html +='<div class="hide_all show_cover">';
+						    html +='<div>';
+							    html +='<img class="hide" src="'+val.background_url+'">';
+							    html +='<div class="header_bg" style="background-image: url('+ "'" + val.background_url + "'" +')"  >';
+							    html +='<div class="spinner"></div>';			      
+							    html +='</div>';
+						    html +='</div>';
+					    html +='</div>';
+					    
+					    html +='<div class="hide_all show_logo">';
+						    html +='<div>';
+							    html +='<img class="hide" src="'+val.logo+'">';
+							    html +='<div class="header_bg" style="background-image: url('+ "'" + val.logo + "'" +')"  >';
+							      html +='<div class="spinner"></div>';			      
+							    html +='</div>';
+						    html +='</div>';
+					    html +='</div>';
+
+					    if (val.minimum_order_raw>0){
+						    /*html +='<div class="min_tag">';
+						     html += val.minimum_order+'<br><small>MIN</small>';
+						    html +='</div>';*/
+					    }
+					    
+						if( !empty(val.offers)){
+							x=0;
+							$.each( val.offers  , function( key_offer, val_offer ) {
+								if(x<=0){
+									html +='<div class="pink_tag ">'+ val_offer.raw +'</div>';			       	  			       	 
+								}
+								x++;
+							});			       
+						}
+
+						if(!empty(val.open_status_raw)){
+							html +='<div class="green_tag '+ val.open_status_raw +' ">'+ val.open_status +'</div>';
+						}
+
+					html +='</div>';			
+
+					  
+				    html +='<div class="min-carousel-wrap">';
+
+						html += '<div class="">';
+							html +='<h4>'+ val.restaurant_name +'</h4>';
+							    if(!empty(val.delivery_distance)){
+							    	html += '<span class="center distance stic-score trn"> · '+ val.delivery_distance+''+t("km")+'</span>';
+							    }
+
+								html += '<div class="new-box">';
+									if(val.is_sponsored==2) {
+									   html +='<div class="ribbon">';
+								       		html += '<span class="stic-store-dot"> · </span><span class="center stic-score trn">'+t("New")+'</span>';
+								       		html += '<div>';
+												html+='<img src="lib/icons/new.svg" onerror="this.src=\'new.png\'">';
+								       		html += '</div>';
+								       	html += '</div>';
+									}
+								html += '</div>';
+
+						html += '</div>';
+
+						if(!empty(val.cuisine)){
+							html +='<div class="cuisine-box">';			
+								html +='<p class="stic-cuisine concat_text">'+ val.cuisine +'</p>';
+							html +='</div>';			
+						}
+
+						if(!empty(val.delivery_estimation)){
+							html+='<div class="rest-info mt10">';
+								html+='<div>'
+									html+='<img src="lib/icons/time.svg" onerror="this.src=\'time.png\'">';
+									html+='<p class="concat_text trn">'+t("Delivers in")+' '+val.delivery_estimation+'</p>';	    	           	   
+								html+='</div>'
+							html+='</div>'
+						}
+
+						html+='<div class="offers-only mt5">';
+						if(!empty(val.offers)){
+							html+='<ons-carousel swipeable auto-scroll auto-scroll-ratio="0.1" overscrollable direction="horizontal" item-width="80%" >';
+							$.each( val.offers  , function( key_offer, val_offer ) {       	
+					       		html +='<ons-carousel-item class="min-offers-carousel">';      	  			       	 
+									html+='<div class="content">';
+										html+='<span class="offer-full">'+ val_offer.full +'</span>';
+									html+='</div>';
+								html+='</ons-carousel-item>';
+					       });	
+							html+='</ons-carousel>';
+						}	
+						html+='</div>';
+
+				    html +='</div>';
+				html +='</div>';
+
+			    if(!empty(val.rating)){
+				    html += '<div class="ratings-box text-right">';
+				    	html += '<ons-icon class="gold-color f13" icon="star"></ons-icon>';
+				    	html += '<span class="center stic-score bold m0 f14 trn">'+ val.rating.ratings+'</span>';
+				    html += '</div>';
+			    }
+
+			html +='</ons-carousel-item>';	
+		});
+	
+	html +='</ons-carousel>';
+	return html;
+};
+
+MerchantSpecialOffers = function(data){
+	html = '<ons-carousel class="stic-carousel rtlSpecialCarousel" swipeable auto-scroll auto-scroll-ratio="0.1" overscrollable id="carousel" direction="horizontal" item-width="70%" >';	
+
+		$.each(data, function(key, val){		
+			html +='<ons-carousel-item class="width" onclick="loadMerchant('+ val.merchant_id+')"  >';
+				html +='<div class="carousel-content">';
+			    	html +='<ons-ripple modifier="material"></ons-ripple>';
+				    html +='<div class="banner">';
+					    html +='<div class="hide_all show_cover">';
+						    html +='<div>';
+							    html +='<img class="hide" src="'+val.background_url+'">';
+							    html +='<div class="header_bg" style="background-image: url('+ "'" + val.background_url + "'" +')"  >';
+							    html +='<div class="spinner"></div>';			      
+							    html +='</div>';
+						    html +='</div>';
+					    html +='</div>';
+					    
+					    html +='<div class="hide_all show_logo">';
+						    html +='<div>';
+							    html +='<img class="hide" src="'+val.logo+'">';
+							    html +='<div class="header_bg" style="background-image: url('+ "'" + val.logo + "'" +')"  >';
+							      html +='<div class="spinner"></div>';			      
+							    html +='</div>';
+						    html +='</div>';
+					    html +='</div>';
+
+					    if (val.minimum_order_raw>0){
+						    /*html +='<div class="min_tag">';
+						     html += val.minimum_order+'<br><small>MIN</small>';
+						    html +='</div>';*/
+					    }
+					    
+						if( !empty(val.offers)){
+							x=0;
+							$.each( val.offers  , function( key_offer, val_offer ) {
+								if(x<=0){
+									html +='<div class="pink_tag ">'+ val_offer.raw +'</div>';			       	  			       	 
+								}
+								x++;
+							});			       
+						}
+
+						if(!empty(val.open_status_raw)){
+							html +='<div class="green_tag '+ val.open_status_raw +' ">'+ val.open_status +'</div>';
+						}
+
+					html +='</div>';			
+
+					  
+				    html +='<div class="min-carousel-wrap">';
+
+						html += '<div class="">';
+							html +='<h4>'+ val.restaurant_name +'</h4>';
+							    if(!empty(val.delivery_distance)){
+							    	html += '<span class="center distance stic-score trn"> · '+ val.delivery_distance+''+t("km")+'</span>';
+							    }
+
+								html += '<div class="new-box">';
+									if(val.is_sponsored==2) {
+									   html +='<div class="ribbon">';
+								       		html += '<span class="stic-store-dot"> · </span><span class="center stic-score trn">'+t("New")+'</span>';
+								       		html += '<div>';
+												html+='<img src="lib/icons/new.svg" onerror="this.src=\'new.png\'">';
+								       		html += '</div>';
+								       	html += '</div>';
+									}
+								html += '</div>';
+
+						html += '</div>';
+
+						if(!empty(val.cuisine)){
+							html +='<div class="cuisine-box">';			
+								html +='<p class="stic-cuisine concat_text">'+ val.cuisine +'</p>';
+							html +='</div>';			
+						}
+
+						if(!empty(val.delivery_estimation)){
+							html+='<div class="rest-info mt10">';
+								html+='<div>'
+									html+='<img src="lib/icons/time.svg" onerror="this.src=\'time.png\'">';
+									html+='<p class="concat_text trn">'+t("Delivers in")+' '+val.delivery_estimation+'</p>';	    	           	   
+								html+='</div>'
+							html+='</div>'
+						}
+
+						html+='<div class="offers-only mt5">';
+						if(!empty(val.offers)){
+							html+='<ons-carousel swipeable auto-scroll auto-scroll-ratio="0.1" overscrollable direction="horizontal" item-width="80%" >';
+							$.each( val.offers  , function( key_offer, val_offer ) {       	
+					       		html +='<ons-carousel-item class="min-offers-carousel">';      	  			       	 
+									html+='<div class="content">';
+										html+='<span class="offer-full">'+ val_offer.full +'</span>';
+									html+='</div>';
+								html+='</ons-carousel-item>';
+					       });	
+							html+='</ons-carousel>';
+						}	
+						html+='</div>';
+
+				    html +='</div>';
+				html +='</div>';
+
+			    if(!empty(val.rating)){
+				    html += '<div class="ratings-box text-right">';
+				    	html += '<ons-icon class="gold-color f13" icon="star"></ons-icon>';
+				    	html += '<span class="center stic-score bold m0 f14 trn">'+ val.rating.ratings+'</span>';
+				    html += '</div>';
+			    }
+
+			html +='</ons-carousel-item>';	
+		});
+	
+	html +='</ons-carousel>';
+	return html;
+};
+
+MerchantFavorites = function(data){
+	html = '<ons-carousel class="stic-carousel rtlFavoritesCarousel" swipeable auto-scroll auto-scroll-ratio="0.1" overscrollable id="carousel" direction="horizontal" item-width="70%" >';	
+
+		$.each(data, function(key, val){		
+			html +='<ons-carousel-item class="width" onclick="loadMerchant('+ val.merchant_id+')"  >';
+				html +='<div class="carousel-content">';
+			    	html +='<ons-ripple modifier="material"></ons-ripple>';
+				    html +='<div class="banner">';
+					    html +='<div class="hide_all show_cover">';
+						    html +='<div>';
+							    html +='<img class="hide" src="'+val.background_url+'">';
+							    html +='<div class="header_bg" style="background-image: url('+ "'" + val.background_url + "'" +')"  >';
+							    html +='<div class="spinner"></div>';			      
+							    html +='</div>';
+						    html +='</div>';
+					    html +='</div>';
+					    
+					    html +='<div class="hide_all show_logo">';
+						    html +='<div>';
+							    html +='<img class="hide" src="'+val.logo+'">';
+							    html +='<div class="header_bg" style="background-image: url('+ "'" + val.logo + "'" +')"  >';
+							      html +='<div class="spinner"></div>';			      
+							    html +='</div>';
+						    html +='</div>';
+					    html +='</div>';
+
+					    if (val.minimum_order_raw>0){
+						    /*html +='<div class="min_tag">';
+						     html += val.minimum_order+'<br><small>MIN</small>';
+						    html +='</div>';*/
+					    }
+					    
+						if( !empty(val.offers)){
+							x=0;
+							$.each( val.offers  , function( key_offer, val_offer ) {
+								if(x<=0){
+									html +='<div class="pink_tag ">'+ val_offer.raw +'</div>';			       	  			       	 
+								}
+								x++;
+							});			       
+						}
+
+						if(!empty(val.open_status_raw)){
+							html +='<div class="green_tag '+ val.open_status_raw +' ">'+ val.open_status +'</div>';
+						}
+
+					html +='</div>';			
+
+					  
+				    html +='<div class="min-carousel-wrap">';
+
+						html += '<div class="">';
+							html +='<h4>'+ val.restaurant_name +'</h4>';
+							    if(!empty(val.delivery_distance)){
+							    	html += '<span class="center distance stic-score trn"> · '+ val.delivery_distance+''+t("km")+'</span>';
+							    }
+
+								html += '<div class="new-box">';
+									if(val.is_sponsored==2) {
+									   html +='<div class="ribbon">';
+								       		html += '<span class="stic-store-dot"> · </span><span class="center stic-score trn">'+t("New")+'</span>';
+								       		html += '<div>';
+												html+='<img src="lib/icons/new.svg" onerror="this.src=\'new.png\'">';
+								       		html += '</div>';
+								       	html += '</div>';
+									}
+								html += '</div>';
+
+						html += '</div>';
+
+						if(!empty(val.cuisine)){
+							html +='<div class="cuisine-box">';			
+								html +='<p class="stic-cuisine concat_text">'+ val.cuisine +'</p>';
+							html +='</div>';			
+						}
+
+						if(!empty(val.delivery_estimation)){
+							html+='<div class="rest-info mt10">';
+								html+='<div>'
+									html+='<img src="lib/icons/time.svg" onerror="this.src=\'time.png\'">';
+									html+='<p class="concat_text trn">'+t("Delivers in")+' '+val.delivery_estimation+'</p>';	    	           	   
+								html+='</div>'
+							html+='</div>'
+						}
+
+						html+='<div class="offers-only mt5">';
+						if(!empty(val.offers)){
+							html+='<ons-carousel swipeable auto-scroll auto-scroll-ratio="0.1" overscrollable direction="horizontal" item-width="80%" >';
+							$.each( val.offers  , function( key_offer, val_offer ) {       	
+					       		html +='<ons-carousel-item class="min-offers-carousel">';      	  			       	 
+									html+='<div class="content">';
+										html+='<span class="offer-full">'+ val_offer.full +'</span>';
+									html+='</div>';
+								html+='</ons-carousel-item>';
+					       });	
+							html+='</ons-carousel>';
+						}	
+						html+='</div>';
+
+				    html +='</div>';
+				html +='</div>';
+
+			    if(!empty(val.rating)){
+				    html += '<div class="ratings-box text-right">';
+				    	html += '<ons-icon class="gold-color f13" icon="star"></ons-icon>';
+				    	html += '<span class="center stic-score bold m0 f14 trn">'+ val.rating.ratings+'</span>';
+				    html += '</div>';
+			    }
+
+			html +='</ons-carousel-item>';	
+		});
+	
+	html +='</ons-carousel>';
+	return html;
+};
+
+MerchantFeatured = function(data){
+	html = '<ons-carousel class="stic-carousel rtlFeaturedCarousel featured" swipeable auto-scroll auto-scroll-ratio="0.1" overscrollable id="carousel" direction="horizontal" item-width="100%" >';	
+
+		$.each(data, function(key, val){		
+			html +='<ons-carousel-item class="width" onclick="loadMerchant('+ val.merchant_id+')"  >';
+				html +='<div class="carousel-content">';
+			    	html +='<ons-ripple modifier="material"></ons-ripple>';
+				    html +='<div class="banner">';
+					    html +='<div class="hide_all show_cover">';
+						    html +='<div>';
+							    html +='<img class="hide" src="'+val.background_url+'">';
+							    html +='<div class="header_bg stic_cover" style="background-image: url('+ "'" + val.background_url + "'" +')"  >';
+							    html +='<div class="spinner"></div>';			      
+							    html +='</div>';
+						    html +='</div>';
+					    html +='</div>';
+					html +='</div>';			
+				html +='</div>';
+
+			    html +='<div class="featured-carousel-wrap">';
+					html +='<h4>'+ val.restaurant_name +'</h4>';
+					html +='<div class="view-btn">';			
+						html +='<span class="trn">'+ t("View restaurant") +'</span>';
+			    		html +='<ons-icon icon="ion-ios-arrow-thin-right"></ons-icon>';
+					html +='</div>';
+			    html +='</div>';
+
+			html +='</ons-carousel-item>';	
+		});
+	
+	html +='</ons-carousel>';
+	return html;
+};
+
+MerchantList = function(data){
+	html = '<ons-list class="stic-all-rest">';	
 	$.each(data, function(key, val){
 		
-		html +='<ons-carousel-item onclick="loadMerchant('+ val.merchant_id+')"  >';
-	    html +='<ons-ripple color="#EF6625" background="#EF6625"></ons-ripple>';
+		var reviews_qty = val.rating.review_count.match(/\d+/)[0];
+		
+		html +='<ons-list-item onclick="loadMerchant('+ val.merchant_id+')"  >';
+	    html +='<ons-ripple modifier="material"></ons-ripple>';
 		    html +='<div class="banner">';
 			    //html +='<div class="header_bg" style="background-image: url('+ "'" + val.background_url + "'" +')"  ></div>';
 			    
 			    html +='<div>';
 			    html +='<img class="hide" src="'+val.background_url+'">';
-			    
-			    if(val.is_sponsored==2){
-			       html +='<div class="ribbon"><span>'+ val.sponsored +'</span></div>';
-			    }
-			    
 			    html +='<div class="header_bg" style="background-image: url('+ "'" + val.background_url + "'" +')"  >';
 			      html +='<div class="spinner"></div>';			      
 			    html +='</div>';
 			    html +='</div>';
+
 			    
 			    if (val.minimum_order_raw>0){
 				    /*html +='<div class="min_tag">';
@@ -70,100 +450,147 @@ MerchantCarousel = function(data){
 				    html +='</div>';*/
 			    }
 			    
-			    if( !empty(val.offers)){
-			       x=0;
-			       $.each( val.offers  , function( key_offer, val_offer ) {
-			       	  if(x<=0){
-			       	     html +='<div class="pink_tag ">'+ val_offer.raw +'</div>';			       	  			       	 
-			       	  }
-			       	  x++;
-			       });			       
-			    }
-			    
-			    if(!empty(val.open_status_raw)){
-			          html +='<div class="green_tag '+ val.open_status_raw +' ">'+ val.open_status +'</div>';
-			       }
-			    
+
+		       if(!empty(val.open_status_raw)){
+		          html +='<div class="green_tag '+ val.open_status_raw +' ">'+ val.open_status +'</div>';
+		       }
+
 			    //if(val.rating.ratings>0){
 			       //html +='<div class="rating_wrap"><ons-icon icon="ion-star" size="13px"></ons-icon> <span>'+val.rating.ratings+'</span></div>';
 			    //}
 			    
 			  html +='</div>';			
-			  
-			html +='<h4>'+ val.restaurant_name +'</h4>';
+				  
+			  html +='<div class="rest-list-details">';
+			    html += '<ons-row>';
+
+					html += '<ons-col width="60px" class="logo-col">';
+			  			html +='<div>';
+							html += '<img class="logo-col-img" src="'+val.logo+'" />';
+			  			html +='</div>';
+					html += '</ons-col>';
+						
+				    html += '<ons-col class="stic-div-details">';
+						html += '<div class="mb5" style="width:77%;">';
+						html +='<h4>'+ val.restaurant_name +'</h4>';
+						    if(!empty(val.rating)){
+						    	html += '<span class="center stic-score trn"> · '+ val.rating.ratings+'</span>';
+						    	html += '<ons-icon class="gold-color" icon="star"></ons-icon>';
+						    	// html += '<span class="center ultra-light-gray reviews-qty trn">('+reviews_qty+')</span>';
+						    }
+						html += '</div>';
+
+						if(!empty(val.cuisine)){
+							html +='<p class="stic-cuisine concat_text">'+ val.cuisine +'</p>';
+						}
+
+					    html += '<ons-row class="mt10">';
+						    
+						    // if(!empty(val.rating)){
+							   //  html += '<div class="mr5">';
+							   //  	html += '<span class="center stic-score trn">'+ val.rating.ratings+'</span>';
+							   //  	html += '<ons-icon class="gold-color" icon="star"></ons-icon>';
+							   //  	html += '<span class="center ultra-light-gray reviews-qty trn">('+reviews_qty+')</span>';
+							   //  html += '</div>';
+						    // }
+
+					    	if(val.is_sponsored==2) {
+					    	   html +='<div class="rest-info new mr5">';
+					           		html += '<div>';
+					    				html+='<img src="lib/icons/new.svg" onerror="this.src=\'new.png\'">';
+					           			html+='<p class="concat_text">'+t("New")+'</span>';
+					           		html += '</div>';
+					           	html += '</div>';
+					    	}
+
+						    if(!empty(val.delivery_estimation)){
+						    	html+='<div class="rest-info mr5">';
+						    		html+='<div>'
+						    			html+='<img src="lib/icons/time.svg" onerror="this.src=\'time.png\'">';
+						    			html+='<p class="concat_text">'+val.delivery_estimation+'</p>';	    	           	   
+						    		html+='</div>'
+						    	html+='</div>'
+						    }
+
+						    if(!empty(val.delivery_fee)){
+						    	html+='<div class="rest-info mr5">';
+						    		html+='<div>'
+						    			html+='<img src="lib/icons/scooter.svg" onerror="this.src=\'scooter.png\'">';
+						    			html+='<p class="concat_text">'+val.delivery_fee+'</p>';	    	           	   
+						    		html+='</div>'
+						    	html+='</div>'
+						    }
+
+						    if( !empty(val.offers)){
+						       x=0;
+						       $.each( val.offers  , function( key_offer, val_offer ) {
+						       	  if(x<=0){
+						    		html+='<div class="rest-info promo">';
+						    			html+='<div>'
+						    				html+='<img src="lib/icons/off.svg" onerror="this.src=\'off.png\'">';
+						    				html+='<p class="concat_text">'+val_offer.raw+'</p>';	    	           	   
+						    			html+='</div>'
+						    		html+='</div>'
+						       	  }
+						       	  x++;
+						       });			       
+						    }
+
+						    // if( !empty(val.vouchers)){
+						    // 	voucher_list='';  xv=0;
+						    // 	$.each( val.vouchers  , function( key_voucher, val_voucher ) {
+						    // 		if(xv<=0){
+						    // 		   voucher_list+=val_voucher+'<br/>';
+						    // 		}
+						    // 		xv++;
+						    // 	});
+						    // 	if(!empty(voucher_list)){
+						    // 	   html +='<p class="bold">'+ voucher_list  +'</p>';		
+						    // 	}
+						    // }
+
+					    html += '</ons-row>';
+
+				    html += '</ons-col>';
+
+			    html += '</ons-row>';
+
+
+			  html +='</div>';
 			
-			if(!empty(val.cuisine)){
-			html +='<p class="concat_text">'+ val.cuisine +'</p>';
-			}
-			
-		    if( !empty(val.offers)){		
-		    	offer_list='';  x=0;
-		    	$.each( val.offers  , function( key_offer, val_offer ) {
-		    		if(x<=0){
-		    		   offer_list+=val_offer.full+'<br/>';
-		    		}
-		    		x++;
-		    	});
-		    	html +='<p class="bold">'+ offer_list  +'</p>';		
-		    }
-		    
-		    if( !empty(val.vouchers)){
-		    	voucher_list='';  xv=0;
-		    	$.each( val.vouchers  , function( key_voucher, val_voucher ) {
-		    		if(xv<=0){
-		    		   voucher_list+=val_voucher+'<br/>';
-		    		}
-		    		xv++;
-		    	});
-		    	if(!empty(voucher_list)){
-		    	   html +='<p class="bold">'+ voucher_list  +'</p>';		
-		    	}
-		    }		    
-		    
-		    /*rating*/
-		    if(!empty(val.rating)){
-		    html += '<ons-row class="rating_wrap">';
-		    html += '<ons-col><div class="raty-stars" data-score="'+ val.rating.ratings +'"></div></ons-col>';
-		    html += '<ons-col>'+ val.rating.review_count+'</ons-col>';
-		    html += '</ons-row>';
-		    }
-			
-	    html +='</ons-carousel-item>';
+	    html +='</ons-list-item>';
 		
 	});
 	
-	html +='</ons-carousel>';
+	html +='</ons-list>';
 	return html;
 };
 
-
 CuisineCarousel = function(data){
 	
-	html = '<ons-carousel fullscreen swipeable auto-scroll overscrollable id="carousel" direction="horizontal" item-width="50%">';	
+	html = '<ons-carousel swipeable auto-scroll auto-scroll-ratio="0.1" overscrollable class="stic-carousel cuisine-carousel rtlCuisineCarousel" id="carousel" direction="horizontal" item-width="80px">';	
 	$.each(data, function(key, val){
 		
-		html +='<ons-carousel-item  onclick="showRestaurantListCuisine(\'byCuisine\','+ val.id+')" >';
-	    html +='<ons-ripple color="#EF6625" background="#EF6625"></ons-ripple>';
-		    html +='<div class="banner">';		
-		            
-		        //html +='<div class="dim_background absolute"><div class="cuisine"><h4>'+val.name+'</h4><p> '+val.total_merchant+' <ons-icon icon="ion-android-arrow-dropright-circle" size="14px"></ons-icon></p> </div></div>'; 
-			    html +='<div class="header_bg" style="background-image: url('+ "'" + val.featured_image + "'" +')"  >';			       
-			    
-					html +='<div class="is-loading">'; 
-					html +='<div class="spinner"></div>';		
-					html +='<img class="hide" src="'+val.featured_image+'">';	      
-					html +='</div>'; 
+		html +='<ons-carousel-item class="stic-carousel" onclick="showRestaurantListCuisine(\'byCuisine\','+ val.id+')" >';
 
-			    
-			    html +='</div>';			    			   
-			   			    
-			html +='</div>';    
-			
-			html +='<h4>'+ val.name+'</h4>';
-			html +='<p class="concat_text">'+ val.total_merchant +'</p>';
-			  						
-	    html +='</ons-carousel-item>';
-		
+		html +='<div class="carousel-content">';		
+		    html +='<ons-ripple modifier="material"></ons-ripple>';
+			    html +='<div class="banner">';		
+				    html +='<div class="header_bg" style="background-image: url('+ "'" + val.featured_image + "'" +')"  >';			       			    
+						html +='<div class="is-loading">'; 
+							html +='<div class="spinner"></div>';		
+								html +='<img class="hide" src="'+val.featured_image+'">';	      
+							html +='</div>';
+				   		html +='</div>';			    			   	   			    
+					html +='</div>';    
+
+					html +='<div class="cuisine-title">';    
+						html +='<span class="">'+ val.name+'</span>';
+						html +='<span class="concat_text rest_qty">'+ val.total_merchant +'</p>';			
+					html +='</div>';    
+		html +='</div>';    
+
+		html +='</ons-carousel-item>';
 	});
 	
 	html +='</ons-carousel>';
@@ -175,112 +602,227 @@ CuisineCarousel = function(data){
 restaurantList = function(data, element){
 	var list = document.getElementById(element);
 	html='';
-	
-	$.each(data, function(key, val){		
-		
-		html+='<ons-list-item modifier="longdivider list_item_nopadding list_type_list1" tappable onclick="loadMerchant('+ val.merchant_id+')" >';
-	      html+='<div class="left">';
-	        
-	        html+='<div class="is-loading xsmall-loader">';
-	          html +='<div class="spinner"></div>';		
-	          html+='<img class="list_left_logo" src="'+ val.logo+'" />';
-	          if(!empty(val.open_status_raw)){
-	             html+='<div class="green_tag '+val.open_status_raw+' inherit">'+val.open_status+'</div>'
-	          }
-	        html+='</div>';
-	        
-	      html+='</div>';
-	      html+='<div class="center">';
-	      
-	         html+='<span class="list-item__title is_rtl_text_right">'+ val.restaurant_name +'</span>';
-	         	         
-	         
-             html+='<span class="list-item__subtitle is_rtl_text_right">';
-              
-                if(!empty(val.address)){
-                	 html+=val.address;      
-                     html+='<br/>';
-                }
-                if(!empty(val.cuisine)){
-                     html+=val.cuisine;      
-                     html+='<br/>';
-                }
-                if(!empty(val.distance_plot)){
-                   html+=val.distance_plot;
-                   html+='<br/>';
-                }
+	$.each(data, function(key, val){
 
-                if(!empty(val.minimum_order)){               	                
-	                html+= val.minimum_order+ '<br/>';
-                }
-                if(!empty(val.delivery_estimation)){               	                
-	                html+= val.delivery_estimation+ '<br/>';
-                }
-                if(!empty(val.delivery_distance)){               	                
-	                html+= val.delivery_distance+ '<br/>';
-                }
-                if(!empty(val.delivery_fee)){               	                
-	                html+= val.delivery_fee+ '<br/>';
-                }
-                
-                if(val.is_sponsored==2){
-                   html+= '<ons-icon icon="ion-ios-circle-filled" size="12px" ></ons-icon>&nbsp;' +  t("Sponsored") +  '<br/>';
-                }
-                
-                if(!empty(val.offers)){               	                                	
-	                if(val.offers.length>=1){
-	                	$.each(val.offers, function(offer_key, offer_val){	                		
-	                		html+= '<ons-icon icon="ion-ios-circle-filled" size="12px" ></ons-icon>&nbsp;' +  offer_val.full +  '<br/>';
-	                	});
-	                }
-                }
-                
-                if(!empty(val.vouchers)){               	                                	
-	                if(val.vouchers.length>=1){
-	                	$.each(val.vouchers, function(vouchers_key, vouchers_val){	                		
-	                		html+= '<ons-icon icon="ion-ios-circle-filled" size="12px" ></ons-icon>&nbsp;' +  vouchers_val +  '<br/>';
-	                	});
-	                }
-                }
-                
-                if(!empty(val.services)){               	                                	
-	                if(val.services.length>=1){
-	                	html+='<ons-row>';
-	                	$.each(val.services, function(services_key, services_val){	                			                		
-	                		html+='<ons-col width="80px" ><ons-icon icon="md-check" size="18px"></ons-icon><span class="indent">'+services_val+'</span></ons-col>';
-	                	});
-	                	html+='</ons-row>';
-	                }
-                }
-                
-                if(!empty(val.paymet_method_icon)){
-                	if(val.paymet_method_icon.length>=1){
-	                html+='<ons-row style="margin-top:10px;">';
-	                  $.each(val.paymet_method_icon, function(paymet_method_icon_key, paymet_method_icon_val){	                			                			                 
-	                     html+='<ons-col width="35px" ><img src="'+paymet_method_icon_val+'" class="payment_options_icon"></ons-col>';
-	                  });
-	                html+='</ons-row>';
-                	}
-                }
-                              
-             html+='</span>';
-                          
-                                       
-             if(!empty(val.rating)){
-	             html+='<span class="list-item__subtitle">';
-	             html+='<div class="raty-stars" data-score="'+ val.rating.ratings +'"></div>';
-	             html+='</span>';
-             }
-	      
-	      html+='</div>';
-	      	      
-	    html+='</ons-list-item>';
+	var reviews_qty = val.rating.review_count.match(/\d+/)[0];		
+		
+		html +='<ons-list-item onclick="loadMerchant('+ val.merchant_id+')"  >';
+	    html +='<ons-ripple modifier="material"></ons-ripple>';
+		    html +='<div class="banner">';
+			    //html +='<div class="header_bg" style="background-image: url('+ "'" + val.background_url + "'" +')"  ></div>';
+			    
+			    html +='<div>';
+			    html +='<img class="hide" src="'+val.background_url+'">';
+			    html +='<div class="header_bg" style="background-image: url('+ "'" + val.background_url + "'" +')"  >';
+			      html +='<div class="spinner"></div>';			      
+			    html +='</div>';
+			    html +='</div>';
+
+			    
+			    if (val.minimum_order_raw>0){
+				    /*html +='<div class="min_tag">';
+				     html += val.minimum_order+'<br><small>MIN</small>';
+				    html +='</div>';*/
+			    }
+			    
+
+		       if(!empty(val.open_status_raw)){
+		          html +='<div class="green_tag '+ val.open_status_raw +' ">'+ val.open_status +'</div>';
+		       }
+
+			    //if(val.rating.ratings>0){
+			       //html +='<div class="rating_wrap"><ons-icon icon="ion-star" size="13px"></ons-icon> <span>'+val.rating.ratings+'</span></div>';
+			    //}
+			    
+			  html +='</div>';			
+				  
+			  html +='<div class="rest-list-details">';
+			    html += '<ons-row>';
+
+					html += '<ons-col width="60px" class="logo-col">';
+			  			html +='<div>';
+							html += '<img class="logo-col-img" src="'+val.logo+'" />';
+			  			html +='</div>';
+					html += '</ons-col>';
+						
+				    html += '<ons-col class="stic-div-details">';
+						html += '<div class="mb5" style="width:77%;">';
+						html +='<h4 class="is_rtl_text_right">'+ val.restaurant_name +'</h4>';
+						    if(!empty(val.rating)){
+						    	html += '<span class="center stic-score trn"> · '+ val.rating.ratings+'</span>';
+						    	html += '<ons-icon class="gold-color" icon="star"></ons-icon>';
+						    	// html += '<span class="center ultra-light-gray reviews-qty trn">('+reviews_qty+')</span>';
+						    }
+						html += '</div>';
+
+						if(!empty(val.cuisine)){
+							html +='<p class="stic-cuisine concat_text">'+ val.cuisine +'</p>';
+						}
+
+					    html += '<ons-row class="mt10">';
+						    
+						    // if(!empty(val.rating)){
+							   //  html += '<div class="mr5">';
+							   //  	html += '<span class="center stic-score trn">'+ val.rating.ratings+'</span>';
+							   //  	html += '<ons-icon class="gold-color" icon="star"></ons-icon>';
+							   //  	html += '<span class="center ultra-light-gray reviews-qty trn">('+reviews_qty+')</span>';
+							   //  html += '</div>';
+						    // }
+
+					    	if(val.is_sponsored==2) {
+					    	   html +='<div class="rest-info new mr5">';
+					           		html += '<div>';
+					    				html+='<img src="lib/icons/new.svg" onerror="this.src=\'new.png\'">';
+					           			html+='<p class="concat_text">'+t("New")+'</span>';
+					           		html += '</div>';
+					           	html += '</div>';
+					    	}
+
+						    if(!empty(val.delivery_estimation)){
+						    	html+='<div class="rest-info mr5">';
+						    		html+='<div>'
+						    			html+='<img src="lib/icons/time.svg" onerror="this.src=\'time.png\'">';
+						    			html+='<p class="concat_text">'+val.delivery_estimation+'</p>';	    	           	   
+						    		html+='</div>'
+						    	html+='</div>'
+						    }
+
+						    if(!empty(val.delivery_fee)){
+						    	html+='<div class="rest-info mr5">';
+						    		html+='<div>'
+						    			html+='<img src="lib/icons/scooter.svg" onerror="this.src=\'scooter.png\'">';
+						    			html+='<p class="concat_text">'+val.delivery_fee+'</p>';	    	           	   
+						    		html+='</div>'
+						    	html+='</div>'
+						    }
+
+						    if( !empty(val.offers)){
+						       x=0;
+						       $.each( val.offers  , function( key_offer, val_offer ) {
+						       	  if(x<=0){
+						    		html+='<div class="rest-info promo">';
+						    			html+='<div>'
+						    				html+='<img src="lib/icons/off.svg" onerror="this.src=\'off.png\'">';
+						    				html+='<p class="concat_text">'+val_offer.raw+'</p>';	    	           	   
+						    			html+='</div>'
+						    		html+='</div>'
+						       	  }
+						       	  x++;
+						       });			       
+						    }
+
+					    html += '</ons-row>';
+
+				    html += '</ons-col>';
+
+			    html += '</ons-row>';
+
+
+			  html +='</div>';
+			
+	    html +='</ons-list-item>';
 				
 		var newItem = ons.createElement(html);
 	    list.appendChild(newItem);
 	    html='';
 	});
 };
+
+// restaurantList = function(data, element){
+// 	var list = document.getElementById(element);
+// 	html='';
+// 	$.each(data, function(key, val){		
+		
+// 		html+='<ons-list-item modifier="longdivider list_item_nopadding list_type_list1" tappable onclick="loadMerchant('+ val.merchant_id+')" >';
+// 	      html+='<div class="left">';
+	        
+// 	        html+='<div class="is-loading xsmall-loader">';
+// 	          html +='<div class="spinner"></div>';		
+// 	          html+='<img class="list_left_logo" src="'+ val.logo+'" />';
+// 	          if(!empty(val.open_status_raw)){
+// 	             html+='<div class="green_tag '+val.open_status_raw+' inherit">'+val.open_status+'</div>'
+// 	          }
+// 	        html+='</div>';
+	        
+// 	      html+='</div>';
+// 	      html+='<div class="center">';
+	      
+// 	         html+='<span class="list-item__title">'+ val.restaurant_name +'</span>';
+	         	         
+	         
+//              html+='<span class="list-item__subtitle">';
+              
+//                 if(!empty(val.address)){
+//                 	 html+=val.address;      
+//                      html+='<br/>';
+//                 }
+//                 if(!empty(val.cuisine)){
+//                      html+=val.cuisine;      
+//                      html+='<br/>';
+//                 }
+//                 if(!empty(val.distance_plot)){
+//                    html+=val.distance_plot;
+//                    html+='<br/>';
+//                 }
+
+//                 if(!empty(val.minimum_order)){               	                
+// 	                html+= val.minimum_order+ '<br/>';
+//                 }
+//                 if(!empty(val.delivery_estimation)){               	                
+// 	                html+= val.delivery_estimation+ '<br/>';
+//                 }
+//                 if(!empty(val.delivery_distance)){               	                
+// 	                html+= val.delivery_distance+ '<br/>';
+//                 }
+//                 if(!empty(val.delivery_fee)){               	                
+// 	                html+= val.delivery_fee+ '<br/>';
+//                 }
+//                 if(!empty(val.offers)){               	                                	
+// 	                if(val.offers.length>=1){
+// 	                	$.each(val.offers, function(offer_key, offer_val){	                		
+// 	                		html+= '<ons-icon icon="ion-ios-circle-filled" size="12px" ></ons-icon>&nbsp;' +  offer_val.full +  '<br/>';
+// 	                	});
+// 	                }
+//                 }
+                
+//                 if(!empty(val.services)){               	                                	
+// 	                if(val.services.length>=1){
+// 	                	html+='<ons-row>';
+// 	                	$.each(val.services, function(services_key, services_val){	                			                		
+// 	                		html+='<ons-col width="80px" ><ons-icon icon="md-check" size="18px"></ons-icon><span class="indent">'+services_val+'</span></ons-col>';
+// 	                	});
+// 	                	html+='</ons-row>';
+// 	                }
+//                 }
+                
+//                 if(!empty(val.paymet_method_icon)){
+//                 	if(val.paymet_method_icon.length>=1){
+// 	                html+='<ons-row style="margin-top:10px;">';
+// 	                  $.each(val.paymet_method_icon, function(paymet_method_icon_key, paymet_method_icon_val){	                			                			                 
+// 	                     html+='<ons-col width="35px" ><img src="'+paymet_method_icon_val+'" class="payment_options_icon"></ons-col>';
+// 	                  });
+// 	                html+='</ons-row>';
+//                 	}
+//                 }
+                              
+//              html+='</span>';
+                          
+                                       
+//              if(!empty(val.rating)){
+// 	             html+='<span class="list-item__subtitle">';
+// 	             html+='<div class="raty-stars" data-score="'+ val.rating.ratings +'"></div>';
+// 	             html+='</span>';
+//              }
+	      
+// 	      html+='</div>';
+	      	      
+// 	    html+='</ons-list-item>';
+				
+// 		var newItem = ons.createElement(html);
+// 	    list.appendChild(newItem);
+// 	    html='';
+// 	});
+// };
 
 restaurantListWithBanner = function(data, element){
 	var list = document.getElementById(element);
@@ -381,7 +923,7 @@ restaurantListWithBanner = function(data, element){
                 	});
                 }
             }
-            
+
             if(!empty(val.vouchers)){               	                                	
                 if(val.vouchers.length>=1){
                 	$.each(val.vouchers, function(vouchers_key, vouchers_val){	                		
@@ -660,7 +1202,7 @@ sortList = function(data , element_id){
 
 restoPageCarousel = function(data){
 	html='';
-	html='<ons-carousel fullscreen swipeable auto-scroll overscrollable id="resto_page_carousel">';
+	html='<ons-carousel fullscreen swipeable auto-scroll auto-scroll-ratio="0.1" overscrollable id="resto_page_carousel">';
 	$.each( data  , function( key, val ) {
 		html+='<ons-carousel-item>';
 		  html+='<div class="banner" style="background-image: url('+ "'" + val + "'" +')" >';
@@ -689,30 +1231,60 @@ restoPageCarousel = function(data){
 };
 
 fillRestoPageInfo = function(data){
+
 	html='';
 	
 	html+='<ons-row>';
-	html+='<ons-col width="70%" vertical-align="center" >';	
-	if(!empty(data.restaurant_name)){
-		html+='<h4>'+data.restaurant_name+'</h4>';
-	}
-	if(!empty(data.cuisine)){
-		html+='<p>'+data.cuisine+'</p>';
-	}
-	if(!empty(data.offers)){
-		$.each( data.offers  , function( key_offer, val_offer ) {       	
-       	   html +='<p class="bold">'+ val_offer.full +'</p>';			       	  			       	 
-       });	
-	}	
-	html+='</ons-col>';	
-	
-	html+='<ons-col vertical-align="center" class="text-right raty-medium">';	
-	//html+='<ons-icon icon="ion-android-star" size="14px" class="pink_color"></ons-icon> <span><b>'+ data.rating.ratings +'</b> ('+ data.rating.votes +')</span>';
-	html+='<div class="raty-stars" data-score="'+ data.rating.ratings +'"></div>';
-	html+='<p class="small">'+ data.rating.review_count +'</p>';
-	html+='</ons-col>';	
+
+		html+='<ons-col class="title-col" width="75%" vertical-align="center" >';	
+			if(!empty(data.restaurant_name)){
+				html+='<h4 class="stic-restaurant-title">'+data.restaurant_name+'</h4>';
+			}
+
+		    html += '<div class="flex mt5" onclick="setClickTab(\'reviews.html\',2)">';
+				html+='<div class="raty-stars" data-score="'+ data.rating.ratings +'"></div>';
+		    	html+='<span class="rating-score">'+ data.rating.ratings+'</span>';
+				html+='<p class="ultra-light-gray small">('+data.rating.review_count+')</p>';
+		    html += '</div>';
+
+			if(!empty(data.cuisine)){
+				html+='<p class="stic-gray">'+data.cuisine+'</p>';
+			}
+
+
+		html+='</ons-col>';	
+		
+		html+='<ons-col vertical-align="bottom" class="stic-more flex center" onclick="setClickTab(\'about.html\',1)">';
+	  			html+='<span class="trn">'+t("INFO")+'</span>';
+		  	html +='<div>';
+	  			html+='<img src="lib/icons/chevron-right.svg" onerror="this.src=\'chevron-right.png\'">';		
+		  	html +='</div>';	
+		html+='</ons-col>';	
 	
 	html+='</ons-row>';
+
+	if(!empty(data.offers)){
+		html+='<ons-row class="stic-lateral-wrap auto">';
+			html+='<ons-carousel class="stic-carousel" swipeable auto-scroll auto-scroll-ratio="0.1" overscrollable direction="horizontal" item-width="80%" >';
+			$.each( data.offers  , function( key_offer, val_offer ) {       	
+	       		html +='<ons-carousel-item class="rest-offers-carousel">';      	  			       	 
+					html+='<div class="content">';
+						html+='<ons-row style="align-items: center;">';
+							html+='<ons-col width="40px">';
+								html+='<div>';
+								  html+='<img src="lib/icons/off.svg" onerror="this.src=\'off.png\'">';
+								html+='</div>';
+							html+='</ons-col>';
+							html+='<ons-col>';
+									html+='<span class="offer-full">'+ val_offer.full +'</span>';
+							html+='</ons-col>';
+						html+='</ons-row>';
+					html+='</div>';
+				html+='</ons-carousel-item>';
+	       });	
+			html+='</ons-carousel>';
+		html+='</ons-row>';
+	}		
 	
 	return html;
 };
@@ -730,16 +1302,17 @@ restoBanner = function(data){
 	   
 	   html +='<div class="is-loading xxsmall-loader">'; 
 	      html +='<div class="spinnerx"></div>';		
-	      html+='<img class="logo" src="'+ data.logo +'">';
+	      html+='<img class="logo" onclick="setClickTab(\'photo_gallery.html\',5)" src="'+ data.logo +'">';
 	   html +='</div>'; 
 	   
-	html+='</div>';
+	html+='</div>';	
 	return html;
+
 };
 
 restoTabMenu = function(data){
 	x=0;
-	html='<ons-carousel fullscreen swipeable auto-scroll overscrollable id="carousel_resto_menu" direction="horizontal" item-width="30%"  >';
+	html='<ons-carousel fullscreen swipeable auto-scroll auto-scroll-ratio="0.1" overscrollable id="carousel_resto_menu" direction="horizontal" item-width="30%"  >';
 	$.each( data  , function( key, val ) {
 		is_selected = 'class="selected"';
 		if (x>=1){
@@ -747,7 +1320,7 @@ restoTabMenu = function(data){
 		}
 		html+='<ons-carousel-item '+is_selected+' onclick="setClickTab('+ "'"+  val.page_name +"'," +  x  +')" >';
 	     html+=val.label;
-	    html+='<ons-ripple color="#EF6625" background="#ffffff"></ons-ripple>';
+	    html +='<ons-ripple modifier="material"></ons-ripple>';
 	    html+='</ons-carousel-item>';
 	    x++;
 	});
@@ -758,8 +1331,8 @@ restoTabMenu = function(data){
 restaurantCategory = function(data, element){
 	if (data.length<=0){
 		return;
-	}	
-	
+	}
+
 	enabled_dish=''; disabled_image = '';
 	if(app_settings = getAppSettings()){
 		enabled_dish = app_settings.enabled_dish;
@@ -768,15 +1341,14 @@ restaurantCategory = function(data, element){
 	
 	/*alert("enabled_dish=>"+enabled_dish);
 	alert("disabled_image=>"+disabled_image);*/
-	
-	
+
 	var list = document.getElementById( element );
 	var html='';
 	
 	$.each( data  , function( key, val ) {
 		
-		 html+='<ons-list-item expandable modifier="list_item_category">';
-		   html+= '<b>'+val.category_name+'</b>';
+		 html+='<ons-list-item expandable class="stic-items expanded" modifier="list_item_category">';
+		   html+= '<b class="stic-standart-bold">'+val.category_name+'</b>';
 		   
 		   html+='<div class="expandable-content">';
 		   
@@ -784,89 +1356,97 @@ restaurantCategory = function(data, element){
 		   	   html+='<ons-list>';
 		   	   $.each( val.item  , function( item_key, item_val ) {
 		   	   	 
-		   	   	 html+='<ons-list-item tappable modifier="longdivider"  onclick="itemDetails('+ "'"+ item_val.item_id+"'," + "'" + val.cat_id + "'"  +')"  >';
-		         html+='<div class="center">';
-			     html+='<span class="list-item__title">'+ item_val.item_name +'</span>';
-			     
-			     if(enabled_dish==1){
-				    if(item_val.dish_image.length>0){
-				      html+='<ons-row>';		    
-				         $.each( item_val.dish_image, function( d_key, d_val ) {      	             
-				            html+='<ons-col vertical-align="top" width="35px">';
-				                html +='<div class="is-loading">'; 
-					            html +='<div class="spinner small"></div>';		
-				                   html+='<img class="cuisine_image" src="'+d_val+'">';
-				                html+='</div>';
-				            html+='</ons-col>';
-				       	  });
-				      html+='</ons-row>';
-				    }
-			     }
-			     
-			     if(!empty(item_val.item_description)){
-			         html+='<span class="list-item__subtitle">'+ item_val.item_description +' ';			         
-			         
-			         if(code_version=="1.4"){
-			         	if (item_val.prices2.length>0){
-			         		html+='<br/>';
-			     			$.each( item_val.prices2  , function( pricekey, priceval ) {
-			     				if(priceval.discount>0.001){
-			     					html+='<ons-icon icon="ion-android-arrow-dropright" size="14px" style="color:#000;"></ons-icon> <price>'+ '<span class="tag_discount">'+ priceval.original_price+'</span>' + priceval.discounted_price_pretty+'<price><br/>';
-			     				} else {
-			     					html+='<ons-icon icon="ion-android-arrow-dropright" size="14px" style="color:#000;"></ons-icon> <price>'+priceval.original_price+'<price><br/>';
-			     				}
-			     			});
-			     		}
-			         } else {
-				         if (item_val.prices.length>0){
-				         	$.each( item_val.prices  , function( pricekey, priceval ) {
-				         		html+='<br/><ons-icon icon="ion-android-arrow-dropright" size="14px" style="color:#000;"></ons-icon> <price>'+priceval+'<price>';
-				         	});			            
-				         }
-			         }
-			         
-			         
-			         html+='</span>';
-			     } else {
-			     	html+='<span class="list-item__subtitle">';
-			     	if(code_version=="1.4"){			     		 
-			     		if (item_val.prices2.length>0){
-			     			$.each( item_val.prices2  , function( pricekey, priceval ) {
-			     				if(priceval.discount>0.001){
-			     					html+='<ons-icon icon="ion-android-arrow-dropright" size="14px" style="color:#000;"></ons-icon> <price>'+ '<span class="tag_discount">'+ priceval.original_price+'</span>' + priceval.discounted_price_pretty+'<price><br/>';
-			     				} else {
-			     					html+='<ons-icon icon="ion-android-arrow-dropright" size="14px" style="color:#000;"></ons-icon> <price>'+priceval.original_price+'<price><br/>';
-			     				}
-			     			});
-			     		}
-			     	} else {
-				     	if (item_val.prices.length>0){
-				     		$.each( item_val.prices  , function( pricekey, priceval ) {
-				     			html+='<ons-icon icon="ion-android-arrow-dropright" size="14px" style="color:#000;"></ons-icon> <price>'+priceval+'<price><br/>';
-				     		});
-				     	}		
-			     	}	     	
-			        html+='</span>';
-			     }			     			     			     
-			    html+='</div>';
-			    
-			    if(disabled_image!=1){
-				    if(!empty(item_val.photo)){
-				    html+='<div class="left">';
-			          html+='<div class="list-item_square_thumbnail" style="background-image: url('+ "'" + item_val.photo + "'" +')"   >';
-			          							         
-						html +='<div class="is-loading small-loader">'; 
-						html +='<div class="spinner"></div>';		
-						html +='<img class="hide" src="'+ item_val.photo +'">';	      
-						html +='</div>';   
-			          
-			          html+='</div>';
-			        html+='</div>';        
-				    }
-			    }
-		        
-		        html+='</ons-list-item> ';
-	    
+		   	   	 html+='<ons-list-item class="stic-item" tappable modifier="longdivider"  onclick="itemDetails('+ "'"+ item_val.item_id+"'," + "'" + val.cat_id + "'"  +')"  >';
+
+			         html+='<ons-row>';
+				         html+='<ons-col>';
+							html+='<div class="stic-item-desc">';
+								html+='<span class="list-item__title">'+ item_val.item_name +'</span>';
+
+								if(enabled_dish==1){
+								    if(item_val.dish_image.length>0){
+								     $.each( item_val.dish_image, function( d_key, d_val ) {      	             
+								        html+='<div class="stic-dish">';
+								            html +='<div class="is-loading">'; 
+								            	html +='<div class="spinner small"></div>';		
+								               	html+='<img class="cuisine_image" src="'+d_val+'">';
+								            html+='</div>';
+								        html+='</div>';
+								   	  });
+								    }
+								}
+
+								if(!empty(item_val.item_description)){
+									html+='<span class="stic-ingridients list-item__subtitle">'+ item_val.item_description +'</span>';
+
+									if(code_version=="1.4"){
+							         	if (item_val.prices2.length>0){
+							         		html+='<br/>';
+							     			$.each( item_val.prices2  , function( pricekey, priceval ) {
+							     				if(priceval.discount>0.001){
+							     					html+='<price>'+ '<span class="tag_discount">'+ priceval.original_price+'</span>' + priceval.discounted_price_pretty+'</price>';
+							     				} else {
+							     					html+='<price>'+priceval.original_price+'</price>';
+							     				}
+							     			});
+							     		}
+							     		
+							         } else {         	
+								 		if (item_val.prices.length>0){
+								 			$.each( item_val.prices  , function( pricekey, priceval ) {
+								 				html+='<price>'+priceval+'</price>';
+								 			});			            
+								 		}
+									}
+
+								} else {
+
+									html+='<span class="stic-ingridients list-item__subtitle"></span>';
+									if(code_version=="1.4"){
+							         	if (item_val.prices2.length>0){
+							         		html+='<br/>';
+							     			$.each( item_val.prices2  , function( pricekey, priceval ) {
+							     				if(priceval.discount>0.001){
+							     					html+='<price>'+ '<span class="tag_discount">'+ priceval.original_price+'</span>' + priceval.discounted_price_pretty+'</price>';
+							     				} else {
+							     					html+='<price>'+priceval.original_price+'</price>';
+							     				}
+							     			});
+							     		}
+							         } else {         	
+								 		if (item_val.prices.length>0){
+								 			$.each( item_val.prices  , function( pricekey, priceval ) {
+								 				html+='<price>'+priceval+'</price>';
+								 			});			            
+								 		}
+									}
+								}
+
+							html+='</div>';
+				         html+='</ons-col>';
+
+						if(!empty(item_val.photo)) {
+					         html+='<ons-col class="h70" width="90px">';
+							    if(disabled_image!=1){
+							    	if(!empty(item_val.photo)){
+									    html+='<div class="right">';
+
+								          html+='<div class="list-item_square_thumbnail" style="background-image: url('+ "'" + item_val.photo + "'" +')"   >';
+								          							         
+											html +='<div class="is-loading small-loader">'; 
+											html +='<div class="spinner"></div>';		
+											html +='<img class="hide" src="'+ item_val.photo +'">';	      
+											html +='</div>';   
+								          
+								          html+='</div>';
+								        html+='</div>';        
+							    	}
+							    }
+							html+='</ons-col>';
+						}
+					html+='</ons-row>';
+
+		       html+='</ons-list-item> ';
 		   	   }); 
 		   	   html+='</ons-list>';
 		   } else {
@@ -972,15 +1552,15 @@ setItemList = function(data, element){
 		    		if (val.prices2.length>0){
 		    			$.each( val.prices2  , function( pricekey, priceval ) {
 		    				if(priceval.discount>0.001){
-							  	html+= '<span class="tag_discount">'+ priceval.original_price+'</span>' + priceval.discounted_price_pretty + '<br/>';
+							  	html+= '<price> <span class="tag_discount">'+ priceval.original_price+'</span>' + priceval.discounted_price_pretty + '</price>';
 							  } else {
-							  	html+= ''+priceval.original_price + '<br/>';
+							  	html+= '<price>'+priceval.original_price + '</price>';
 							  }			    		  
 		    			});
 		    		}
 		    	} else {
-			    	$.each( val.prices  , function( pricekey, priceval ) {		    
-			    		html+= ''+priceval + '<br/>';		    		
+			    	$.each( val.prices  , function( pricekey, priceval ) {		    		
+			    		  html+= ''+priceval + '<br/>';
 			    	});
 		    	}
 		    	
@@ -1004,14 +1584,14 @@ setCategoryCarousel = function(data, selected_cat_id){
 	if(cart_theme==2){
 		return;
 	}
-		
+
 	selected_key = 0;
 	if (data.length<=0){
 		return;
 	}		
 	var html='';
 	
-	html+='<ons-carousel id="carousel_category" class="carousel_small" swipeable auto-scroll overscrollable direction="horizontal" item-width="30%" >';
+	html+='<ons-carousel id="carousel_category" class="carousel_small" swipeable auto-scroll auto-scroll-ratio="0.1" overscrollable direction="horizontal" item-width="30%" >';
 	$.each( data  , function( key, val ) {		
 		 is_selected = 'class="selected"';
 		 if(val.cat_id!=selected_cat_id){
@@ -1021,7 +1601,7 @@ setCategoryCarousel = function(data, selected_cat_id){
 		 }
 		 html+='<ons-carousel-item '+ is_selected +' onclick="reloadItemPage('+ "'" + val.cat_id + "'" +')" >';
 		  html+= val.category_name;
-		  html+='<ons-ripple color="#EF6625" background="#ffffff"></ons-ripple>';
+		  html +='<ons-ripple modifier="material"></ons-ripple>';
 		html+='</ons-carousel-item>';		
 	});
 	html+='</ons-carousel>';
@@ -1078,21 +1658,26 @@ var displayItemDetails = function(data, cart_data) {
 	var html='';	
 	if (!empty(cart_data.qty)){
 		$(".item_qty").val( cart_data.qty );
-		$(".add_to_cart").html( t("UPDATE CART") );
+		$(".add_to_cart").html( t("Update Cart") );
 		html+='<input type="hidden" name="row" value="'+ cart_data.row +'">';
 	}
+	
+	if(!empty(data.photo)) {
+		html+='<div class="item_preview" style="background-image: url('+ "'" + addslashes(data.photo) + "'" +')"  >';
+			 
+		html +='<div class="is-loading">'; 
+		html +='<div class="spinner"></div>';		
+		html +='<img class="hide" src="'+ data.photo +'">';	      
+		html +='</div>'; 
 		
-	html+='<div class="item_preview" style="background-image: url('+ "'" + addslashes(data.photo) + "'" +')"  >';
-		 
-	html +='<div class="is-loading">'; 
-	html +='<div class="spinner"></div>';		
-	html +='<img class="hide" src="'+ data.photo +'">';	      
-	html +='</div>'; 
+		html+='</div>';
+	} else {
+		html+='<div class="fake-toolbar"></div>';
+    	$("#item_details ons-back-button span").addClass("fill-black");
+	}
 	
-	html+='</div>';
-	
-	html+='<div class="wrap">';	
-	  html+= '<b>'+data.item_name+'</b>';
+	html+='<div class="wrap stic-item-wrap">';	
+	  html+= '<h4 class="stic-item-title" style="margin-bottom: 15px !important">'+data.item_name+'</h4>';
 	  
 	  html+= '<input type="hidden" name="item_id" value="'+data.item_id+'">';
 	  html+= '<input type="hidden" name="two_flavors" class="two_flavors" value="'+data.two_flavors+'">';
@@ -1118,20 +1703,18 @@ var displayItemDetails = function(data, cart_data) {
 	  	  	  	  
 	   if(enabled_dish==1){
 	       if($.isArray(data.dish_list)) {	       
-	       	  html+='<ons-row>';
 	       	  $.each( data.dish_list, function( d_key, d_val ) {      	             
-	            html+='<ons-col vertical-align="top" width="35px">';
-	                html +='<div class="is-loading">'; 
-		            html +='<div class="spinner"></div>';		
-	                   html+='<img class="cuisine_image" src="'+d_val+'">';
-	                html+='</div>';
-	            html+='</ons-col>';
+		        html+='<div class="stic-dish-item">';
+		            html +='<div class="is-loading">'; 
+		            	html +='<div class="spinner small"></div>';		
+		               	html+='<img class="cuisine_image" src="'+d_val+'">';
+		            html+='</div>';
+		        html+='</div>';
 	       	  });
-	       	  html+='</ons-row>';
 	       }      
 	   }
        
-       html+='<p class="description">'+data.item_description+'</p>';
+       html+='<p class="stic-gray f14 mb20-olny">'+data.item_description+'</p>';
        
        /*PHOTO GALLERY*/
        if(data.gallery.length>0){
@@ -1141,7 +1724,7 @@ var displayItemDetails = function(data, cart_data) {
        	  html+='</div>'
        	         	  
        	  html+='<div class="white_list_wrapper" style="padding:0;margin:0 0 10px;" >';       	  
-       	  html+='<ons-carousel fullscreen swipeable auto-scroll overscrollable direction="horizontal" item-width="45%" >';	
+       	  html+='<ons-carousel fullscreen swipeable auto-scroll auto-scroll-ratio="0.1" overscrollable direction="horizontal" item-width="45%" >';	
        	   $.each( data.gallery, function( gallery_key, gallery_val ) {       	   	         	   	   
 	       	   html+='<ons-carousel-item onclick="FullImageView(' + "'" +  addslashes(gallery_val) + "'" + ')">';       	  	       	   
 	       	     html +='<div class="banner">';
@@ -1167,7 +1750,7 @@ var displayItemDetails = function(data, cart_data) {
 	if(!website_hide_foodprice){
 	if (data.multiple_price==1){
 		html+='<ons-list modifier="list_grey">';
-		    html+='<ons-list-header>'+ t("Price") +'</ons-list-header>';	    
+		    html+='<ons-list-header class="item-list-header">'+ t("Price") +'</ons-list-header>';	    
 		    if($.isArray(data.prices)) {
 		    	$.each( data.prices, function( price_key, price_val ) {
 		    		//html+='<ons-list-item>'+ price_val.formatted_price +'</ons-list-item>';	 
@@ -1187,20 +1770,25 @@ var displayItemDetails = function(data, cart_data) {
 		    			}
 		    		}
 		    		   		
-		    		html+='<ons-list-item tappable>';
-		    		  html+='<label class="left">';
+		    		html+='<ons-list-item class="item-row" tappable>';
+
+		    		  html+='<label class="min34 left">';
 				        html+='<ons-radio name="price" input-id="price-'+price_key+'" value="'+ value_price +'"  '+selected+' ></ons-radio>';
 				      html+='</label>';
 				      
-				      
-				      
 				      if ( price_val.discount_price>0.0001){
-				      	 html+='<label for="price-'+price_key+'" class="center">' +  price_val.size + '<span class="tag_discount">'+price_val.formatted_price+'</span>' +   price_val.formatted_discount_price + '</label>';
+				      	 html+='<label for="price-'+price_key+'" class="center capitalize stic-right-text">';
+							html+='<span class="float-l">'+ price_val.size +'</span>';
+				      	   	html+='<span class="tag_discount">'+price_val.formatted_price+'</span>';
+				      	   	html+='<span class="bold darkblue">'+price_val.formatted_discount_price+'</span>';
+				      	  html+='</label>';
 				      } else {
-				         html+='<label for="price-'+price_key+'" class="center">' + price_val.size + '<span class="spacer"></span>' +  price_val.formatted_price + '</label>';
+				         html+='<label for="price-'+price_key+'" class="center capitalize stic-right-text">';
+				         	html+='<span class="float-l">'+ price_val.size + '</span>';
+				         	html+='<span class="bold darkblue">' +  price_val.formatted_price + '</span>';
+				         html+='</label>';
 				      }
-				      
-				      
+				        
 		    		html+='</ons-list-item>';
 		    	});
 		    }
@@ -1210,16 +1798,18 @@ var displayItemDetails = function(data, cart_data) {
 	
 	/*SPECIAL INSTRUCTIONS*/
 	html+='<ons-list modifier="list_grey">';
-	  html+='<ons-list-header>' +  t("Special Request")  + '</ons-list-header>';	    	  
+	  html+='<ons-list-header class="item-list-header">' +  t("Special Request")  + '</ons-list-header>';	    	  
 	html+='</ons-list>';
 		
 	notes_value = !empty(cart_data.notes)?cart_data.notes:'';
-	html+='<textarea name="notes" class="textarea textarea--transparent full_width" rows="2" placeholder="'+ t("Your preferences or request") +'.." >'+ notes_value  +'</textarea>';	
+	html+='<div class="stic-lateral-wrap">';
+		html+='<textarea name="notes" class="textarea textarea--transparent full_width" rows="2" placeholder="'+ t("Your preferences or request") +'.." >'+ notes_value  +'</textarea>';	
+	html+='</div>';
 	
 	/*COOKING REF*/
 	if(!empty(data.cooking_ref)) {		
 	   html+='<ons-list modifier="list_grey">';
-	   html+='<ons-list-header>' + t('Cooking Preference') +  '</ons-list-header>';	    	  	
+	   html+='<ons-list-header class="item-list-header">' + t('Cooking Preference') +  '</ons-list-header>';	    	  	
 		$.each( data.cooking_ref, function( cooking_ref_key, cooking_ref_val ) {
 			
 			selected = '';
@@ -1243,7 +1833,7 @@ var displayItemDetails = function(data, cart_data) {
 	/*INGREDIENTS*/
 	if(!empty(data.ingredients)) {
 		html+='<ons-list modifier="list_grey">';
-	    html+='<ons-list-header>' + t('Ingredients') + '</ons-list-header>';	    
+	    html+='<ons-list-header class="item-list-header">' + t('Ingredients') + '</ons-list-header>';	    
 	    $.each( data.ingredients, function( ingredients_key, ingredients_val ) {
 	    	html+='<ons-list-item tappable>';
 	    	
@@ -1287,11 +1877,11 @@ var displayItemDetails = function(data, cart_data) {
             }
 			
 			html+='<ons-list modifier="list_grey">';
-	        html+='<ons-list-header>'+addon_val.subcat_name+'</ons-list-header>';	
+	        html+='<ons-list-header class="item-list-header">'+addon_val.subcat_name+'</ons-list-header>';	
 	        
 	          if($.isArray(addon_val.sub_item)) {
 	          	  $.each( addon_val.sub_item, function( subitem_key, subitem_val ) {
-	          	  		          	  	  	       
+	          	  		          	  	  	          	  	
 	          	  	  dump("multi_option=>"+ addon_val.multi_option)
 	          	  	  switch(addon_val.multi_option)
 	          	  	  {
@@ -1478,7 +2068,6 @@ var displayCartDetails = function(datas){
 	var html='';
 			
 	html+='<div class="cart_header" style="background-image: url('+ "'" + datas.merchant.background_url + "'" +')"   >';
-	  html+='<div class="light_layer absolute"></div>';
 	  	  
 	html +='<div class="is-loading medium-loader">'; 
 	html +='<div class="spinner"></div>';		
@@ -1486,56 +2075,106 @@ var displayCartDetails = function(datas){
 	html +='</div>'; 
 	  
 	html+='</div>';
-	html+='<div class="cart_merchant_name small_raty">';
-	    html+= datas.merchant.restaurant_name;
-	   html+='<div class="raty-stars" data-score="'+ datas.merchant.rating +'"></div>';
+
+	html+='<div class="cream_header">';
+	  html+='<div class="stic-lateral-wrap">';
+	    html+='<h3 class="block trn">'+t("Order details")+'</h3>';
+	    html+='<p class="small inline trn">'+t("You're ordering at")+'</p>';
+	    html+='<p class="small inline bold ml4">'+datas.merchant.restaurant_name+'</p>'; 
+	  html+='</div>';
 	html+='</div>';
 	
 	
 	html+='<ons-list>';	
 	if(!empty(data.item)) {		
 		$.each( data.item, function( item_key, item_val ) {
-			html+='<ons-list-item tappable modifier="nodivider" >';
-			   html+='<div class="left" onclick="itemDetails('+ "'" + item_val.item_id +  "'," + "'" + item_val.category_id + "'," + "'" + item_key  + "'"   +')" ><span class="notification green">'+ item_val.qty +'</span></div>';
-			   html+='<div class="center" onclick="itemDetails('+ "'" + item_val.item_id +  "'," + "'" + item_val.category_id + "'," + "'" + item_key  + "'"   +')"  > '+ item_val.item_name +'  </div>';
-			   html+='<div class="right"><ons-button modifier="quiet" onclick="removeCartItem( '+  item_key +' )" ><ons-icon class="remove" icon="md-close"></ons-icon></ons-button></div>';
-			html+='</ons-list-item>';
+			html+='<ons-list-item modifier="nodivider">';
+
+				html+='<ons-row vertical-align="center">';
+				   html+='<ons-col class="left" width="20px">';
+				   		html+='<span class="notification green f15">'+ item_val.qty +'</span>';
+				   html+='</ons-col>';
+				   html+='<ons-col class="center bold darkblue f15" onclick="itemDetails('+ "'" + item_val.item_id +  "'," + "'" + item_val.category_id + "'," + "'" + item_key  + "'"   +')">';
+				   		html+='<span>'+ item_val.item_name +'</span>';
+				   html+='</ons-col>';
+				   html+='<ons-col class="right text-right" width="20px">';
+				   		html+='<ons-button class="pd0" modifier="quiet" onclick="removeCartItem( '+  item_key +' )" >';
+				   			html+='<ons-icon class="remove" icon="md-close"></ons-icon>';
+				   		html+='</ons-button>';
+				   html+='</ons-col>';
+				html+='</ons-row>';
 			
-			
-			html+='<ons-list-item modifier="nodivider normal_list" >';
-			  if ( item_val.discount>0 ){
-			  	price_used = item_val.discounted_price;
-			  	html+='<div class="left">' +  item_val.size_words + " "  +  '<span class="tag_discount">'+prettyPrice(item_val.normal_price)+'</span>' + " "   + prettyPrice(item_val.discounted_price)  + '</div>';
-			  } else {			  	
-			  	price_used = number_format(item_val.normal_price,2,'.','');
-			  	html+='<div class="left">' + item_val.size_words + " " + prettyPrice(item_val.normal_price) + '</div>';
-			  }			  					  
-			  html+='<div class="right">'+  prettyPrice( parseFloat(price_used)*parseFloat(item_val.qty) )  +'</div>';
+				html+='<ons-row class="item-details-row" onclick="itemDetails('+ "'" + item_val.item_id +  "'," + "'" + item_val.category_id + "'," + "'" + item_key  + "'"   +')">';
+				  if ( item_val.discount>0 ){
+				  	price_used = item_val.discounted_price;
+
+					  	html+='<ons-col class="left" width="20px">';
+					  	html+='</ons-col>';
+
+					  	html+='<ons-col class="center">';
+					  		if(!empty(item_val.size_words)) {
+				  				html+='<span class="mr5true">'+ item_val.size_words +'</span>';
+					  		}
+				  			html+='<span class="tag_discount">'+prettyPrice(item_val.normal_price)+'</span>';
+				  			html+='<span>'+prettyPrice(item_val.discounted_price)+'</span>';
+					  	html+='</ons-col>';
+
+				  } else {			  	
+				  	price_used = number_format(item_val.normal_price,2,'.','');
+
+					  	html+='<ons-col class="left" width="20px">';
+					  	html+='</ons-col>';
+
+					  	html+='<ons-col class="center">';
+				  			html+='<span class="mr5true">'+ item_val.size_words +'</span>';
+				  			html+='<span>'+prettyPrice(item_val.normal_price)+'</span>';
+					  	html+='</ons-col>';
+				  }
+
+				  html+='<ons-col class="right text-right" width="75px">';
+				  		html+='<span>'+prettyPrice( parseFloat(price_used)*parseFloat(item_val.qty) )+'</span>';
+				  html+='</ons-col>';
+
+				html+='</ons-row>';
+
 			html+='</ons-list-item>';
 			
 			/*COOKING REF*/			
 			if (!empty(item_val.cooking_ref)){
-				html+='<ons-list-item modifier="nodivider normal_list" >';
-				  html+=  item_val.cooking_ref;
+				html+='<ons-list-item modifier="nodivider" class="receipt-min-row">';
+					html+='<ons-col class="left" width="20px">';
+					html+='</ons-col>';
+					html+='<ons-col class="center">';
+							html+='<span>'+t("Cooking Ref")+': '+item_val.cooking_ref+'</span>';
+					html+='</ons-col>';
 				html+='</ons-list-item>';
 			}
 			
 			/*NOTES*/
 			if (!empty(item_val.order_notes)){
-				html+='<ons-list-item modifier="nodivider normal_list" >';
-				  html+=  item_val.order_notes;
+				html+='<ons-list-item modifier="nodivider" class="receipt-min-row">';
+					html+='<ons-col class="left" width="20px">';
+					html+='</ons-col>';
+					html+='<ons-col class="center">';
+							html+='<span>'+t("Notes")+': '+item_val.order_notes+'</span>';
+					html+='</ons-col>';
 				html+='</ons-list-item>';
 			}
 			
 			/*INGREDIENTS*/
 			if (!empty(item_val.ingredients)){
-				html+='<ons-list-item modifier="nodivider normal_list" >';
-				html+= '<div class="left">'+ t("Ingredients") +' :</div>' ;				
-				ingredients_list='';   
-				$.each( item_val.ingredients, function( ingredients_key, ingredients_val ) {
-					 ingredients_list+= ingredients_val+',';
-				});
-				html+= '<div class="center">'+ingredients_list+'</div>' ;				
+				html+='<ons-list-item modifier="nodivider" class="receipt-min-row">';
+					html+='<ons-col class="left" width="20px">';
+					html+='</ons-col>';
+
+					ingredients_list='';   
+					$.each( item_val.ingredients, function( ingredients_key, ingredients_val ) {
+						 ingredients_list+= ingredients_val+',';
+					});
+
+					html+='<ons-col class="center">';
+							html+='<span>'+t("Ingredients")+': '+ingredients_list+'</span>';
+					html+='</ons-col>';
 				html+='</ons-list-item>';
 			}
 			
@@ -1556,16 +2195,14 @@ var displayCartDetails = function(datas){
 				});
 			}
 			
-			html+='<ons-list-item modifier="divider" >';				  
-			html+='</ons-list-item>';
-			
-			
 		});
 		
 		
-		html+='<ons-list-item modifier="nodivider normal_list" >';				  
+		html+='<ons-list-item class="" modifier="nodivider" >';				  
 		  html+='<div class="right">';
-		  html+='<ons-button modifier="quiet small_button" onclick="confirmClearCart();" >'+ t("CLEAR CART") +'</ons-button>';
+		  html+='<ons-button modifier="quiet small_button" onclick="confirmClearCart();" >';
+		  	html+='<span class="darkblue bold">'+t("CLEAR CART")+'</span>';
+		  	html+='</ons-button>';
 		  html+='</div>';
 	    html+='</ons-list-item>';
 		
@@ -1594,7 +2231,7 @@ var displayCartDetails = function(datas){
 				if( !empty(data.total.voucher_type)){
 					voucher_percentage  = "<span class=\"spacer\"></span>" +  data.total.voucher_type;
 				}
-				html+= twoColumn( t('Less Voucher') + voucher_percentage +  "<span class=\"spacer\"></span>" +  remove_voucher ,  "("+prettyPrice(less_voucher)+")" );
+				html+= twoColumnBoldOnly( t('Less Voucher') + voucher_percentage +  "<span class=\"spacer\"></span>" +  remove_voucher ,  "("+prettyPrice(less_voucher)+")" );
 			}
 		}
 	}
@@ -1605,7 +2242,7 @@ var displayCartDetails = function(datas){
 			discounted_amount = parseFloat(data.total.discounted_amount);
 			discount_percentage = parseFloat(data.total.merchant_discount_amount);
 			if(discounted_amount>0.0001){
-				html+= twoColumn( t('Discount') + '<span class=\"spacer\"></span>' + discount_percentage +  "%<span class=\"spacer\"></span>"  ,  "("+prettyPrice(discounted_amount)+")" );
+				html+= twoColumnBoldOnly( t('Discount') + '<span class=\"spacer\"></span>' + discount_percentage +  "%<span class=\"spacer\"></span>"  ,  "("+prettyPrice(discounted_amount)+")" );
 			}
 		}
 	}
@@ -1614,14 +2251,131 @@ var displayCartDetails = function(datas){
 	if(!is_apply_tax){
 		if (!empty(data.total.pts_redeem_amt_orig)){
 			remove_pts = '<ons-button modifier="quiet" onclick="removePoints()" ><ons-icon class="remove" icon="md-close"></ons-icon></ons-button>';
-			html+= twoColumn( t('Points Discount') +  "<span class=\"spacer\"></span>" +  remove_pts ,  "("+prettyPrice(data.total.pts_redeem_amt_orig) +")" );
+			html+= twoColumnBoldOnly( t('Points Discount') +  "<span class=\"spacer\"></span>" +  remove_pts ,  "("+prettyPrice(data.total.pts_redeem_amt_orig) +")" );
 		}
 	}
 	
 		
 	if(!is_apply_tax){
-	   html+= twoColumn( t('Sub Total') ,  prettyPrice(data.total.subtotal) );
+	   html+= twoColumnBold( t('Sub Total') ,  prettyPrice(data.total.subtotal) );
 	}
+
+	services = datas.services;
+	
+	dump(services);
+	selected_services = datas.transaction_type ;  	
+	selected_delivery_date = '';
+	selected_delivery_time='';
+	
+	selected_delivery_address = t('Please enter address here');
+	
+	selected_delivery_date = datas.default_delivery_date;
+	default_delivery_date_pretty = datas.default_delivery_date_pretty;
+	
+	delivery_date_set = getStorage("delivery_date_set");
+	delivery_date_set_pretty = getStorage("delivery_date_set_pretty");
+	if(!empty(delivery_date_set)){
+		selected_delivery_date = delivery_date_set;
+	} else {
+		setStorage("delivery_date_set",selected_delivery_date);
+	}
+	if(!empty(delivery_date_set_pretty)){
+		default_delivery_date_pretty = delivery_date_set_pretty;
+	}
+	
+	delivery_time_set = getStorage("delivery_time_set");
+	if(!empty(delivery_time_set)){
+		selected_delivery_time = delivery_time_set;
+	}
+		
+	if(empty(selected_services)){			
+		selected_services='delivery';
+	}	
+	
+	$(".transaction_type").val( selected_services );
+	$(".delivery_date").val( selected_delivery_date );
+	
+	var delivery_date_list_label = '';
+	var delivery_time_list_label = '';
+	
+	switch (datas.transaction_type){
+		case "delivery":
+		  delivery_date_list_label = t('Delivery Date');
+		  delivery_time_list_label = t('Delivery Time');
+		break;
+		
+		case "pickup":
+		  delivery_date_list_label = t('Pickup Date');
+		  delivery_time_list_label = t('Pickup Time');
+		break;
+		
+		case "dinein":
+		  delivery_date_list_label = t('Dinein Date');
+		  delivery_time_list_label = t('Dinein Time');
+		break;
+	}
+	
+	
+	html+='<ons-list-header>' + t('About the order') +'</ons-list-header>';	
+
+	if ( datas.transaction_type == "delivery" ){
+		
+		if ( !empty(datas.cart_details)){
+			if ( !empty(datas.cart_details.street)){
+				selected_delivery_address = datas.cart_details.street;
+				selected_delivery_address+=" ";
+				selected_delivery_address+= datas.cart_details.city;
+				selected_delivery_address+=" ";
+				selected_delivery_address+= datas.cart_details.state;
+				selected_delivery_address+=" ";
+				selected_delivery_address+= datas.cart_details.zipcode;
+				$(".delivery_address").val( selected_delivery_address );
+			}
+		}
+		
+		//html+='<ons-list-item tappable modifier="chevron longdivider" onclick="showPage(\'address_form.html\')" >';	
+		html+='<ons-list-item tappable class="stic-options-list address" modifier="chevron longdivider" onclick="initAddress()" >';	
+		  html+='<div class="left">' + t("Delivery Address")  +'</div>';
+		   html+='<div class="right"> <span class="list-item__subtitle delivery_address_label concat-text">'+ selected_delivery_address +'</span></div>';
+		html+='</ons-list-item>';
+	}
+
+	html+='<ons-list-item class="stic-options-list" modifier="chevron longdivider" tappable onclick="showTransactionList()" >';	
+	   html+='<div class="left">'+ t('Transaction Type') +'</div>';
+	   html+='<div class="right"><span class="list-item__subtitle transaction_type_label">'+ t(services[selected_services])  +'</span></div>';
+	html+='</ons-list-item>';
+
+	html+='<ons-list-item class="stic-options-list" tappable modifier="chevron longdivider" onclick="showDeliveryDateList()" >';	
+	  html+='<div class="left">'+ delivery_date_list_label +'</div>';
+	   html+='<div class="right"><span class="list-item__subtitle delivery_date_label">'+ default_delivery_date_pretty +'</span></div>';
+	html+='</ons-list-item>';
+	
+	html+='<ons-list-item class="stic-options-list" tappable modifier="chevron longdivider" onclick="showDeliveryTime()" >';	
+	  html+='<div class="left">' + delivery_time_list_label + '</div>';
+	   html+='<div class="right"><span class="list-item__subtitle delivery_time_label">'+ selected_delivery_time +'</span></div>';
+	html+='</ons-list-item>';	
+	
+	if (!empty(data.total.delivery_charges)){
+		if(data.total.delivery_charges>0.0001){
+		   html+= twoColumnBoldOnly( t('Delivery Fee') ,  prettyPrice(data.total.delivery_charges) );
+		}
+	}
+	
+	if (!empty(data.total.merchant_packaging_charge)){
+		if(data.total.merchant_packaging_charge>0.0001){
+		   html+= twoColumnBoldOnly( t('Packaging'),  prettyPrice(data.total.merchant_packaging_charge) );
+		}
+	}
+	
+	if(!is_apply_tax){
+		if (!empty(data.total.taxable_total)){
+			if(data.total.taxable_total>0.0001){
+			   html+= twoColumnBoldOnly( t('Tax') + " " + (data.total.tax*100) + "%" ,  prettyPrice(data.total.taxable_total) );
+			}
+		}
+	}
+
+	html+='<div class="bborder2"></div>';
 	
 	/*APPLY VOUCHER*/
 	if(less_voucher>0.0001){
@@ -1725,12 +2479,12 @@ var displayCartDetails = function(datas){
 		
 		if (!empty(data.total.pts_redeem_amt_orig)){
 			remove_pts = '<ons-button modifier="quiet" onclick="removePoints()" ><ons-icon class="remove" icon="md-close"></ons-icon></ons-button>';
-			html+= twoColumn( t('Points Discount') +  "<span class=\"spacer\"></span>" +  remove_pts ,  "("+prettyPrice(data.total.pts_redeem_amt_orig) +")" );
+			html+= twoColumnBoldOnly( t('Points Discount') +  "<span class=\"spacer\"></span>" +  remove_pts ,  "("+prettyPrice(data.total.pts_redeem_amt_orig) +")" );
 		}
 		
 		if(has_tips){
 		   remove_tips = '<ons-button modifier="quiet" onclick="removeTip()" ><ons-icon class="remove" icon="md-close"></ons-icon></ons-button>';
-		   html+= twoColumn( t('Tips') + " "+ data.total.tips_percent + "<span class=\"spacer\"></span>" + remove_tips ,  prettyPrice(data.total.tips) );		
+		   html+= twoColumnBoldOnly( t('Tips') + " "+ data.total.tips_percent + "<span class=\"spacer\"></span>" + remove_tips ,  prettyPrice(data.total.tips) );		
 		}
 		
 		if (!empty(data.total.less_voucher)){
@@ -1741,7 +2495,7 @@ var displayCartDetails = function(datas){
 				if( !empty(data.total.voucher_type)){
 					voucher_percentage  = "<span class=\"spacer\"></span>" +  data.total.voucher_type;
 				}
-				html+= twoColumn( t('Less Voucher') + voucher_percentage +  "<span class=\"spacer\"></span>" +  remove_voucher ,  "("+prettyPrice(less_voucher)+")" );
+				html+= twoColumnBoldOnly( t('Less Voucher') + voucher_percentage +  "<span class=\"spacer\"></span>" +  remove_voucher ,  "("+prettyPrice(less_voucher)+")" );
 			}
 		}
 		
@@ -1749,33 +2503,23 @@ var displayCartDetails = function(datas){
 			discounted_amount = parseFloat(data.total.discounted_amount);
 			discount_percentage = parseFloat(data.total.merchant_discount_amount);
 			if(discounted_amount>0.0001){
-				html+= twoColumn( t('Discount') + '<span class=\"spacer\"></span>' + discount_percentage +  "%<span class=\"spacer\"></span>"  ,  "("+prettyPrice(discounted_amount)+")" );
+				html+= twoColumnBoldOnly( t('Discount') + '<span class=\"spacer\"></span>' + discount_percentage +  "%<span class=\"spacer\"></span>"  ,  "("+prettyPrice(discounted_amount)+")" );
 			}
 		}
 		
-		html+= twoColumn( t('Sub Total') ,  prettyPrice(data.total.subtotal) );
-		html+= twoColumn( t('Tax') + " " + (data.total.tax*100) + "%" ,  prettyPrice(data.total.taxable_total) );
+		html+= twoColumnBoldOnly( t('Sub Total') ,  prettyPrice(data.total.subtotal) );
+		html+= twoColumnBoldOnly( t('Tax') + " " + (data.total.tax*100) + "%" ,  prettyPrice(data.total.taxable_total) );
 	}
 	/*END EURO TAX*/
 			
 	if(!is_apply_tax){
 		if(has_tips){		   
 		   remove_tips = '<ons-button modifier="quiet" onclick="removeTip()" ><ons-icon class="remove" icon="md-close"></ons-icon></ons-button>';
-		   html+= twoColumn( t('Tips') + " "+ data.total.tips_percent + "<span class=\"spacer\"></span>" + remove_tips ,  prettyPrice(data.total.tips) );		
+		   html+= twoColumnBoldOnly( t('Tips') + " "+ data.total.tips_percent + "<span class=\"spacer\"></span>" + remove_tips ,  prettyPrice(data.total.tips) );		
 		}
 	}
 	
 	$(".cart_total_value").val('');
-	
-	if (!empty(data.total.total)){
-		if(data.total.total>0){
-		   html+= twoColumn( t('Total') ,  prettyPrice(data.total.total) );
-		   $(".cart_total").html( prettyPrice(data.total.total) );
-		   $(".cart_total_value").val(  prettyPrice(data.total.total) );
-		   $(".cart_total_value_raw").val(  data.total.total );
-		   $(".cart_sub_total").val(  data.total.subtotal );
-		}
-	}
 	
 	/*MIN ORDER TABLE*/
 	if(!empty(datas.cart_details.min_delivery_order)){
@@ -1798,115 +2542,42 @@ var displayCartDetails = function(datas){
 		    html+='</ons-list-item>';
 		});
 	}*/
-	
-	
-	services = datas.services;
-	
-	dump(services);
-	selected_services = datas.transaction_type ;  	
-	selected_delivery_date = '';
-	selected_delivery_time='';
-	
-	selected_delivery_address = t('Please enter address here');
-	
-	selected_delivery_date = datas.default_delivery_date;
-	default_delivery_date_pretty = datas.default_delivery_date_pretty;
-	
-	delivery_date_set = getStorage("delivery_date_set");
-	delivery_date_set_pretty = getStorage("delivery_date_set_pretty");
-	if(!empty(delivery_date_set)){
-		selected_delivery_date = delivery_date_set;
-	} else {
-		setStorage("delivery_date_set",selected_delivery_date);
-	}
-	if(!empty(delivery_date_set_pretty)){
-		default_delivery_date_pretty = delivery_date_set_pretty;
-	}
-	
-	delivery_time_set = getStorage("delivery_time_set");
-	if(!empty(delivery_time_set)){
-		selected_delivery_time = delivery_time_set;
-	}
-		
-	if(empty(selected_services)){			
-		selected_services='delivery';
-	}	
-	
-	$(".transaction_type").val( selected_services );
-	$(".delivery_date").val( selected_delivery_date );
-	
-	var delivery_date_list_label = '';
-	var delivery_time_list_label = '';
-	
-	switch (datas.transaction_type){
-		case "delivery":
-		  delivery_date_list_label = t('Delivery Date');
-		  delivery_time_list_label = t('Delivery Time');
-		break;
-		
-		case "pickup":
-		  delivery_date_list_label = t('Pickup Date');
-		  delivery_time_list_label = t('Pickup Time');
-		break;
-		
-		case "dinein":
-		  delivery_date_list_label = t('Dinein Date');
-		  delivery_time_list_label = t('Dinein Time');
-		break;
-	}
-	
-	
-	html+='<ons-list-header>' + t('Options') +'</ons-list-header>';	
-	
-	html+='<ons-list-item modifier="chevron longdivider" tappable onclick="showTransactionList()" >';	
-	   html+='<div class="left">'+ t('Transaction Type') +'</div>';
-	   html+='<div class="right"><span class="list-item__subtitle transaction_type_label">'+ t(services[selected_services])  +'</span></div>';
-	html+='</ons-list-item>';
-	
-	html+='<ons-list-item tappable modifier="chevron longdivider" onclick="showDeliveryDateList()" >';	
-	  html+='<div class="left">'+ delivery_date_list_label +'</div>';
-	   html+='<div class="right"><span class="list-item__subtitle delivery_date_label">'+ default_delivery_date_pretty +'</span></div>';
-	html+='</ons-list-item>';
-	
-	html+='<ons-list-item tappable modifier="chevron longdivider" onclick="showDeliveryTime()" >';	
-	  html+='<div class="left">' + delivery_time_list_label + '</div>';
-	   html+='<div class="right"><span class="list-item__subtitle delivery_time_label">'+ selected_delivery_time +'</span></div>';
-	html+='</ons-list-item>';
-	
-	if ( datas.transaction_type == "delivery" ){
-		
-		if ( datas.checkout_stats.is_pre_order!=1){
-			html+='<ons-list-item>';
-		      html+='<div class="center">';
-		        html+= t("Delivery Asap");
-		      html+='</div>';
-		      html+='<div class="right">';
-		        html+='<ons-switch id="delivery_asap" class="delivery_asap" value="1" onclick="setAsap()"></ons-switch>';
-		      html+='</div>';
-		    html+='</ons-list-item>';
+
+	if (!empty(data.total.total)){
+		if(data.total.total>0){
+		   html+= twoColumnTotal( t('Total') ,  prettyPrice(data.total.total) );
+		   $(".cart_total").html( prettyPrice(data.total.total) );
+		   $(".cart_total_value").val(  prettyPrice(data.total.total) );
+		   $(".cart_total_value_raw").val(  data.total.total );
+		   $(".cart_sub_total").val(  data.total.subtotal );
 		}
-		
-		if ( !empty(datas.cart_details)){
-			if ( !empty(datas.cart_details.street)){
-				selected_delivery_address = datas.cart_details.street;
-				selected_delivery_address+=" ";
-				selected_delivery_address+= datas.cart_details.city;
-				selected_delivery_address+=" ";
-				selected_delivery_address+= datas.cart_details.state;
-				selected_delivery_address+=" ";
-				selected_delivery_address+= datas.cart_details.zipcode;
-				$(".delivery_address").val( selected_delivery_address );
+	}
+
+	html+='<div class="hide_all">';
+		html+='<ons-list-item class="stic-options-list" tappable modifier="chevron longdivider" onclick="showDeliveryDateList()" >';	
+		  html+='<div class="left">'+ delivery_date_list_label +'</div>';
+		   html+='<div class="right"><span class="list-item__subtitle delivery_date_label">'+ default_delivery_date_pretty +'</span></div>';
+		html+='</ons-list-item>';
+		html+='<ons-list-item class="stic-options-list" tappable modifier="chevron longdivider" onclick="showDeliveryTime()" >';	
+		  html+='<div class="left">' + delivery_time_list_label + '</div>';
+		   html+='<div class="right"><span class="list-item__subtitle delivery_time_label">'+ selected_delivery_time +'</span></div>';
+		html+='</ons-list-item>';
+		if ( datas.transaction_type == "delivery" ){
+			if ( datas.checkout_stats.is_pre_order!=1){
+				html+='<ons-list-item>';
+			      html+='<div class="center">';
+			        html+= t("Delivery Asap");
+			      html+='</div>';
+			      html+='<div class="right">';
+			        html+='<ons-switch id="delivery_asap" class="delivery_asap" value="1" onclick="setAsap()"></ons-switch>';
+			      html+='</div>';
+			    html+='</ons-list-item>';
 			}
 		}
-		
-		//html+='<ons-list-item tappable modifier="chevron longdivider" onclick="showPage(\'address_form.html\')" >';	
-		html+='<ons-list-item tappable modifier="chevron longdivider" onclick="initAddress()" >';	
-		  html+='<div class="left">' + t("Delivery Address")  +'</div>';
-		   html+='<div class="right"> <span class="list-item__subtitle delivery_address_label concat-text">'+ selected_delivery_address +'</span></div>';
-		html+='</ons-list-item>';
-	}
+	html+='</div>';
 	
-	html+='<div style="height:40px;"></div>';	
+
+
 	html+='</ons-list>';
 	return html;
 };
@@ -1919,18 +2590,49 @@ var twoColumn = function(label, value){
 	return html;
 };
 
+var twoColumnBold = function(label, value){
+	var html='<ons-list-item class="bborder2" modifier="nodivider">';
+	   html+='<div class="left bold">'+ label +'</div>';
+	   html+='<div class="right">'+ value +'</div>';
+	html+='</ons-list-item>';
+	return html;
+};
+
+var twoColumnBoldOnly = function(label, value){
+	var html='<ons-list-item class="column-bold-only" modifier="nodivider">';
+	   html+='<div class="left bold">'+ label +'</div>';
+	   html+='<div class="right">'+ value +'</div>';
+	html+='</ons-list-item>';
+	return html;
+};
+
+var twoColumnTotal = function(label, value){
+	var html='<ons-list-item class="stic-total-row" modifier="nodivider">';
+	   html+='<div class="left bold">'+ label +'</div>';
+	   html+='<div class="right">'+ value +'</div>';
+	html+='</ons-list-item>';
+	return html;
+};
+
 var voucherColumn = function(){
 	
 	if(settings = getMerchantSettings()){
 		if(settings.enabled_voucher!="yes"){
 			return '';
 		}
-	}
+	}	
 	
-	var html='<ons-list-item modifier="nodivider">';
-	   html+='<div class="left"><ons-input id="voucher_name" class="voucher_name" modifier="underbar" placeholder="' + t('Enter voucher here') + '" float></ons-input></div>';
-	   html+='<div class="right"><ons-button modifier="quiet quiet_green" onclick="applyVoucher()">' + t("APPLY") +'</ons-button></div>';
-	html+='</ons-list-item>';
+	var html='<ons-list-header>' + t('Do you have a voucher?') +'</ons-list-header>';
+		html+='<ons-list-item modifier="nodivider">';
+		   html+='<ons-row class="stic-voucher-row" vertical-align="center" >';
+			   html+='<ons-col class="left">';
+			   		html+='<ons-input id="voucher_name" class="voucher_name" modifier="underbar" placeholder="' + t('Enter voucher here') + '" float></ons-input>';
+			   	html+='</ons-col>';
+			   	html+='<ons-col class="right text-right" width="75px">';
+			   		html+='<ons-button class="stic-min-grey-btn" modifier="quiet" onclick="applyVoucher()">' + t("APPLY") +'</ons-button>';
+			   	html+='</ons-col>';
+		   	html+='</ons-row>';
+		html+='</ons-list-item>';
 	return html;
 };
 
@@ -1959,12 +2661,19 @@ tipColumn = function(data){
 	      });	      	      
 	    }
 	 tip_list+='</ons-select>';
-	 	 
-	
-	var html='<ons-list-item modifier="nodivider">';
-	   html+='<div class="left">'+  tip_list +'</div>';
-	   html+='<div class="right"><ons-button modifier="quiet quiet_green" onclick="applyTips()">' + t("TIPS") + '</ons-button></div>';
-	html+='</ons-list-item>';
+
+	var html='<ons-list-header>' + t('Would you like to tip?') +'</ons-list-header>';
+		html+='<ons-list-item modifier="nodivider">';
+		   html+='<ons-row class="stic-tips-row" vertical-align="center" >';
+			   html+='<ons-col class="left">';
+			   		html+=tip_list;
+			   	html+='</ons-col>';
+			   	html+='<ons-col class="right text-right" width="75px">';
+			   		html+='<ons-button class="stic-min-grey-btn" modifier="quiet" onclick="applyTips()">' + t("APPLY") +'</ons-button>';
+			   	html+='</ons-col>';
+		   	html+='</ons-row>';
+		html+='</ons-list-item>';
+
 	return html;
 }
 
@@ -2001,7 +2710,7 @@ var displayPaymentList = function(data){
 	html+='<ons-list>';
 	  $.each( data, function( key, val ) {
 	  	 html+='<ons-list-item tappable modifier="longdivider" >';
-   		   html+='<label class="left">';
+   		   html+='<label class="left min34">';
 	        html+='<ons-radio name="payment_provider" class="payment_provider" input-id="payment_provider-'+key+'" value="'+ val.payment_code +'"  ></ons-radio>';
 	       html+='</label>';
 	       
@@ -2015,25 +2724,27 @@ var displayPaymentList = function(data){
 
 accountMenu = function(login){
 	
-	var html='';	
-	
-	html+='<ons-list-item tappable modifier="chevron" onclick="showPage(\'settings.html\');" >';
-	  html+='<div class="left">';
-	    html+='<ons-icon icon="md-settings" size="25px" class="list-item__icon"></ons-icon>';
-	  html+='</div>';
-	  html+='<div class="center">';
-	    html+= t('Settings');
-	  html+='</div>';
-	html+='</ons-list-item>';
+	var html='';
+
+	if (login) {
+		html+='<ons-list-item tappable modifier="chevron" onclick="showPage(\'edit_profile.html\');" >';
+		  html+='<div class="left">';
+		    html+='<img src="lib/icons/edit.svg" onerror="this.src=\'edit.png\'">';
+		  html+='</div>';
+		  html+='<div class="center">';
+		    html+= t('Edit Profile');
+		  html+='</div>';
+		html+='</ons-list-item>';
+	}	
 	
 	if(app_settings = getAppSettings()){
 		if(app_settings.addon.driver){
 			html+='<ons-list-item tappable modifier="chevron" onclick="showPage(\'driver_signup.html\');" >';
 			  html+='<div class="left">';
-			    html+='<ons-icon icon="md-car" size="25px" class="list-item__icon"></ons-icon>';
+			    html+='<img src="lib/icons/car.svg" onerror="this.src=\'car.png\'">';
 			  html+='</div>';
 			  html+='<div class="center">';
-			    html+= t('Driver Signup');
+			    html+= t('Be a deliveryman');
 			  html+='</div>';
 			html+='</ons-list-item>';
 		}
@@ -2041,7 +2752,7 @@ accountMenu = function(login){
 	    if(app_settings.contact_us.enabled_contact){
 		html+='<ons-list-item tappable modifier="chevron" onclick="showPage(\'contact_us.html\');" >';
 		  html+='<div class="left">';
-		    html+='<ons-icon icon="md-email" size="25px" class="list-item__icon"></ons-icon>';
+		    html+='<img src="lib/icons/mail.svg" onerror="this.src=\'mail.png\'">';
 		  html+='</div>';
 		  html+='<div class="center">';
 		    html+= t('Contact Us');
@@ -2050,77 +2761,93 @@ accountMenu = function(login){
 		}
 		
 	}
-		
+
 	
 	if (login){
 		
-		 html+='<ons-list modifier="list_menu">';
 	      html+='<ons-list-item modifier="chevron" tappable onclick="showPage(\'notifications.html\')" >';
-	        html+='<div class="left"><ons-icon icon="md-notifications" size="22px"></ons-icon></div>';
+	        html+='<div class="left"><img src="lib/icons/notification.svg" onerror="this.src=\'notification.png\'"></div>';
 	        html+='<div class="center">' + t('Notifications') +  '</div>';
 	      html+='</ons-list-item>';
 		
-		 //html+='<ons-list modifier="list_menu">';
 	      html+='<ons-list-item modifier="chevron" tappable onclick="showPage(\'order_list.html\')" >';
-	        html+='<div class="left"><ons-icon icon="fa-cocktail" size="22px"></ons-icon></div>';
+	        html+='<div class="left"><img src="lib/icons/order-history.svg" onerror="this.src=\'order-history.png\'"></div>';
 	        html+='<div class="center">' + t('Order History') +  '</div>';
 	      html+='</ons-list-item>';
 	      
 	      if(app_settings.merchant_tbl_book_disabled!=2){
 	      html+='<ons-list-item modifier="chevron" tappable  onclick="showPage(\'booking_history.html\')" >';
-	        html+='<div class="left"><ons-icon icon="md-receipt" size="22px"></ons-icon></div>';
+	        html+='<div class="left"><img src="lib/icons/booking-history.svg" onerror="this.src=\'booking-history.png\'"></div>';
 	        html+='<div class="center">' + t('Booking History') +'</div>';
 	      html+='</ons-list-item>';
 	      }
 	      
 	      if(app_settings.addon.points){
-		       //html+='<ons-list modifier="list_menu">';
 		      html+='<ons-list-item modifier="chevron" tappable onclick="showPage(\'points_list.html\')" >';
-		        html+='<div class="left"><ons-icon icon="md-view-week" size="22px"></ons-icon></div>';
+		        html+='<div class="left"><img src="lib/icons/points.svg" onerror="this.src=\'points.png\'"></div>';
 		        html+='<div class="center">' + t('Points') +  '</div>';
 		      html+='</ons-list-item>';
 	      }
 	      
-	      //html+='<ons-list modifier="list_menu">';
 	      html+='<ons-list-item modifier="chevron" tappable onclick="showPage(\'favorite_list.html\')" >';
-	        html+='<div class="left"><ons-icon icon="md-favorite-outline" size="22px"></ons-icon></div>';
+	        html+='<div class="left"><img src="lib/icons/heart.svg" onerror="this.src=\'heart.png\'"></div>';
 	        html+='<div class="center">' + t('Favorites') +  '</div>';
 	      html+='</ons-list-item>';
 	      
-	      if(app_settings.disabled_cc_management!="yes"){
-		  //html+='<ons-list modifier="list_menu">';
+	      // if(app_settings.disabled_cc_management!="yes"){
 	      html+='<ons-list-item modifier="chevron" tappable onclick="showPage(\'creditcard_list.html\')" >';
-	        html+='<div class="left"><ons-icon icon="md-card" size="22px"></ons-icon></div>';
-	        html+='<div class="center">' + t('Your Credit Cards') +  '</div>';
+	        html+='<div class="left"><img src="lib/icons/credit-card.svg" onerror="this.src=\'credit-card.png\'"></div>';
+	        html+='<div class="center">' + t('Credit Cards') +  '</div>';
 	      html+='</ons-list-item>';
-	      }
+	      // }
 	            
 	      html+='<ons-list-item modifier="chevron" tappable  onclick="showPage(\'addressbook_list.html\')" >';
-	        html+='<div class="left"><ons-icon icon="md-pin-drop" size="22px"></ons-icon></div>';
-	        html+='<div class="center">' + t('Your Address Book') +'</div>';
+	        html+='<div class="left"><img src="lib/icons/pin.svg" onerror="this.src=\'pin.png\'"></div>';
+	        html+='<div class="center">' + t('Address Book') +'</div>';
 	      html+='</ons-list-item>';
-	      
-	      html+=getCustomPages(1);
-	      
-	      html+='<ons-list-item modifier="chevron" tappable  onclick="logout();" >';
-	        html+='<div class="left"><ons-icon icon="ion-log-out" size="22px"></ons-icon></div>';
-	        html+='<div class="center">' + t('Log out') +'</div>';
-	      html+='</ons-list-item>';
-	      	      
-		
-	} else {		
-		
-		html+=getCustomPages(1);
-		
-		html+='<ons-list-item tappable onclick="Pagelogin(1)">';
+
+	} 
+
+
+	if (login) {
+
+		html+='<ons-list-item tappable modifier="chevron" onclick="showPage(\'settings.html\');" >';
 		  html+='<div class="left">';
-		    html+='<ons-icon icon="md-account-o" class="list-item__icon" size="25px"></ons-icon>';
+		    html+='<img src="lib/icons/settings.svg" onerror="this.src=\'settings.png\'">';
+		  html+='</div>';
+		  html+='<div class="center">';
+		    html+= t('Settings');
+		  html+='</div>';
+		html+='</ons-list-item>';
+
+		html+=getCustomPages(1);			      
+
+		html+='<ons-list-item modifier="chevron" tappable  onclick="logout();" >';
+			html+='<div class="left"><img src="lib/icons/logout.svg" onerror="this.src=\'logout.png\'"></div>';
+			html+='<div class="center">' + t('Log out') +'</div>';
+		html+='</ons-list-item>';
+
+	} else {
+
+		html+=getCustomPages(1);
+
+		html+='<ons-list-item modifier="chevron" tappable onclick="Pagelogin(1)">';
+		  html+='<div class="left">';
+		    html+='<img src="lib/icons/login.svg" onerror="this.src=\'login.png\'">';
 		  html+='</div>';
 		  html+='<div class="center">';
 		    html+= t('Log in');
 		  html+='</div>';
 		html+='</ons-list-item>';
-		html+='</ons-list>';
+
+		html+='<ons-list-item tappable modifier="chevron" onclick="showPage(\'settings.html\');" >';
+		  html+='<div class="left">';
+		    html+='<img src="lib/icons/settings.svg" onerror="this.src=\'settings.png\'">';
+		  html+='</div>';
+		  html+='<div class="center">';
+		    html+= t('Settings');
+		  html+='</div>';
+		html+='</ons-list-item>';	
 	}
 	
 	$("#account_menu").html( html );
@@ -2157,43 +2884,50 @@ settingsMenu = function(login){
 	
 	var html='';
 	
-	html+='<ons-list-title modifier="list_title_grey">'+ t("YOU") +'</ons-list-title>';
+	// html+='<ons-list-title modifier="list_title_grey">'+ t("YOU") +'</ons-list-title>';
 	
-	if(login){
-		html+='<ons-list-item tappable modifier="chevron" onclick="showPage(\'edit_profile.html\');" >';
-		  html+='<div class="left">';
-		    html+='<ons-icon icon="md-edit" size="25px" class="list-item__icon"></ons-icon>';
-		  html+='</div>';
-		  html+='<div class="center">';
-		    html+= t('Edit profile');
-		  html+='</div>';
-		html+='</ons-list-item>';
+	// if(login){
+	// 	html+='<ons-list-item tappable modifier="chevron" onclick="showPage(\'edit_profile.html\');" >';
+	// 	  html+='<div class="left">';
+	// 	    html+='<ons-icon icon="md-edit" size="25px" class="list-item__icon"></ons-icon>';
+	// 	  html+='</div>';
+	// 	  html+='<div class="center">';
+	// 	    html+= t('Edit profile');
+	// 	  html+='</div>';
+	// 	html+='</ons-list-item>';
 		
-		html+='<ons-list-item tappable modifier="chevron" onclick="showPage(\'change_password.html\');" >';
-		  html+='<div class="left">';
-		    html+='<ons-icon icon="md-key" size="25px" class="list-item__icon"></ons-icon>';
-		  html+='</div>';
-		  html+='<div class="center">';
-		    html+= t('Change password');
-		  html+='</div>';
-		html+='</ons-list-item>';
-	}	
+	// 	html+='<ons-list-item tappable modifier="chevron" onclick="showPage(\'change_password.html\');" >';
+	// 	  html+='<div class="left">';
+	// 	    html+='<ons-icon icon="md-key" size="25px" class="list-item__icon"></ons-icon>';
+	// 	  html+='</div>';
+	// 	  html+='<div class="center">';
+	// 	    html+= t('Change password');
+	// 	  html+='</div>';
+	// 	html+='</ons-list-item>';
+	// }	
 	
 	
+	// html+='<ons-list-title modifier="list_title_grey">'+ t("ABOUT US") +'</ons-list-title>';
+
+	html+='<div class="cream_header">';
+	  html+='<div class="stic-lateral-wrap">';
+	    html+='<h3 class="trn">'+t("Settings")+'</h3>';
+	    html+='<p class="small trn">'+t("Change language and app's info")+'</p>'; 
+	  html+='</div>';
+	html+='</div>';
+
 	html+='<ons-list-item tappable modifier="chevron" onclick="showPage(\'language_list.html\');" >';
 	  html+='<div class="left">';
-	    html+='<ons-icon icon="md-globe-alt" size="25px" class="list-item__icon"></ons-icon>';
+		html+='<img src="lib/icons/language.svg" onerror="this.src=\'language.png\'">';
 	  html+='</div>';
 	  html+='<div class="center">';
 	    html+= t('Language');
 	  html+='</div>';
 	html+='</ons-list-item>';
 	
-	html+='<ons-list-title modifier="list_title_grey">'+ t("ABOUT US") +'</ons-list-title>';
-	
-	html+='<ons-list-item tappable  >';
+	html+='<ons-list-item>';
 	  html+='<div class="left">';
-	    html+='<ons-icon icon="md-tablet-android" size="25px" class="list-item__icon"></ons-icon>';
+		html+='<img src="lib/icons/mobile.svg" onerror="this.src=\'mobile.png\'">';
 	  html+='</div>';
 	  html+='<div class="center">';
 	    html+= t('App version');
@@ -2211,24 +2945,74 @@ settingsMenu = function(login){
 	  html+='</div>';	  
 	html+='</ons-list-item>';
 	
-	html+='<ons-list-item tappable modifier="chevron" onclick="showPage(\'device_id.html\');" >';
-	  html+='<div class="left">';
-	    html+='<ons-icon icon="md-smartphone-info" size="25px" class="list-item__icon"></ons-icon>';
-	  html+='</div>';
-	  html+='<div class="center">';
-	    html+= t('Device Information');
-	  html+='</div>';	  	  
-	html+='</ons-list-item>';
-	
+	// html+='<ons-list-item tappable modifier="chevron" onclick="showPage(\'device_id.html\');" >';
+	//   html+='<div class="left">';
+	//     html+='<ons-icon icon="md-smartphone-info" size="25px" class="list-item__icon"></ons-icon>';
+	//   html+='</div>';
+	//   html+='<div class="center">';
+	//     html+= t('Device Information');
+	//   html+='</div>';	  	  
+	// html+='</ons-list-item>';
 
 	html+=getCustomPages(2);
+
+	html+='<ons-list-item>';
+	  html+='<div class="left">';
+		html+='<img src="lib/icons/mobile.svg" onerror="this.src=\'mobile.png\'">';
+	html+='</div>';
+	  html+='<div class="center">';
+	    html+= t('Device UIID');
+	  html+='</div>';
+	  html+='<div class="right">';
+	  	html+= device_uiid;
+	  html+='</div>';
+	html+='</ons-list-item>';
+
+	html+='<ons-list-item>';
+	  html+='<div class="left">';
+		html+='<img src="lib/icons/mobile.svg" onerror="this.src=\'mobile.png\'">';
+	  html+='</div>';
+	  html+='<div class="center">';
+	    html+= t('Device ID');
+	  html+='</div>';
+	  html+='<div class="right">';
+	  	html+= device_id;
+	  html+='</div>';
+	html+='</ons-list-item>';
 	
-	if(login){
-	   html+='<ons-list-title modifier="list_title_grey">'+ t("RECEIVE PUSH NOTIFICATION") +'</ons-list-title>';
-	   	  
+	/*ADD CUSTOM PAGE*/
+	if(app_settings = getAppSettings()){		
+		if(app_settings.custom_pages.length>0){
+			$.each( app_settings.custom_pages  , function( page_key, page_val ) {
+				
+				html+='<ons-list-item tappable modifier="chevron" onclick="loadCustomPage('+ page_val.page_id +')" >';
+				  html+='<div class="left">';
+				   
+				    if(!empty(page_val.icon)){
+				       icon = page_val.icon;
+				    } else {
+				       icon = "ion-ios-circle-outline";
+				    }
+				  
+					html+='<img src="lib/icons/open.svg" onerror="this.src=\'open.png\'">';
+				  html+='</div>';
+				  html+='<div class="center">';
+				    html+= t(page_val.title);
+				  html+='</div>';	  	  
+				html+='</ons-list-item>';
+				
+			});
+		}
+	}
+	
+	if(login){	   	  
       html+='<ons-list-item >';
-        html+='<div class="left"><ons-icon icon="md-notifications-active" size="22px"></ons-icon></div>';
-        html+='<div class="center"></div>';
+        html+='<div class="left">';
+			html+='<img src="lib/icons/notification.svg" onerror="this.src=\'notification.png\'">';
+        html+='</div>';
+        html+='<div class="center">';
+			html+= t("Push notifications");
+        html+='</div>';
         html+='<div class="right">';
           html+='<ons-switch name="enabled_push" id="enabled_push" class="enabled_push" value="1" onchange="EnabledPush()" ></ons-switch>';
         html+='</div>';
@@ -2249,48 +3033,69 @@ setOrderList = function(data, element){
 	
 	$.each( data  , function( key, val ) {
 				
-	  html+='<ons-list-item modifier="full_list list_style1" tappable onclick="actionSheetOrder('+ val.order_id+ ',' + val.add_review + ',' + val.add_cancel + ',' + val.add_track +  ')" >';
-	   html+='<div class="inner">';
-		   html+='<ons-row>';
-		   
-		     html+='<ons-col width="60px" vertical-align="center" >';
-		       html+='<div class="is-loading">'; 
-		          html +='<div class="spinner"></div>';	
-		          html+='<img class="thumbnail" src="' + val.logo +'">';
-		       html+='</div>';
-		     html+='</ons-col>';
-		     
-		     html+='<ons-col width="160px" vertical-align="top">';
-		        html+='<h5>'+ val.merchant_name +'</h5>';
-		        html+='<p class="small">'+ val.transaction +'</p>';
-		        html+='<p class="small">'+ val.payment_type+'</p>';
-		        
-		        if(!empty(val.cancel_status)){
-		          html+='<p class="small blues">'+ val.cancel_status+'</p>';
-		        }
-		        
-		        html+='<div class="raty-medium"><div class="raty-stars" data-score="'+ val.rating +'"></div></div>';
-		     html+='</ons-col>';
-		     
-		     html+='<ons-col vertical-align="top" class="text-right" >';
-		     html+='<span class="notification '+ val.status_raw +'">'+ val.status +'</span>';
-		     
-		     html+='</ons-col>';
-		     
-		   html+='</ons-row>';
-		   
-		   html+='<div class="grey_line"></div>   ';
-		   
-		   html+='<ons-row class="last" >';
-		       html+='<ons-col width="80%" vertical-align="center" >';
-		        html+='<p>'+  val.date_created +'</p>';
-		       html+='</ons-col>';
-		       html+='<ons-col vertical-align="center" class="text-right" >';
-		       html+='<P class="price">' +  val.total_w_tax +   '</P>';
-		       html+='</ons-col>';
-		   html+='</ons-row>';
-	   html+='</div>';
-	  html+='</ons-list-item> ';
+		html+='<ons-list-item class="stic-order-history" modifier="full_list list_style1">';
+
+			html+='<div class="stic-date-header">';
+				html+='<div class="main">';
+					html+='<p class="dot">·</p>';
+					html+='<p>'+val.stic_date_created+'</p>';
+				html+='</div>';
+				html+='<div class="min">';
+					html+='<span class="at">'+t("at")+' </span>';
+					html+='<span class="order-time">'+val.stic_time_created+'</span>';
+				html+='</div>';
+			html+='</div>';
+
+			html+='<div class="inner" onclick="actionSheetOrder('+ val.order_id+ ',' + val.add_review + ',' + val.add_cancel + ',' + val.add_track +  ')" modifier="quiet">';
+			html +='<ons-ripple modifier="material"></ons-ripple>';
+
+				html+='<ons-row class="pb10">';
+					html+='<ons-col width="50px" vertical-align="center" >';
+						html+='<div class="is-loading">'; 
+							html+='<div class="spinner"></div>';	
+							html+='<img class="thumbnail" src="' + val.logo +'">';
+						html+='</div>';
+					html+='</ons-col>';
+
+					html+='<ons-col vertical-align="center">';
+						html+='<h5>'+ val.merchant_name +'</h5>';
+						html+='<div class="stic-order-details">';
+							html+='<span class="small">'+t("Status")+': '+val.status+'</span>';
+							html+='<span class="small-dot"> · </span>';
+							html+='<span class="small">'+t("Order ID #")+''+val.transaction+'</span>';
+						html+='</div>';
+
+						if(!empty(val.cancel_status)){
+							html+='<p class="small blues">'+ val.cancel_status+'</p>';
+						}
+					html+='</ons-col>';
+				html+='</ons-row>';
+
+				html+='<div class="grey_line"></div>';
+
+				html+='<ons-row class="review">';
+					html+='<ons-col>';
+						html+='<span>'+t("Review your order")+'</span>';
+					html+='</ons-col>';
+					html+='<ons-col class="text-right" width="120px">';
+						html+='<div class="raty-medium"><div class="raty-stars" data-score="'+ val.rating +'"></div></div>';
+					html+='</ons-col>';
+				html+='</ons-row>';
+
+				html+='<div class="grey_line"></div>';
+
+				html+='<ons-row class="last" vertical-align="center" >';
+					html+='<ons-col>';
+						html+='<span>'+val.payment_type+'</span>';
+					html+='</ons-col>';
+					html+='<ons-col vertical-align="center" class="text-right" width="70px">';
+						html+='<p class="price">'+val.total_w_tax+'</p>';
+					html+='</ons-col>';
+				html+='</ons-row>';
+
+			html+='</div>';
+
+		html+='</ons-list-item> ';
 
 		var newItem = ons.createElement(html);
 	    list.appendChild(newItem);
@@ -2308,46 +3113,60 @@ setBookingList = function(data, element){
 	var html='';
 	
 	$.each( data  , function( key, val ) {
-				
-	    html+='<ons-list-item modifier="full_list list_style1" tappable onclick="ViewBookingDetails('+ val.booking_id+')" >';
-		html+='<div class="inner">';
-		   html+='<ons-row>';
-		     html+='<ons-col width="60px" vertical-align="center" >'
-		     
-		       html+='<div class="is-loading">'; 
-		       html +='<div class="spinner"></div>';
-		       html+='<img class="thumbnail" src="'+  val.logo +'">'
-		       html+='</div>';
-		       
-		      html+='</ons-col>';
-		      
-		     html+='<ons-col width="160px" vertical-align="top">';
-		        html+='<h5>'+ val.merchant_name +'</h5>';
-		        html+='<p class="small">'+ val.booking_ref+'</p>';
-		        html+='<p class="small">'+ val.number_guest +'</p>';
-		        		        
-		     html+='</ons-col>';
-		     
-		     html+='<ons-col vertical-align="top" class="text-right" >';
-		     html+='<span class="notification '+ val.status_raw +' ">'+ val.status +'</span>';
-		     html+='</ons-col>';
-		     
-		   html+='</ons-row>';
-		   
-		   html+='<ons-row class="rating_wrap raty-medium">';
-			      html+='<ons-col width="95px"><div class="raty-stars" data-score="'+ val.rating.ratings +'"></div></ons-col>';
-			      html+='<ons-col>'+ val.rating.review_count +'</ons-col>';
-			    html+='</ons-row>';
-		   
-		   html+='<div class="grey_line"></div>';
-		   
-		   html+='<ons-row class="last" >';
-		       html+='<ons-col width="80%" vertical-align="center" >';
-		        html+='<p>'+ val.date_created +'</p>';
-		       html+='</ons-col>';
-		   html+='</ons-row>';
-		html+='</div>';
-		html+='</ons-list-item>';
+
+	    var stic_reviews_qty = val.rating.review_count.match(/\d+/)[0];
+					
+			html+='<ons-list-item class="stic-booking-history" modifier="full_list list_style1">';
+
+				html+='<div class="stic-date-header">';
+					html+='<div class="main">';
+						html+='<p class="dot">·</p>';
+						html+='<p>'+val.stic_date_created+'</p>';
+					html+='</div>';
+					html+='<div class="min">';
+						html+='<span class="at">'+t("at")+' </span>';
+						html+='<span class="order-time">'+val.stic_time_created+'</span>';
+					html+='</div>';
+				html+='</div>';
+
+				html+='<div class="inner" onclick="ViewBookingDetails('+ val.booking_id+')" modifier="quiet">';
+				html +='<ons-ripple modifier="material"></ons-ripple>';
+
+					html+='<ons-row class="pb10">';
+						html+='<ons-col width="50px" vertical-align="center" >';
+							html+='<div class="is-loading">'; 
+								html+='<div class="spinner"></div>';	
+								html+='<img class="thumbnail" src="' + val.logo +'">';
+							html+='</div>';
+						html+='</ons-col>';
+
+						html+='<ons-col vertical-align="center">';
+							html+='<h5>'+ val.merchant_name +'</h5>';
+							html+='<div class="stic-order-details">';
+								html+='<span class="small">'+t("Guests")+': '+val.number_guest+'</span>';
+								html+='<span class="small-dot"> · </span>';
+								html+='<span class="small">'+t("Booking ID #")+''+val.booking_ref+'</span>';
+							html+='</div>';
+						html+='</ons-col>';
+					html+='</ons-row>';
+
+					html+='<div class="grey_line"></div>';
+
+					html+='<ons-row class="review">';
+						html+='<ons-col>';
+							html+='<span>'+t("Restaurant Rating")+'</span>';
+						html+='</ons-col>';
+						html+='<ons-col class="text-right" width="120px">';
+							html+='<div class="raty-medium">';
+								html+='<div class="raty-stars" data-score="'+ val.rating.ratings +'"></div>';
+				    			html += '<span class="center ultra-light-gray reviews-qty trn">('+stic_reviews_qty+')</span>';
+							html+='</div>';
+						html+='</ons-col>';
+					html+='</ons-row>';
+
+				html+='</div>';
+
+			html+='</ons-list-item> ';
 
 		var newItem = ons.createElement(html);
 	    list.appendChild(newItem);
@@ -2368,30 +3187,45 @@ setFavoriteList = function(data, element){
 	
 	$.each( data  , function( key, val ) {
 				
-	   html+='<ons-list-item modifier="full_list list_style1" tappable onclick="actionSheetFavorites('+ "'"+val.id+"'," + "'"+ val.merchant_id  + "'" +')" >';
-	   html+='<div class="inner raty-medium">';
-		   html+='<ons-row>';
-		   html+='<ons-col>';
-		   
+	html+='<ons-list-item modifier="full_list list_style1" onclick="actionSheetFavorites('+ "'"+val.id+"'," + "'"+ val.merchant_id  + "'" +')" >';
+		html +='<ons-ripple modifier="material"></ons-ripple>';
+		html+='<div class="inner">';
+
 			html +='<div class="is-loading medium-loader">'; 
-			html +='<div class="spinner"></div>';		
-			html +='<img class="hide" src="'+val.background_url+'">';	      
+				html +='<div class="spinner"></div>';		
+				html +='<img class="hide" src="'+val.background_url+'">';	      
 			html +='</div>'; 
 
-		   
-		     html+='<div class="fav_banner" style="background-image: url('+ "'" + val.background_url + "'" +')" ></div>';
-		     html+='<h5>'+ val.merchant_name +'</h5>';
-		     html+='<p class="small">'+ val.date_added +'</p>';
-		   
-		     html+='<ons-row class="rating_wrap">';
-			      html+='<ons-col width="95px"><div class="raty-stars" data-score="'+ val.rating.ratings +'"></div></ons-col>';
-			      html+='<ons-col>'+ val.rating.review_count +'</ons-col>';
-			  html+='</ons-row>';
-		     
-		   html+='</ons-col>';
-		   html+='</ons-row>';   	  
-	   html+='</div>';
-	  html+='</ons-list-item> ';
+			html+='<div class="fav_banner" style="background-image: url('+ "'" + val.background_url + "'" +')" ></div>';
+
+			html +='<div class="rest-list-details">';
+				html +='<ons-row>';
+
+					html+='<ons-col width="50px" class="logo-col">';
+						html +='<div>';
+							html += '<img class="logo-col-img" src="'+val.logo+'" />';
+						html +='</div>';
+					html+='</ons-col>';
+					
+				    html += '<ons-col class="stic-div-details">';
+						html +='<h5>'+ val.merchant_name +'</h4>';
+						html +='<p class="ultra-light-gray f12 concat_text">'+ val.date_added +'</p>';
+				    html += '</ons-col>'; 
+
+					if(!empty(val.rating)){
+					    var reviews_qty = val.rating.review_count.match(/\d+/)[0];
+					    html += '<ons-col class="ratings-col text-right" vertical-align="center" width="26%">';
+					    	html += '<span class="center bold stic-score trn">'+ val.rating.ratings+'</span>';
+					    	html += '<ons-icon class="gold-color ml4" icon="star"></ons-icon>';
+					    	html += '<span class="center ultra-light-gray reviews-qty trn">('+reviews_qty+')</span>';
+					    html += '</ons-col>';
+					}
+
+				html += '</ons-row>';
+		  
+			html+='</div>';
+		html+='</div>';
+	html+='</ons-list-item> ';
 
 		var newItem = ons.createElement(html);
 	    list.appendChild(newItem);
@@ -2428,12 +3262,12 @@ setCreditCardList = function(data, element){
 	  	
 	  } else {	 	
 	  	
-		  html+='<ons-list-item modifier="longdivider full_list" tappable onclick="actionSheetCards('+val.id+')">';
+		  html+='<ons-list-item modifier="chevron full_list" tappable onclick="actionSheetCards('+val.id+')">';
 		      html+='<div class="left">';
-		        html+='<ons-icon icon="fa-credit-card" class="list-item__icon"></ons-icon>';
+		        html+='<img src="lib/icons/credit-card.svg" onerror="this.src=\'credit-card.png\'">';
 		      html+='</div>';
 		      html+='<div class="center">';	        
-		        html+='<span class="list-item__title">'+val.credit_card_number+'</span>';
+		        html+='<span class="list-item__title">'+val.credit_card_number+'</span>';	        
 		        html+='<p class="list-item__subtitle small">'+val.card_name+'</p>';
 		        html+='<p class="list-item__subtitle small">'+val.date_added+'</p>';
 		      html+='</div>';
@@ -2462,9 +3296,9 @@ setAddressBookList = function(data, element){
 			selected = 'orange_color';	
 		}
 		
-	  html+='<ons-list-item modifier="longdivider full_list" tappable onclick="actionSheetBook('+val.id+')">';
+	  html+='<ons-list-item modifier="chevron full_list" tappable onclick="actionSheetBook('+val.id+')">';
 	      html+='<div class="left">';
-	        html+='<ons-icon icon="ion-ios-home" class="list-item__icon '+ selected +' "></ons-icon>';
+	        html+='<img src="lib/icons/home.svg" onerror="this.src=\'home.png\'">';
 	      html+='</div>';
 	      html+='<div class="center">';	        
 	        html+='<span class="list-item__title">'+val.address+'</span>';	        
@@ -2495,7 +3329,7 @@ setlanguageList = function(data, element, selected_lang){
 		
 	  html+='<ons-list-item modifier="longdivider full_list" tappable onclick="setLanguage('+ "'" + val + "'"  +')">';
 	      html+='<div class="left">';
-	        html+='<ons-icon icon="md-check" class="list-item__icon  '+is_selected+' "></ons-icon>';
+	        html+='<ons-icon icon="md-check" class="list-item__icon '+is_selected+' ultra-light-gray"></ons-icon>';
 	      html+='</div>';
 	      html+='<div class="center">';
 	        html+= val;
@@ -2514,10 +3348,10 @@ setOrderDetails = function(data, element){
 	
 	var html='';
 	
-	html+='<div class="white_wrapper">';
-	html+='<div class="wrap">';
-		html+='<ons-row>';
-		   html+='<ons-col width="58px" vertical-align="center" >';
+	html+='<div class="white_wrapper iphonex_margin">';
+	html+='<div class="stic-lateral-wrap">';
+		html+='<ons-row class="mb20">';
+		   html+='<ons-col width="65px" vertical-align="center" >';
 		   
 		     html+='<div class="is-loading">'; 
 		       html +='<div class="spinner"></div>';		
@@ -2527,8 +3361,8 @@ setOrderDetails = function(data, element){
 		   html+='</ons-col>';
 		   html+='<ons-col width="50%" vertical-align="center" >';
 		    html+='<h5>'+ data.merchant_name+'</h5>';
-		    html+='<p class="small print_trans">'+ data.transaction +'</p>	    ';
-		    html+='<p class="small">'+ data. payment_type+'</p>	   ';
+		    html+='<p class="small capitalize print_trans">'+ data.transaction +'</p>	    ';
+		    html+='<p class="small capitalize">'+ data.status+'</p>	   ';
 		   html+='</ons-col>';
 		   
 		   html+='<ons-col vertical-align="center" >';
@@ -2537,8 +3371,6 @@ setOrderDetails = function(data, element){
 		html+='</ons-row>';
 	html+='</div>';
 	
-	html+='<div class="grey_line tickline"></div>';
-
    $(element).html( html );
 	
 };
@@ -2553,12 +3385,12 @@ setOrderHistory = function(data, element){
 	$.each( data  , function( key, val ) {
 				
 	  html+='<ons-list-item modifier="longdivider full_list" tappable >';
-	      html+='<div class="left">';
+	      html+='<div class="left min34">';
 	        html+='<ons-icon icon="ion-ios-circle-outline" class="list-item__icon"></ons-icon>';
 	      html+='</div>';
 	      html+='<div class="center">';	        
 	        html+='<span class="list-item__title">'+val.status+'</span>';
-	        html+='<p class="list-item__subtitle small">'+val.remarks+'</p>';
+	        html+='<p class="bold list-item__subtitle small">'+val.remarks+'</p>';
 	        html+='<p class="list-item__subtitle small">'+val.date+'</p>';
 	      html+='</div>';
 	  html+='</ons-list-item>';
@@ -2642,6 +3474,7 @@ templateError = function(title, message){
 	var html='';
 	html+='<div class="no_order_wrap">';
 	html+='<div class="center">';
+	html+='<img class="stic-not-found" src="lib/icons/not-found.svg" onerror="this.src=\'not-found.png\'">';
 	  html+='<h4>'+ title +'</h4>';
 	  html+='<p class="small">'+ message +'</p>';
 	html+='</div>';
@@ -2673,50 +3506,54 @@ merchantAbout = function(data, element){
      html+='<div class="dim_background absolute"></div>';
     html+='</div>';
 	
-	html+='<div class="wrap content_page">';
-	   html+='<h3>'+ data.restaurant_name +'</h3>';
-	   
-	   if(!empty(data.cuisine)){
-	   html+='<p class="sub">'+ data.cuisine +'</p> ';
-	   }
-	   
-	   if(!empty(data.services)){
-	   html+='<p class="sub">'+ data.services +'</p> ';
-	   }
-	   
-	   if(!empty(data.restaurant_phone)){
-	   	  if(app_settings.remove_contact!=1){
-	         html+='<p class="sub">'+ t("Tel#") +' :<a href="tel:'+data.restaurant_phone+' ">'+data.restaurant_phone+'</a></p> ';
-	   	  }
-	   }
-	   
-	   if(!empty(data.website)){	   	   
-	   	   html+='<ons-button modifier="quiet link_button" onclick="browseLink( '+ "'" + data.website + "'" +' )" >';
-	   	   html+=data.website ;
-	   	   html+='</ons-button>';
-	   }
-	   
-	   html+='<ons-row class="rating_wrap">';
-	      html+='<ons-col width="110px"><div class="raty-stars" data-score="'+ data.rating.ratings +'"></div></ons-col>';
-	      html+='<ons-col>'+ data.review_count +'</ons-col>';
-	   html+='</ons-row>';
-	 html+='</div>';
+	html+='<div class="content_page">';
+	   html+='<h4 class="stic-restaurant-title bold mb0">'+ data.restaurant_name +'</h4>';
+
+	   html += '<div class="flex mt5" onclick="setClickTab(\'reviews.html\',2)">';
+			html+='<div class="raty-stars" data-score="'+ data.rating.ratings +'"></div>';
+	   		html+='<span class="rating-score">'+ data.rating.ratings+'</span>';
+			html+='<p class="ultra-light-gray small m0">('+data.review_count+')</p>';
+	   html += '</div>';
+
+	   html += '<div class="stic-desc-full">';
+		   if(!empty(data.cuisine)){
+		   html+='<p class="sub">'+ data.cuisine +'</p> ';
+		   }
+
+		   if(!empty(data.restaurant_phone)){
+		   	if(app_settings.remove_contact!=1){
+		   		html+='<p class="sub">'+ t("Tel:") +' <a href="tel:'+data.restaurant_phone+' ">'+data.restaurant_phone+'</a></p> ';
+		   	}
+		   }
+		   
+		   if(!empty(data.website)){	   	   
+		   	   html+='<ons-button modifier="quiet link_button" onclick="browseLink( '+ "'" + data.website + "'" +' )" >';
+		   	   	html+=data.website ;
+		   	   html+='</ons-button>';
+		   }
+
+			html+='<div class="booking-div" onclick="setClickTab(\'book_table.html\',4)">';
+				html+='<span class="stic-uppercase">'+t("Book a Table")+'</span>';
+			html+='</div>';
+
+	   html += '</div>';
 	 
-	 html+='<div class="grey_line"></div>';
-	 html+='<div class="wrap content_page">';
-	   html+='<h4>'+ t("OPEN IN") +'</h4>';
+	 html+='<div class="content_page">';
+	   html += '<div class="stic-desc-header">';
+	   		html+='<b class="stic-standart-bold">'+ t("Opening Hours") +'</b>';
+	   html += '</div>';
 	   html+='<ul class="opening_hours">';
 	   	    	     
 	    if(data.opening.length>0){
 	    	$.each( data.opening  , function( key, val ) {
 	    		html+='<li>';	    		
-	    		 html+='<ons-row >';
-	    		   html+='<ons-col width="100px">';
-	    		   html+= val.day;
+	    		 html+='<ons-row class="day-row">';
+	    		   html+='<ons-col width="100px" class="left float-l">';
+	    		   html+='<p class="small trn">'+val.day+'</p>';
 	    		   html+='</ons-col>';
 	    		   
-	    		   html+='<ons-col>';
-	    		   html+= val.hours;
+	    		   html+='<ons-col class="text-right">';
+	    		   html+='<p class="small">'+val.hours+'</p>';
 	    		   html+='</ons-col>';	    		   
 	    		 html+='</ons-row>';
 	    		 
@@ -2726,21 +3563,22 @@ merchantAbout = function(data, element){
 	    		html+='</li>';
 	    	});
 	    } else {
-	    	html+='<p class="small">'+ t("not available") +'</p>';
+	    	html+='<p class="small">'+ t("Not available") +'</p>';
 	    }	    
 	    
 	   html+='</ul>';
 	 html+='</div>';
-	 html+='<div class="grey_line"></div>';
 	 
-	 html+='<div class="wrap content_page">';
-	   html+='<h4>'+ t("PAYMENT METHOD") +'</h4>';
-	   html+='<ons-list>';
+	 html+='<div class="content_page">';
+	 	html += '<div class="stic-desc-header">';
+	   		html+='<b class="stic-standart-bold">'+ t("Payment Methods") +'</b>';
+	   html += '</div>';
+	   html+='<ons-list class="payment">';
 	   
 	    if(data.payment.length>0){
 	    	$.each( data.payment  , function( key, val ) {
 			     html+='<ons-list-item>';
-			      html+='<div class="left">';
+			      html+='<div class="left min34">';
 			        html+='<ons-icon icon="ion-card" class="list-item__icon"></ons-icon>';
 			      html+='</div>';
 			      html+='<div class="center">';
@@ -2754,13 +3592,23 @@ merchantAbout = function(data, element){
 	   
 	   html+='</ons-list>';
 	 html+='</div>';
-	 
-	 html+='<div class="map_half" id="map_info"  style="border:1px solid #e0dcdb;"></div>';
 
-	 html+='<div class="wrap content_page">';
-	  html+='<h4>'+ t("INFORMATION")+'</h4>';
-	  html+='<p>'+ data.information +'</p>';
-	 html+='</div>';
+	 html+='<div class="content_page" onclick="setClickTab(\'location.html\',3)">';
+	 	html += '<div class="stic-desc-header">';
+	   		html+='<b class="stic-standart-bold">'+ t("Location on Map") +'</b>';
+	   html += '</div>';
+
+	 	html+='<div class="map_half" id="map_info" style="border:1px solid #e0dcdb;"></div>';
+	 html += '</div>';
+
+	 if(!empty(data.information)) {
+		 html+='<div class="content_page">';
+			 html += '<div class="stic-desc-header">';
+			  	html+='<b class="stic-standart-bold">'+ t("Information")+'</b>';
+			 html += '</div>';
+		  html+='<p>'+ data.information +'</p>';
+		 html+='</div>';
+	 }
 	 
 	 html+='<div class="bottom_gap"></div>';
 	
@@ -2782,19 +3630,30 @@ setReviewList = function(data, element){
 	
 	$.each( data  , function( key, val ) {
 		
-	 html+='<ons-list-item modifier="longdivider full_list" tappable >';
+	 html+='<ons-list-item class="review-item-list" modifier="longdivider full_list" >';
 	   html+='<ons-row>';
-	     html+='<ons-col width="60px" vertical-align="center" >';
+
+	     html+='<ons-col width="65px" vertical-align="top" >';
 	        html +='<div class="is-loading xxsmall-loader">'; 
 	          html +='<div class="spinner"></div>';		
 	           html+='<img class="small_avatar" src="'+ val.avatar +'">';
 	        html +='</div>'; 
 	     html+='</ons-col>';
-	     html+='<ons-col width="160px" vertical-align="top"><h5>'+ val.customer_name +'</h5><p class="small">'+ val.date_posted +'</p></ons-col>';
-	     html+='<ons-col vertical-align="top"><div class="raty-stars" data-score="'+ val.rating +'"></div></ons-col>';
+
+	     html+='<ons-col vertical-align="top">';
+		     html+='<h5 class="review-customer-name">'+ val.customer_name +'</h5>';
+		     html+='<p class="review-date">'+ val.date_posted +'</p>';
+		     html+='<p class="review-text small">'+ val.review +'</p>';
+		 html+='</ons-col>';
+
+	     html+='<ons-col class="right text-right" vertical-align="top" width="55px">';
+		     if(!empty(val.rating)){
+		     	html += '<span class="rating-score trn">'+ val.rating+'</span>';
+		     	html += '<ons-icon class="gold-color" icon="star"></ons-icon>';
+		     }
+		 html+='</ons-col>';
+
 	   html+='</ons-row>';
-	   html+='<div class="gap"></div>';
-	   html+=val.review;
 	  html+='</ons-list-item> ';
 	
 		var newItem = ons.createElement(html);
@@ -2812,7 +3671,7 @@ setReviewList = function(data, element){
 			         html+='<img class="small_avatar" src="'+ val2.logo +'">';
 			       html +='</div>'; 				
 			     html+='</ons-col>';
-			     html+='<ons-col width="160px" vertical-align="top"><h5>'+ val2.customer_name +'</h5><p class="small">'+ val2.date_posted +'</p></ons-col>';			     
+			     html+='<ons-col width="160px" vertical-align="top"><h5 class="f16">'+ val2.customer_name +'</h5><p class="small">'+ val2.date_posted +'</p></ons-col>';			     
 			   html+='</ons-row>';
 			   html+='<div class="gap"></div>';
 			   html+=val2.review;
@@ -3089,7 +3948,7 @@ setGetRecentLocation = function(data, element_id){
 		params_data = clickFormat( val.search_address+ "|" + val.latitude + "|"+ val.longitude + "|" + val.street  + "|" + val.city  + "|" + val.state  + "|" + val.zipcode  + "|" + val.location_name );
 		html+='<ons-list-item class="recent_loc_child" tappable onclick="setRecentSearch('+ params_data +')" >';
 		  html+='<div class="left">';
-		    html+='<ons-icon icon="ion-ios-loop" class="list-item__icon"></ons-icon>';
+		    html+='<ons-icon icon="redo" class="list-item__icon"></ons-icon>';
 		  html+='</div>';
 		  html+='<div class="center">';
 		      html+='<span class="list-item__title">'+ val.search_address +'</span>';
@@ -3126,7 +3985,7 @@ setMerchantFoodList = function(data, element_id){
 		  html+='<div class="center">';
 		    html+='<span class="list-item__title">' + val.title + '</span>';
 		    html+='<span class="list-item__subtitle">' + val.sub_title + '</span>';
-		    html+='<span class="list-item__subtitle">' + t("Search type") + ": " + t(val.restaurant) + '</span>';
+		    html+='<span class="list-item__subtitle search_type capitalize">'+ t(val.restaurant) +'</span>';
 		  html+='</div>';
 		html+='</ons-list-item>';
 				
@@ -3252,11 +4111,10 @@ restaurantListColumn = function(data, element){
 			  col+='<div class="header_bg" style="background-image: url('+ "'" + val.background_url + "'" +')"></div>';			  
 			  if(!empty(val.open_status_raw)){
 	             col+='<div class="green_tag '+val.open_status_raw+'">'+val.open_status+'</div>'
-	          }	          
+	          }
               if(!empty(val.sponsored)){
-			   	  col+='<div class="sponsored_tag">'+ val.sponsored +'</div>';
+			   	 col+='<div class="sponsored_tag">'+ val.sponsored +'</div>';
 			  }
-			   
 			col+='</div> ';
 			col+='<h4 class="is_rtl_text_right">'+val.restaurant_name+'</h4>';
 			col+='<p class="concat_text is_rtl_text_right">'+val.cuisine+'</p>';
@@ -3415,21 +4273,21 @@ setItemListColumn = function(data, element){
 					col+='<p>';
 					$.each( val.prices2  , function( pricekey, priceval ) {		    		
 						  if(priceval.discount>0.001){
-						  	col+= '<span class="tag_discount">'+ priceval.original_price+'</span>' + priceval.discounted_price_pretty + '<br/>';
+						  	col+= '<price> <span class="tag_discount">'+ priceval.original_price+'</span>' + priceval.discounted_price_pretty + '</price>';
 						  } else {
-						  	col+= ''+priceval.original_price + '<br/>';
+						  	col+= '<price>'+priceval.original_price + '</price>';
 						  }			    		  
 			    	});
 			    	col+='</p>';
 				}
 			} else {
-				if (val.prices.length>0){
-					col+='<p>';
-					$.each( val.prices  , function( pricekey, priceval ) {		    		
-			    		  col+= ''+priceval + '<br/>';
-			    	});
-			    	col+='</p>';
-				}
+			if (val.prices.length>0){
+				col+='<p>';
+				$.each( val.prices  , function( pricekey, priceval ) {		    		
+		    		  col+= ''+priceval + '<br/>';
+		    	});
+		    	col+='</p>';
+			}
 			}
 			
          col+='</ons-col>';		
@@ -3468,9 +4326,8 @@ setTrackList = function(data, element){
 	if (data.length<=0){
 		return;
 	}		
-	
 	html='';
-	
+
 	track_template = "1";
 	if(app_settings = getAppSettings()){
 		track_template = app_settings.tracking_theme;
@@ -3492,8 +4349,8 @@ setTrackList = function(data, element){
 	    html+='</ons-row>';		
 	    $("#track_template2").html( html );	    
 		return;
-	} 
-		
+	}
+
 	var list = document.getElementById(element);
 	
 	if(data.driver_id>0){
@@ -3570,8 +4427,6 @@ setDriverInformation = function(data, element, element2){
 		html+='</ons-row>';
 	html+='</div>';
 	
-	html+='<div class="grey_line tickline"></div>';
-
    $(element).html( html );
    
    
@@ -3700,7 +4555,7 @@ notiRemoveButton = function(show){
 	html='';
 	if(show) {
 		html+='<ons-toolbar-button onclick="markAllNotifications()">';
-	      html+='<ons-icon icon="md-delete" size="25px"></ons-icon>';
+			html+='<img class="stic-toolbar-icon" src="lib/icons/trash.svg" onerror="this.src=\'trash.png\'">';
 	    html+='</ons-toolbar-button>';
 	}	
     $(".noti_remove_div").html( html );
@@ -3726,7 +4581,7 @@ fillOrderTabs = function(element, tab, selected_index){
 			if(key==tab){
 				is_selected='selected"';
 			}
-			html+='<ons-carousel-item class="'+ is_selected +'" onclick="OrderListTab('+ "'" + key + "'," + index  +')"  >'+ t(val) +'<ons-ripple color="#EF6625" background="#ffffff"></ons-ripple></ons-carousel-item>';						
+			html+='<ons-carousel-item class="'+ is_selected +'" onclick="OrderListTab('+ "'" + key + "'," + index  +')"  >'+ t(val) +'<ons-ripple modifier="material"></ons-ripple></ons-carousel-item>';						
 	        index++;
 	        
 	        var newItem = ons.createElement(html);
@@ -3757,7 +4612,7 @@ fillBookingTabs = function(element, tab, selected_index){
 			if(key==tab){
 				is_selected='selected"';
 			}
-			html+='<ons-carousel-item class="'+ is_selected +'" onclick="BookingListTab('+ "'" + key + "'," + index  +')"  >'+ t(val) +'<ons-ripple color="#EF6625" background="#ffffff"></ons-ripple></ons-carousel-item>';						
+			html+='<ons-carousel-item class="'+ is_selected +'" onclick="BookingListTab('+ "'" + key + "'," + index  +')"  >'+ t(val) +'<ons-ripple modifier="material"></ons-ripple></ons-carousel-item>';						
 	        index++;
 	        
 	        var newItem = ons.createElement(html);
@@ -3824,38 +4679,72 @@ fillStartupBanner = function(div){
 			
 	if(app_settings = getAppSettings()){
 	   banner = app_settings.startup.banner;	   
-	   	   	   	 
+	   
 	   if(banner.length<=0){	   	  
 	   	  return;
 	   }
-	   	   
 	   
-	   html+='<ons-carousel fullscreen swipeable auto-scroll overscrollable id="startup_carousel"  >';	   
+	   html+='<ons-carousel fullscreen swipeable auto-scroll auto-scroll-ratio="0.1" overscrollable id="startup_carousel"  >';	   
 	   $.each( banner  , function( key, val ) {
 	   	  html+='<ons-carousel-item>';
 	   	    html+='<div class="banner" style="background-image: url('+ "'" + val + "'" +')"  >';
-	   	    
-	   	    html +='<div class="is-loading xlarge-loader">'; 
-			html +='<div class="spinner"></div>';		
-			html +='<img class="hide" src="'+ val +'">';	      
-			html +='</div>'; 
-			
-			html +='</div>'; 
-	   	    
+	   	    	html+='<div class="is-loading xlarge-loader">'; 
+					html+='<div class="spinner"></div>';		
+					html+='<img class="hide" src="'+ val +'">';	      
+				html+='</div>'; 
+			html+='</div>';
+
+	   		if (key == 0 || key == "0") {
+				html+='<div id="skip_presentation" class="cream_header is_rtl">';
+					html +='<h3 id="walk_title" class="trn">'+ t('Find restaurants nearby') +'</h3>'; 
+					html +='<p id="walk_desc" class="small trn">'+ t('Order delicious food from your favourite restaurants with a few clicks')+'</p>'; 
+				html+='</div>';
+	   		}
+
+	   		if (key == 1 || key == "1") {
+				html+='<div id="skip_presentation" class="cream_header is_rtl">';
+					html +='<h3 id="walk_title" class="trn">'+ t('Secure and private') +'</h3>'; 
+					html +='<p id="walk_desc" class="small trn">'+ t('Paying trought the app is easy, fast and safe. Here your info are private') +'</p>'; 
+				html+='</div>';
+	   		}
+
+	   		if (key == 2 || key == "2") {
+				html+='<div id="skip_presentation" class="cream_header is_rtl">';
+					html +='<h3 id="walk_title" class="trn">'+ t('We take it to you') +'</h3>'; 
+					html +='<p id="walk_desc" class="small trn">'+ t('Get the order at home. You don\'t even have to get up off the couch') +'</p>'; 
+				html+='</div>';
+
+				html+='<div class="stic-start">';
+					html+='<ons-button modifier="large normal_large to_orange" onclick="showPage(\'create_account.html\')">';
+						html+='<span class="trn">'+ t('Register') +'</span>';
+					html+='</ons-button>';
+	
+					html+='<ons-button modifier="large normal_large to_neutral" onclick="showPage(\'login.html\')" >';
+						html+='<span class="trn">'+ t('Sign in') +'</span>';
+					html+='</ons-button>';	
+				html+='</div>';
+
+				html+='<ons-button class="stic-skip" modifier="large normal_large to_neutral" onclick="skip(\'map_select_location.html\')" >';
+					html+='<span class="trn">'+ t('Skip') +'</span>';
+				html+='</ons-button>';
+	   		}
+
 	   	  html+='</ons-carousel-item>';
 	   });
 	   html+='</ons-carousel>';
-	   	   
-	   html+='<ul class="dots">';
-		  $.each( banner  , function( key, val ) {
-		  	  is_selected='active';
-		  	  if(key>=1){
-		  	  	is_selected='';
-		  	  }
-		  	  html+='<li class="c'+key + ' ' + is_selected +'"><div class="circle"></div></li>';
-		  });
-	   html+='</ul>';
-	   
+
+	   html+='<div class="stic-counter">';
+		   html+='<ul class="dots">';
+			  $.each( banner  , function( key, val ) {
+			  	  is_selected='active';
+			  	  if(key>=1){
+			  	  	is_selected='';
+			  	  }
+			  	  html+='<li class="c'+key + ' ' + is_selected +'"><div class="circle"></div></li>';
+			  });
+		   html+='</ul>';
+	   html+='</div>';
+
 	   $(div).html( html );	   
 	   imageLoaded();
 	}
@@ -3878,7 +4767,7 @@ setlanguageList2 = function(data, element, selected_lang){
 		
 	  html+='<ons-list-item modifier="longdivider full_list" tappable onclick="setStartupLanguage('+ "'" + key + "'"  +')"	   >';
 	      html+='<div class="left">';
-	        html+='<ons-icon icon="md-check" class="list-item__icon  '+is_selected+' "></ons-icon>';
+	        html+='<ons-icon icon="md-check" class="list-item__icon  '+is_selected+' ultra-light-gray"></ons-icon>';
 	      html+='</div>';
 	      html+='<div class="center">';
 	        html+= val;
@@ -3943,7 +4832,10 @@ fillEnterPhone = function(){
 	    if(turnoff_prefix){
            html+='<div class="left" style="width:60px;"> <ons-input type="text" name="moobile_prefix" id="moobile_prefix" class="moobile_prefix" required  placeholder="'+ t("Prefix") +'" float value="" onclick="showMobileCode()" ></ons-input> </div>';
 	    }
-        html+='<div class="center"> <ons-input type="number" value="" maxlength="15" name="mobile_no" id="mobile_no" required class="mobile_no"  placeholder="'+ t("Mobile no.") +'" float ></ons-input> </div>';
+        html+='<div class="center">';
+        	html+='<ons-input class="stic-mobile-num mobile_no" type="number" value="" maxlength="15" name="mobile_no" id="mobile_no" required placeholder="'+ t("Mobile no.") +'" float ></ons-input>';
+            html+='<img class="stic-icon" src="lib/icons/mobile.svg" onerror="this.src=\'mobile.png\'">';
+        html+='</div>';
     html+='</ons-list-item>';
     $("#enter_phone_list").html( html )	;
 };
@@ -3956,31 +4848,49 @@ createAccountFields = function(){
 	
 	
 	html+='<ons-list-item>';        
-       html+='<div class="center"><ons-input name="first_name" id="first_name" required modifier="transparent" placeholder="'+ t("First Name") +'" float ></ons-input></div>';
+       html+='<div class="center">';
+	       html+='<ons-input name="first_name" id="first_name" required modifier="transparent" placeholder="'+ t("First Name") +'" float ></ons-input>';
+	       html+='<img class="stic-icon" src="lib/icons/user.svg" onerror="this.src=\'user.png\'">';
+       html+='</div>';
     html+='</ons-list-item>';
     
     html+='<ons-list-item>';       
-       html+='<div class="center"><ons-input name="last_name" id="last_name" required modifier="transparent" placeholder="'+ t("Last Name") +'" float></ons-input></div>';
+       html+='<div class="center">';
+       		html+='<ons-input name="last_name" id="last_name" required modifier="transparent" placeholder="'+ t("Last Name") +'" float></ons-input>';
+	       	html+='<img class="stic-icon" src="lib/icons/user.svg" onerror="this.src=\'user.png\'">';       		
+       html+='</div>';
     html+='</ons-list-item>';
         
     if(settings.registration.phone==1){
 	    html+='<ons-list-item> ';       
-	       html+='<div class="center"><ons-input name="contact_phone" id="contact_phone" class="contact_phone" required modifier="transparent" placeholder="'+ t("Mobile") +'" float onclick="showPage(\'enter_phone.html\')"></ons-input></div>';
+	       html+='<div class="center">';
+	       		html+='<ons-input name="contact_phone" id="contact_phone" class="contact_phone" required modifier="transparent" placeholder="'+ t("Mobile") +'" float onclick="showPage(\'enter_phone.html\')" onfocus="showPage(\'enter_phone.html\')"></ons-input>';
+	       		html+='<img class="stic-icon" src="lib/icons/mobile.svg" onerror="this.src=\'mobile.png\'">';	       		
+	       html+='</div>';
 	    html+='</ons-list-item>';
     }
         
     if(settings.registration.email==1){
 	    html+='<ons-list-item>   ';     
-	       html+='<div class="center"><ons-input type="email" name="email_address" id="email_address" required modifier="transparent" placeholder="'+ t("Email") +'" float ></ons-input></div>';
+	      	html+='<div class="center">';
+       			html+='<ons-input type="email" name="email_address" id="email_address" required modifier="transparent" placeholder="'+ t("Email") +'" float ></ons-input>';
+	       		html+='<img class="stic-icon" src="lib/icons/mail.svg" onerror="this.src=\'mail.png\'">';       			
+       		html+='</div>';
 	    html+='</ons-list-item>';
     }
     
     html+='<ons-list-item>   ';     
-       html+='<div class="center"><ons-input type="password" name="password" id="password" required modifier="transparent" placeholder="'+ t("Password") +'" float ></ons-input></div>';
+    	html+='<div class="center">';
+       		html+='<ons-input type="password" name="password" id="password" required modifier="transparent" placeholder="'+ t("Password") +'" float ></ons-input>';
+	       	html+='<img class="stic-icon" src="lib/icons/lock.svg" onerror="this.src=\'lock.png\'">';
+       	html+='</div>';
     html+='</ons-list-item>';
     
     html+='<ons-list-item class="reg_last_row"> ';
-       html+='<div class="center"><ons-input type="password" name="cpassword" id="cpassword" required modifier="transparent" placeholder="'+ t("Confirm Password") +'" float ></ons-input></div>';
+		html+='<div class="center">';
+	   		html+='<ons-input type="password" name="cpassword" id="cpassword" required modifier="transparent" placeholder="'+ t("Confirm Password") +'" float ></ons-input>';
+	       	html+='<img class="stic-icon" src="lib/icons/lock.svg" onerror="this.src=\'lock.png\'">';
+	   html+='</div>';
     html+='</ons-list-item>';
 	
     $("#create_account_list").html( html )	;
@@ -4098,9 +5008,26 @@ ageRestriction = function(){
 	}
 };
 
+rtlCarousel = function() {
+	if(isRTL(current_lang_code)){
+
+		document.querySelector('.rtlHomeCarousel').last();
+
+		document.querySelector('.rtlCuisineCarousel').last();
+
+		document.querySelector('.rtlMerchantCarousel').last();
+
+		document.querySelector('.rtlFeaturedCarousel').last();
+
+		document.querySelector('.rtlSpecialCarousel').last();
+
+		document.querySelector('.rtlFavoritesCarousel').last();
+	}
+}
+
 
 fillHomeBanner = function(data, div){
-	
+
 	app_settings = getAppSettings();	
 	
 	item_width ='item-width="60%"';
@@ -4108,24 +5035,43 @@ fillHomeBanner = function(data, div){
 		item_width='';
 	}
 	
-	html='<ons-carousel fullscreen swipeable auto-scroll overscrollable id="carousel" direction="horizontal" '+ item_width +'   >';
-	$.each( data  , function( key, val ) {
-		
-      html+='<ons-carousel-item >';
-      html+='<div class="banner">';
-        html+='<div class="header_bg" style="background-image: url('+ "'" + val + "'" +')"  >';
-        html+='<div class="">';
-        html+='<div class="spinner"></div>';
-           html+='<img class="hide" src="'+ val +'"></div>';
-        html+='</div>';
-        html+='</div>';
-      html+='</ons-carousel-item>';
-		
-	});
-	html+='</ons-carousel>';
+	html = '<ons-carousel class="stic-carousel featured rtlHomeCarousel" swipeable auto-scroll auto-scroll-ratio="0.1" overscrollable id="carousel" direction="horizontal" item-width="100%" >';	
+
+		$.each(data, function(key, val){		
+			html +='<ons-carousel-item class="width" >';
+				html +='<div class="carousel-content relative">';
+			    	html +='<ons-ripple modifier="material"></ons-ripple>';
+				    html +='<div class="banner">';
+					    html +='<div class="hide_all show_cover">';
+						    html +='<div>';
+							    html +='<img class="hide" src="'+val.banner_name+'">';
+							    html +='<div class="header_bg stic_cover" style="background-image: url('+ "'" + val.banner_name + "'" +')"  >';
+							    html +='<div class="spinner"></div>';			      
+							    html +='</div>';
+						    html +='</div>';
+					    html +='</div>';
+					html +='</div>';			
+					html +='<div class="stic-home-shadow">';			
+					html +='</div>';			
+				html +='</div>';
+
+			    html +='<div class="home-banner-box">';
+				    html +='<div class="home-carousel-wrap">';
+						html +='<h4>'+ val.title +'</h4>';
+				    html +='</div>';
+
+				    html +='<div class="home-carousel-wrap active_desc">';
+						html +='<p class="trn">description_'+key+'</p>';
+				    html +='</div>';
+			    html +='</div>';
+
+			html +='</ons-carousel-item>';	
+		});
+	
+	html +='</ons-carousel>';
 	
 	$(div).html( html );
-	
+
 	imageLoaded(); 
 };
 
@@ -4136,18 +5082,18 @@ carouselMap = function(data, div){
 		return false;
 	}
 	
-	html='<ons-carousel fullscreen swipeable auto-scroll overscrollable  direction="horizontal" item-width="90%"  >';
+	html='<ons-carousel class="stic-carousel" fullscreen swipeable auto-scroll auto-scroll-ratio="0.1" overscrollable  direction="horizontal" item-width="100%"  >';
 	$.each(data, function(key, val){
 		html+='<ons-carousel-item onclick="loadMerchant('+ val.merchant_id+')"  >';
-		html +='<ons-ripple color="#EF6625" background="#EF6625"></ons-ripple>';
+		html +='<ons-ripple modifier="material"></ons-ripple>';
         
-		html+='<ons-row>';
-		  html+='<ons-col width="120px">';
+		html+='<ons-row class="p15">';
+		  html+='<ons-col width="75px">';
 		  
 		  html+='<div class="banner">';
-		  html+='<div >';
-		    html+='<img class="hide" src="'+ val.background_url +'">';
-		     html+='<div class="header_bg" style="background-image: url('+ "'" + val.background_url + "'" +')"  >';
+		  html+='<div>';
+		    html+='<img class="hide" src="'+ val.logo +'">';
+		     html+='<div class="header_bg" style="background-image: url('+ "'" + val.logo + "'" +')"  >';
 		         html+='<div class="spinner"></div>';
 		     html+='</div>';
 		    html+='</div>';
@@ -4155,15 +5101,17 @@ carouselMap = function(data, div){
 		  
 		  html+='</ons-col>';
 		  
-		  html+='<ons-col width="5px"></ons-col>';
-		  
-		  html+='<ons-col width="120px">';
-		    html+='<h4>'+ val.restaurant_name +'</h4>';
+		  html+='<ons-col class="ingrid align-end">';
+		    if(!empty(val.delivery_distance)){
+		    	html+='<h4>'+ val.restaurant_name +' · '+ val.delivery_distance+''+t("km")+'</h4>';
+		    } else {
+		    	html+='<h4>'+ val.restaurant_name +'</h4>';
+		    }
 		    html+='<p class="concat_text">'+ val.cuisine +'</p>';
 		    
 		    html+='<ons-row class="rating_wrap small">';
-		      html+='<ons-col><div class="raty-stars" data-score="'+ val.rating.ratings +'"></div></ons-col>';
-		      html+='<ons-col>'+ val.rating.review_count +'</ons-col>';
+		      html+='<ons-col class="contents"><div class="raty-stars" data-score="'+ val.rating.ratings +'"></div></ons-col>';
+		      html+='<ons-col class="stic_map_review">'+ val.rating.review_count +'</ons-col>';
 		    html+='</ons-row>';
 		    
 		  html+='</ons-col>';
@@ -4189,20 +5137,28 @@ LocationSearchForm = function(div){
 	switch(location_mode){
 		case 1:
 
-		 html+='<div class="content_wrapper">';
-		  html+='<ons-row>';
-		    html+='<ons-col vertical-align="center"  >';
-		      html+='<ons-search-input id="city_name" class="city_name" required placeholder="'+ t("City") +'" onclick="showPage(\'location_city.html\',\'none\',\'{address_book:0,state_id:0}\')"  ></ons-search-input>';
-		    html+='</ons-col>';
-		  html+='</ons-row>';
-		  html+='</div>';
-		  
-		  html+='<div class="content_wrapper">';
-		  html+='<ons-row>';
-		    html+='<ons-col vertical-align="center"  >';
-		      html+='<ons-search-input id="area_name" class="area_name" required placeholder="'+ t("District / Area") +'"  onclick="showLocationArea2();" ></ons-search-input>';
-		    html+='</ons-col>';
-		  html+='</ons-row>';
+		 html+='<div id="stic_search">';
+			 html+='<div class="content_wrapper">';
+			  html+='<ons-row>';
+			    html+='<ons-col vertical-align="center"  >';
+				    html+='<ons-search-input id="city_name" class="city_name" required placeholder="'+ t("City") +'" onclick="showPage(\'location_city.html\',\'none\',\'{address_book:0,state_id:0}\')" ></ons-search-input>';
+				    html+='<div class="stic-icon">';
+				       html+='<img src="lib/icons/chevron-right.svg" onerror="this.src=\'chevron-right.png\'">';
+				    html+='</div>';
+			    html+='</ons-col>';
+			  html+='</ons-row>';
+			  html+='</div>';
+			  
+			  html+='<div class="content_wrapper">';
+			  html+='<ons-row>';
+			    html+='<ons-col vertical-align="center"  >';
+				    html+='<ons-search-input id="area_name" class="area_name" required placeholder="'+ t("District / Area") +'" onclick="showLocationArea2()" ></ons-search-input>';
+				    html+='<div class="stic-icon">';
+				       html+='<img src="lib/icons/chevron-right.svg" onerror="this.src=\'chevron-right.png\'">';
+				    html+='</div>';
+			    html+='</ons-col>';
+			  html+='</ons-row>';
+			  html+='</div>';
 		  html+='</div>';
 		
 		break;
@@ -4210,32 +5166,45 @@ LocationSearchForm = function(div){
 		case 2: 
 		
 		
-		html+='<div class="content_wrapper">';
-		  html+='<ons-row>';
-		    html+='<ons-col vertical-align="center"  >';
-		      html+='<ons-search-input id="state_name" class="state_name" required placeholder="'+ t("State") +'" onclick="showPage(\'location_state.html\',\'none\',\'{address_book:0,state_id:0}\')"  ></ons-search-input>';
-		    html+='</ons-col>';
-		  html+='</ons-row>';
-		  html+='</div>';
-		
-		 html+='<div class="content_wrapper">';
-		  html+='<ons-row>';
-		    html+='<ons-col vertical-align="center"  >';
-		      html+='<ons-search-input id="city_name" class="city_name" required placeholder="'+ t("City") +'" onclick="showPage(\'location_city.html\',\'none\',\'{address_book:0,state_id:0}\')"  ></ons-search-input>';
-		    html+='</ons-col>';
-		  html+='</ons-row>';
+		html+='<div id="stic_search">';
+			html+='<div class="content_wrapper">';
+			  html+='<ons-row>';
+			    html+='<ons-col vertical-align="center"  >';
+				    html+='<ons-search-input id="state_name" class="state_name" required placeholder="'+ t("State") +'" onclick="showPage(\'location_state.html\',\'none\',\'{address_book:0,state_id:0}\')" ></ons-search-input>';
+				    html+='<div class="stic-icon">';
+				       html+='<img src="lib/icons/chevron-right.svg" onerror="this.src=\'chevron-right.png\'">';
+				    html+='</div>';		    
+			    html+='</ons-col>';
+			  html+='</ons-row>';
+			  html+='</div>';
+			
+			 html+='<div class="content_wrapper">';
+			  html+='<ons-row>';
+			    html+='<ons-col vertical-align="center"  >';
+			      html+='<ons-search-input id="city_name" class="city_name" required placeholder="'+ t("City") +'" onclick="showPage(\'location_city.html\',\'none\',\'{address_book:0,state_id:0}\')" ></ons-search-input>';
+			      html+='<div class="stic-icon">';
+			         html+='<img src="lib/icons/chevron-right.svg" onerror="this.src=\'chevron-right.png\'">';
+			      html+='</div>';
+			    html+='</ons-col>';
+			  html+='</ons-row>';
+			  html+='</div>';
 		  html+='</div>';
 		  
 		break;
 		
 		case 3:
 		
-		html+='<div class="content_wrapper">';
-		  html+='<ons-row>';
-		    html+='<ons-col vertical-align="center"  >';
-		      html+='<ons-search-input id="postal_code" class="postal_code" required placeholder="'+ t("Postal Code/Zip Code") +'" onclick="showPage(\'location_postal_code.html\',\'none\',\'{address_book:0,state_id:0}\')"  ></ons-search-input>';
-		    html+='</ons-col>';
-		  html+='</ons-row>';
+		html+='<div id="stic_search">';
+			html+='<div class="content_wrapper">';
+			  html+='<ons-row>';
+			    html+='<ons-col vertical-align="center"  >';
+				    html+='<ons-search-input id="postal_code" class="postal_code" required placeholder="'+ t("Postal Code/Zip Code") +'" onclick="showPage(\'location_postal_code.html\',\'none\',\'{address_book:0,state_id:0}\')" ></ons-search-input>';
+				    html+='<div class="stic-icon">';
+				       html+='<img src="lib/icons/chevron-right.svg" onerror="this.src=\'chevron-right.png\'">';
+				    html+='</div>';	
+			    html+='</ons-col>';
+			  html+='</ons-row>';
+			  html+='</div>';
 		  html+='</div>';
 		
 		break;
@@ -4258,6 +5227,11 @@ setCityList = function(data, element){
 		dump(val);
 		//setCity = function(name, city_id, state_id, state_name, country_id, country_name){
 		html+='<ons-list-item tappable onclick="setCity('+ clickFormat(val.name+"|"+val.city_id+"|"+val.state_id+"|"+ val.state_name + "|"+val.country_id +"|" + val.country_name ) +')">';
+	       html+='<div class="left min34">';
+			    html+='<ons-col width="34px" vertical-align="center"  >';
+		    		html+='<img class="stic-icon-redo" src="lib/icons/pin.svg" onerror="this.src=\'pin.png\'">';
+			    html+='</ons-col>';
+	       html+='</div>';
 	       html+='<div class="center">';
 	         html+='<span class="list-item__title">'+ val.city_name +'</span>';
 	         html+='<span class="list-item__subtitle">'+ val.state_name +'</span>';
@@ -4278,12 +5252,18 @@ setAreaList = function(data, element){
 	
 	$.each( data  , function( key, val ) {
 		dump(val);
-		html+='<ons-list-item tappable onclick="setArea('+ clickFormat(val.area_id+"|"+val.name) +')">';
-	       html+='<div class="center">';
-	         html+='<span class="list-item__title">'+ val.area_name +'</span>';
-	         html+='<span class="list-item__subtitle">'+ val.city_name +'</span>';
-	       html+='</div>';
-	     html+='</ons-list-item>';
+
+     	html+='<ons-list-item tappable onclick="setArea('+ clickFormat(val.area_id+"|"+val.name) +')">';
+            html+='<div class="left min34">';
+     		    html+='<ons-col width="34px" vertical-align="center"  >';
+     	    		html+='<img class="stic-icon-redo" src="lib/icons/pin.svg" onerror="this.src=\'pin.png\'">';
+     		    html+='</ons-col>';
+            html+='</div>';
+            html+='<div class="center">';
+              html+='<span class="list-item__title">'+ val.area_name +'</span>';
+              html+='<span class="list-item__subtitle">'+ val.city_name +'</span>';
+            html+='</div>';
+          html+='</ons-list-item>';
 	     
 	     var newItem = ons.createElement(html);
 	    list.appendChild(newItem);
@@ -4300,12 +5280,18 @@ setStateList = function(data, element){
 	
 	$.each( data  , function( key, val ) {
 		dump(val);
-		html+='<ons-list-item tappable onclick="setState('+ clickFormat(val.state_raw+"|"+val.state_id+"|"+val.country_id+"|"+val.country_name) +')" >';
-	       html+='<div class="center">';
-	         html+='<span class="list-item__title">'+ val.state +'</span>';
-	         html+='<span class="list-item__subtitle">'+ val.country_name +'</span>';
-	       html+='</div>';
-	     html+='</ons-list-item>';
+
+     	html+='<ons-list-item tappable onclick="setState('+ clickFormat(val.state_raw+"|"+val.state_id+"|"+val.country_id+"|"+val.country_name) +')">';
+            html+='<div class="left min34">';
+     		    html+='<ons-col width="34px" vertical-align="center"  >';
+     	    		html+='<img class="stic-icon-redo" src="lib/icons/pin.svg" onerror="this.src=\'pin.png\'">';
+     		    html+='</ons-col>';
+            html+='</div>';
+            html+='<div class="center">';
+              html+='<span class="list-item__title">'+ val.state +'</span>';
+              html+='<span class="list-item__subtitle">'+ val.country_name +'</span>';
+            html+='</div>';
+          html+='</ons-list-item>';
 	     
 	     var newItem = ons.createElement(html);
 	    list.appendChild(newItem);
@@ -4323,12 +5309,18 @@ setPotalList  = function(data, element){
 	
 	$.each( data  , function( key, val ) {
 		dump(val);
-		html+='<ons-list-item tappable onclick="setPostal('+ clickFormat(val.city_id+"|"+val.city_name+"|"+val.postal_code_raw+"|"+val.state_id + "|" + val.state_name +"|" + val.country_id ) +')" >';
-	       html+='<div class="center">';
-	         html+='<span class="list-item__title">'+ val.postal_code +'</span>';
-	         html+='<span class="list-item__subtitle">'+ val.city_name +'</span>';
-	       html+='</div>';
-	     html+='</ons-list-item>';
+
+	     	html+='<ons-list-item tappable onclick="setPostal('+ clickFormat(val.city_id+"|"+val.city_name+"|"+val.postal_code_raw+"|"+val.state_id + "|" + val.state_name +"|" + val.country_id ) +')">';
+	            html+='<div class="left min34">';
+	     		    html+='<ons-col width="34px" vertical-align="center"  >';
+	     	    		html+='<img class="stic-icon-redo" src="lib/icons/pin.svg" onerror="this.src=\'pin.png\'">';
+	     		    html+='</ons-col>';
+	            html+='</div>';
+	            html+='<div class="center">';
+	              html+='<span class="list-item__title">'+ val.postal_code +'</span>';
+	              html+='<span class="list-item__subtitle">'+ val.city_name +'</span>';
+	            html+='</div>';
+	          html+='</ons-list-item>';
 	     
 	     var newItem = ons.createElement(html);
 	    list.appendChild(newItem);
@@ -4373,7 +5365,6 @@ setFloatingCategory = function(element){
 	}
 };
 
-
 getCustomPages = function(is_location){
 	/*ADD CUSTOM PAGE*/
 	html='';
@@ -4415,7 +5406,7 @@ addTermsCondition = function(element){
 	 html='';
 	        
 	 html+='<ons-list-item modifier="list_small nodivider">';
-	 html+='<p>'+ t("By creating an account, you agree to receive sms from vendor.") +'</p>';
+	 html+='<p class="mlat20">'+ t("By creating an account, you agree to receive sms from vendor.") +'</p>';
 	 html+='</ons-list-item>';
 	 
 	 var newItem = ons.createElement(html);
@@ -4446,17 +5437,13 @@ addTermsCondition = function(element){
 
 fillContactUsForm = function(element){
 	var list = document.getElementById(element);
-	 html='';
+	 // html='';
 	 
 	if(app_settings = getAppSettings()){
 		dump(app_settings.contact_us.contact_content);
+
 		if(!empty(app_settings.contact_us.contact_content)){
-			 html+='<ons-list-item modifier="nodivider">';
-		         html+='<p class="small">'+ app_settings.contact_us.contact_content +'</p>';
-		      html+='</ons-list-item>';
-		      var newItem = ons.createElement(html);
-              list.appendChild(newItem);	    
-              html='';   
+			$(".contact_us_desc").html(t(app_settings.contact_us.contact_content));
 		}		
 				
 		$.each( app_settings.contact_us.contact_field  , function( key, val ) {
@@ -4468,43 +5455,48 @@ fillContactUsForm = function(element){
 			switch(val){
 				case "name":
 				  label = t("Name");
+				  icon = "user";
 				break;
 				
 				case "email":
 				  label = t("Email address");
 				  field_type ="email";
+				  icon = "mail";
 				break;
 				
 				case "phone":
 				  val = 'contact_phone';
 				  label = t("Contact Number");
-				  click_action='onclick="showPage(\'enter_phone.html\')"';
+				  click_action='onclick="showPage(\'enter_phone.html\')" onfocus="showPage(\'enter_phone.html\')"';
+				  icon = "mobile";
 				break;
 				
 				case "country":
 				  label = t("Country");
+				  icon = "pin";
 				break;
 				
 				case "message":
 				  label = t("Message");
+				  icon = "edit";
 				break;
 			}
 			
 			html+='<ons-list-item>';
 	         html+='<div class="center">';
-	           html+='<ons-input type="'+ field_type +'" name="'+val+'" id="'+val+'" class="'+ val +'" required modifier="transparent" '+ click_action +' ';
-	           html+='placeholder="'+ label +'" float ></ons-input>';
+	           html+='<ons-input type="'+ field_type +'" name="'+val+'" id="'+val+'" class="'+ val +'" required modifier="transparent" '+ click_action +' placeholder="'+ label +'" float ></ons-input>';
+    	       html+='<img class="stic-icon" src="lib/icons/'+icon+'.svg" onerror="this.src=\''+icon+'.png\'">';       			
 	          html+='</div>';
 	        html+='</ons-list-item>';
-	        
+
 	        var newItem = ons.createElement(html);
             list.appendChild(newItem);	    
             html='';   
 			
 		});
 		
-		background_url = app_settings.images.image3;
-		$("#contact_us .header_contact").css('background-image', 'url('+ "'" + background_url + "'" +')');
+		// background_url = app_settings.images.image3;
+		// $("#contact_us .header_contact").css('background-image', 'url('+ "'" + background_url + "'" +')');
 		
 	}
 };

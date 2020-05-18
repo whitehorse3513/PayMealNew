@@ -20,7 +20,7 @@
     </gap:plugin>
     <gap:plugin name="cordova-plugin-x-toast" source="npm" spec="2.7.0" />
     <gap:plugin name="cordova-plugin-media" source="npm" spec="5.0.2" />
-    <gap:plugin name="cordova.plugins.diagnostic" source="npm" spec="4.0.0" />
+    <gap:plugin name="cordova.plugins.diagnostic" source="npm" spec="5.0.1" />
     <gap:plugin name="cordova-plugin-buildinfo" source="npm" spec="2.0.1" />
     <gap:plugin name="cordova-plugin-camera" source="npm" spec="2.4.1" />
     <gap:plugin name="cordova-plugin-file-transfer" source="npm" spec="1.7.1" />
@@ -37,7 +37,6 @@
         <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="PayMeal will use your photo library" />
         <variable name="PHOTO_LIBRARY_ADD_USAGE_DESCRIPTION" value="PayMeal saves images of your photo library" />
     </gap:plugin>
-    <gap:plugin name="cordova-plugin-statusbar" source="npm" />
     <gap:plugin name="cordova-plugin-ionic-webview" source="npm" spec="4.2.1" />
     <gap:plugin name="cordova-plugin-ionic-keyboard" source="npm" spec="2.2.0" />
     <access origin="*" />
