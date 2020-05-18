@@ -89,8 +89,8 @@
      <gap:plugin name="cordova-plugin-statusbar" source="npm"  /> 
 	 
 	 <!--ENABLED THIS PLUGIN ONLY FOR IOS-->
-   <gap:plugin name="cordova-plugin-ionic-webview" source="npm" spec="4.2.1" />
-    <gap:plugin name="cordova-plugin-ionic-keyboard" source="npm" spec="2.2.0" />
+   <!-- <gap:plugin name="cordova-plugin-ionic-webview" source="npm" spec="4.2.1" /> -->
+    <!-- <gap:plugin name="cordova-plugin-ionic-keyboard" source="npm" spec="2.2.0" /> -->
 		
 	<!--END OF PLUGIN-->
 	    	
