@@ -49,8 +49,8 @@
     <gap:plugin name="cordova-plugin-media" source="npm" spec="5.0.2" />
     
     <!--WHEN COMPILING THE APP TO IOS USE cordova.plugins.diagnostic version 5.0.1 FOR ANDROID use 4.0.0-->
-    <gap:plugin name="cordova.plugins.diagnostic" source="npm" spec="5.0.1" />
-    <!-- <gap:plugin name="cordova.plugins.diagnostic" source="npm" spec="4.0.0" />     -->
+    <!-- <gap:plugin name="cordova.plugins.diagnostic" source="npm" spec="5.0.1" /> -->
+    <gap:plugin name="cordova.plugins.diagnostic" source="npm" spec="4.0.0" />    
     
     <gap:plugin name="cordova-plugin-buildinfo" source="npm" spec="2.0.1"  />
     <gap:plugin name="cordova-plugin-camera" source="npm" spec="2.4.1" />
@@ -85,7 +85,7 @@
 	</gap:plugin>
 		
     <!--REMOVE cordova-plugin-statusbar WHEN COMPILING TO IOS-->    
-     <!-- <gap:plugin name="cordova-plugin-statusbar" source="npm"  />  -->
+     <gap:plugin name="cordova-plugin-statusbar" source="npm"  /> 
 	 
 	 <!--ENABLED THIS PLUGIN ONLY FOR IOS-->
    <gap:plugin name="cordova-plugin-ionic-webview" source="npm" spec="4.2.1" />

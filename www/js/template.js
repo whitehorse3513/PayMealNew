@@ -18,10 +18,13 @@ tabbarMenu = function(){
 	    html+='</ons-tab>';
 	    html+='<ons-tab id="tab-search" page="search.html" label="'+ t("Search") +'" icon="search" active-icon="search" >';
 	    html+='</ons-tab>';	    
-	    html+='<ons-tab id="tab-profile" page="profile.html" label="'+ t("Profile") +'" icon="user-alt" active-icon="user-alt" >';
-	    html+='</ons-tab>';	    
+	    html+='<ons-tab id="tab-profile" page="profile.html" label="'+ t("Account") +'" icon="user-alt" active-icon="user-alt" >';
+	    html+='</ons-tab>';	   
+		html+='<ons-tab id="tab-history" page="order_list.html" label="'+ t("History") +'" icon="shopping-cart" active-icon="shopping-cart" badge="" >';
+	    html+='</ons-tab>';
 	    html+='<ons-tab id="tab-cart" page="cart_temp.html" label="'+ t("Cart") +'" icon="shopping-cart" active-icon="shopping-cart" badge="" >';
 	    html+='</ons-tab>';
+	
     html+='</ons-tabbar>';	
 	
    return html;
