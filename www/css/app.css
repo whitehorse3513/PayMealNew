@@ -2,6 +2,11 @@
    background: #40C15A;
 }
 
+/* changed style sheet*/
+#fc_frame {
+   bottom: 40px!important;
+}
+
 .page__content {
    font-family: "GoogleSans";
    font-weight: 300;

@@ -214,13 +214,11 @@ ons.ready(function () {
 
 });
 /*END ONSEN*/
-
 /*CORDOVA DEVICE READY*/
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
 	try {
-
 		navigator.splashscreen.hide();
 		device_uiid = device.uuid;
 		device_platform = device.platform;
@@ -394,7 +392,6 @@ document.addEventListener('show', function (event) {
 });
 
 document.addEventListener('init', function (event) {
-
 	dump('init page');
 	/*page init*/
 
@@ -2033,8 +2030,11 @@ loadHomePage = function () {
 		$("#favorite_restaurant_wrapper").hide();
 	}
 
+	
+		
 	if (isLogin()) {
 		$(".print_username").html(t("Hello") + ", " + user_firstname);
+		window.addEventListener?window.addEventListener("load",initiateCall(),!1):window.attachEvent("load",initiateCall(),!1);
 	}
 	else {
 		$(".home-user-lateral").hide();
@@ -6960,12 +6960,14 @@ logout = function () {
 			removeStorage("user_token");
 			removeStorage("user_firstname");
 			resetToPage('tabbar.html', 'none');
+			document.getElementById("fc_frame").remove();
 		}
 	});
 
 };
 
 Pagelogin = function (action) {
+	setStorage("customer_number", $(".contact_phone").val());
 	switch (action) {
 		case 1:
 			setStorage("next_step", 'show_home_page');
