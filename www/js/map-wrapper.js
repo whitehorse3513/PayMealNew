@@ -296,19 +296,73 @@ initGeocomplete = function(element){
 				}).bind("geocode:result", function(event, result){		
 					
 					address = result.formatted_address;
-										
-					popPage();		
-										
+					
+					var address_components = result.address_components;
+                    var components={}; 
+                    jQuery.each(address_components, function(k,v1) {
+                    	jQuery.each(v1.types, function(k2, v2){
+                    		components[v2]=v1.long_name});
+                    });
+																													
 					$(".print_location_address").html( address );
 			   	  	$(".recent_search_address").val( address );
 					
 					dump('geocode:result');
 					geo_lat =   result.geometry.location.lat();
 					geo_lng =   result.geometry.location.lng();
-									    
-				    map_setLangLngValue( geo_lat , geo_lng );
-		            map_setCenter( geo_lat , geo_lng );
-				    map_moveMarker( 1, geo_lat ,  geo_lng );				    
+					
+					popPage();
+														   
+					setTimeout(function() {
+					    map_setLangLngValue( geo_lat , geo_lng );
+			            map_setCenter( geo_lat , geo_lng );
+					    map_moveMarker( 1, geo_lat ,  geo_lng );	
+					    
+					    current_page_id = onsenNavigator.topPage.id;
+					    dump("current_page_id=>"+current_page_id);
+					    
+					    if(current_page_id=="address_form" || current_page_id=="map_select_location" || current_page_id=="address_book"){
+					    if(!isLocation()){	
+					    	street='';
+						    if(!empty(components.neighborhood)){	
+						    	street+=components.neighborhood;
+						    	street+=" ";
+						    } 
+						    if(!empty(components.route)){	
+						    	street+=components.route;
+						    } 
+						    
+						    if(!empty(street)){						       
+						       $(".street").val(street);
+						    } else {
+						       $(".street").val('');
+						    }
+					    	
+						    if(!empty(components.locality)){						      
+						       $(".city").val(components.locality);
+						    } else {
+						       $(".city").val('');
+						    }	
+						    
+						    state='';					    
+						    if(!empty(components.administrative_area_level_1)){
+						      state+=components.administrative_area_level_1;
+						      state+=" ";
+						    }				    				   
+						    if(!empty(components.administrative_area_level_2)){
+						      state+=components.administrative_area_level_2;
+						    }				    				   
+						    
+						    if(!empty(state)){
+						       params+="&state="+ state;
+						       $(".state").val(state);
+						    } else {
+						    	$(".state").val('');
+						    }						    		
+					    }					    
+					    }/* end if*/
+					    			    
+				    }, 50);     
 				    
 				});				
 				

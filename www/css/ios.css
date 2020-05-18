@@ -1,11 +1,14 @@
 body {
-  background-color: black !important;
+  background-color: #fcfcfc !important;
 }
 
-ons-pull-hook,
+ons-pull-hook {
+margin: 13px auto auto !important;
+}
+
 .iphonex_margin
 {
-margin: 13px auto auto !important;
+/*margin: 13px auto auto !important;*/
 }
 
 ons-action-sheet{
@@ -14,4 +17,8 @@ margin-bottom:-20px !important;
 
 .action-sheet--filter_sheet{
 height:500px !important;
+}
+
+ons-fab.fab--floating_category{
+bottom:90px !important;
 }

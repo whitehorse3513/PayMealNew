@@ -5344,7 +5344,7 @@ ons-fab.fab--bottom__center {
 	html[onsflag-iphonex-portrait] .bottom-bar {
 		bottom: 0;
 		box-sizing: content-box;
-		padding-bottom: 34px
+		padding-bottom: 0px
 	}
 	html[onsflag-iphonex-portrait] .dialog .bottom-bar,
 	html[onsflag-iphonex-portrait] .page-with-bottom-toolbar>.page__content .bottom-bar,
@@ -5428,7 +5428,7 @@ ons-fab.fab--bottom__center {
 		top: 49px
 	}
 	html[onsflag-iphonex-portrait] .tabbar:not(.tabbar--top):not(.tabbar--top) {
-		padding-bottom: 34px
+		padding-bottom: 0;
 	}
 	html[onsflag-iphonex-portrait] .dialog .tabbar:not(.tabbar--top):not(.tabbar--top),
 	html[onsflag-iphonex-portrait] .page-with-bottom-toolbar>.page__content .tabbar:not(.tabbar--top),
@@ -5436,7 +5436,7 @@ ons-fab.fab--bottom__center {
 		padding-bottom: 0
 	}
 	html[onsflag-iphonex-portrait] .tabbar__content:not(.tabbar--top__content) {
-		bottom: 83px
+		bottom: 49px
 	}
 	html[onsflag-iphonex-portrait] .dialog .tabbar__content:not(.tabbar--top__content),
 	html[onsflag-iphonex-portrait] .page-with-bottom-toolbar>.page__content .tabbar__content:not(.tabbar--top__content),

@@ -1,5 +1,4 @@
 .page--orange_bg__background {
-   /*background:#F68715;*/
    background: #40C15A;
 }
 
@@ -45,9 +44,14 @@
 }
 
 p.small,
-.remove-min-height.small {
+.remove-min-height.small,
+.list-item--list_small {
    font-size: 12px;
    color: #626573;
+}
+
+.list-item--list_small a{
+color:#626573;
 }
 
 p.small.padding {
@@ -112,7 +116,7 @@ p.small.padding {
 }
 
 .bottom_toolbar1 {
-   height: 150px;
+   height: 180px;
    text-align: center;
 }
 
@@ -344,7 +348,7 @@ p.to_center {
    height: 46px;
    line-height: 46px;
    box-shadow: 0 5px 20px 0 rgba(30, 40, 50, 0.1) !important;
-   margin-left: 7.55px;
+   margin-left: 7.5px;
    border-radius: 5px;
 }
 
@@ -857,7 +861,7 @@ padding-left:5px;*/
 .search_result_small,
 .resp_small {
    padding: 5px 20px;
-   color: #626573;
+   color:#626573;
 }
 
 span.highlight {
@@ -1013,10 +1017,10 @@ span.highlight {
 }
 
 .rating-score {
-   font-size: 14px;
-   font-weight: bold;
-   padding: 0 5px;
-   color: #626573;
+font-size: 14px;
+font-weight: bold;
+padding: 0 5px;
+color: #626573;
 }
 
 .carousel_resto_menu ons-carousel-item.selected,
@@ -1033,9 +1037,9 @@ span.highlight {
 }
 
 #resto_list_category .list-item__title {
-   font-size: 16px;
-   display: block;
-   color: #333;
+font-size: 16px;
+display: block;
+color: #333;
 }
 
 #resto_list_category p,
@@ -1116,10 +1120,10 @@ span.highlight {
 }
 
 .quantity_wrap ons-button {
-   background: #40C15A;
-   font-size: 22px;
-   color: #fff;
-   border-radius: 5px;
+ background: #40C15A;
+ font-size: 22px;
+ color: #fff;
+ border-radius: 5px;
 }
 
 .quantity_wrap .text-input--material,
@@ -1138,14 +1142,14 @@ span.highlight {
 }
 
 textarea.full_width {
-   background: #fff;
-   padding: 15px;
+    background: #fff;
+    padding: 15px;
    border-radius: 3px;
-   box-shadow: 0 5px 20px 0 rgba(30, 40, 50, 0.1);
-   border: .75px solid #edeefc;
-   font-size: 14px;
-   color: #333;
-   margin: 10px 0 15px;
+    box-shadow: 0 5px 20px 0 rgba(30, 40, 50, 0.1);
+    border: .75px solid #edeefc;
+    font-size: 14px;
+    color: #333;
+    margin: 10px 0 15px;
 }
 
 .list--list_grey .list-header--material {
@@ -1322,12 +1326,12 @@ ons-button .equal_table {
 #receipt h3,
 #driver_ty h3,
 #booking_receipt h3 {
-   color: #40C15A;
-   text-shadow: 1px 0 #40C15A;
-   background: #fff;
-   padding: 10px 20px;
-   border-radius: 40px;
-   box-shadow: 0 5px 20px 0 rgba(30, 40, 50, 0.1);
+color: #40C15A;
+text-shadow: 1px 0 #40C15A;
+background: #fff;
+padding: 10px 20px;
+border-radius: 40px;
+box-shadow: 0 5px 20px 0 rgba(30, 40, 50, 0.1);
 }
 
 .notification.green {
@@ -1396,8 +1400,8 @@ ons-button .equal_table {
 }
 
 .content_page h4 {
-   font-weight: bold;
-   color: #2E3B49;
+    font-weight: bold;
+    color: #2E3B49;
 }
 
 .content_page p.sub,
@@ -1961,9 +1965,9 @@ text-transform: capitalize;*/
 }
 
 .cart_merchant_name {
-   padding: 0;
-   margin: 20px;
-   text-align: left;
+padding: 0;
+margin: 20px;
+text-align: left;
 }
 
 .cart_details {
@@ -2001,7 +2005,7 @@ text-transform: capitalize;*/
 .tag_discount {
    color: #c2c4cc;
    font-weight: normal;
-   margin-right: 10px;
+   margin-right: 5px;
    text-decoration: line-through;
 }
 
@@ -2255,7 +2259,7 @@ text-transform: capitalize;*/
 }
 
 .ribbon {
-   display: inline-block;
+display: inline-block;
 }
 
 .ribbon span {
@@ -2272,18 +2276,18 @@ text-transform: capitalize;*/
 }
 
 .ribbon .loaded {
-   display: inline-block;
+display: inline-block;
 }
 
 .ribbon .stic-store-dot {
-   color: #2E3B49;
-   font-size: 16px;
-   margin-left: 5px;
+color: #2E3B49;
+font-size: 16px;
+margin-left: 5px;
 }
 
 .content_wrapper {
-   padding: 5px 0;
-   margin-bottom: 5px;
+padding: 5px 0;
+margin-bottom: 5px;
 }
 
 .bottom-bar--bottom_toolbar_carousel ons-carousel-item {
@@ -2292,25 +2296,25 @@ text-transform: capitalize;*/
 }
 
 .bottom-bar--bottom_toolbar_carousel {
-   height: 130px;
-   padding: 20px 20px 0;
-   background: transparent;
+    height: 130px;
+    padding: 20px 20px 0;
+    background: transparent;
 }
 
 .bottom-bar--bottom_toolbar_carousel ons-carousel-item {
-   background: #fff;
-   padding: 15px;
-   border-radius: 3px;
-   box-shadow: 0 5px 20px 0 rgba(30, 40, 50, 0.1) !important;
-   border: .75px solid #edeefc;
+background: #fff;
+padding: 15px;
+border-radius: 3px;
+box-shadow: 0 5px 20px 0 rgba(30, 40, 50, 0.1) !important;
+border: .75px solid #edeefc;
 }
 
 .bottom-bar--bottom_toolbar_carousel .header_bg {
-   height: 60px;
-   width: 60px;
-   background-size: cover;
-   background-repeat: no-repeat;
-   border-radius: 3px;
+height: 60px;
+width: 60px;
+background-size: cover;
+background-repeat: no-repeat;
+border-radius: 3px;
 }
 
 .bottom-bar--bottom_toolbar_carousel h4 {
@@ -2367,5 +2371,107 @@ ons-fab.fab--floating_category {
 }
 
 #restaurant_page .green_tag.open {
-   display: none;
+display: none;
 }
+
+.header_contact{
+background-size:cover;
+}
+.fixed_header.header_contact{
+height:20%;
+}
+
+.RTL .is_rtl,
+.RTL .bottom-bar--is_rtl,
+.RTL .page--is_rtl,
+.RTL .toolbar--is_rtl,
+.RTL .tabbar--is_rtl,
+.RTL #home .white_list_wrapper,
+.RTL .list--is_rtl,
+.RTL ons-action-sheet,
+.RTL ons-dialog,
+.RTL ons-alert-dialog
+{
+direction: rtl;
+}
+
+.RTL .page--is_rtl ons-list,
+.RTL .action-sheet-title,
+.RTL .action-sheet-button,
+.RTL .list--is_rtl,
+.RTL ons-dialog ons-list,
+.RTL .bottom_loader,
+.RTL #list_restaurant .is_rtl_text_right
+{
+/*padding-right: 10px;*/
+}
+
+.RTL .list--is_rtl_nopad{
+padding-right: 0px;
+}
+
+.RTL .text-input--material__label{
+left: unset;
+right: 0px;
+}
+
+.RTL .page--is_rtl .cream_header img{
+right:80px;
+top:-5px;
+}
+
+.RTL #profile.page--is_rtl .cream_header img{
+top:10px;
+}
+
+.RTL .back-button--fixed_back_button,
+.RTL #address_form ons-back-button
+{
+left: auto;
+right: 10px;
+}
+
+.RTL .text-right,
+.RTL #home .white_list_wrapper .right,
+.RTL .is_rtl_text_left
+{
+text-align: left !important;
+}
+
+.RTL #profile .list-item--chevron::before,
+.RTL #points_list .list-item--chevron::before
+{
+display:none;
+}
+
+.RTL .list-title--list_title_grey,
+.RTL #device_id ons-list-item,
+.RTL #notifications ons-list-item,
+.RTL ons-list-item,
+.RTL .action-sheet-title,
+.RTL .action-sheet-button,
+.RTL .list--is_rtl,
+.RTL #favorite_list h5,
+.RTL #favorite_list p,
+.RTL ons-toolbar .toolbar__title,
+.RTL #cuisine_list h4,
+.RTL #cuisine_list p,
+.RTL .is_rtl_text_right,
+/*.RTL .bottom_loader,*/
+.RTL ons-action-sheet ons-list-header
+{
+ text-align: right !important;
+}
+
+.RTL .fab--is_rtl{
+left: 20px;
+right: auto;
+}
+
+
+/*
+#home_banner_wrapper{
+background: #fff none repeat scroll 0 0;    
+margin: 10px 0 0;
+padding: 5px 10px;
+}*/
