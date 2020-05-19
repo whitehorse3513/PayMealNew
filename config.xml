@@ -3,8 +3,8 @@
     xmlns:gap = "http://phonegap.com/ns/1.0"
     xmlns:android = "http://schemas.android.com/apk/res/android"
     id        = "com.paymeal"
-    versionCode = "2.0"
-    version   = "2.0">
+    versionCode = "1.5"
+    version   = "1.5">
     <name>PayMeal</name>
     <description>
         PayMeal
@@ -33,12 +33,11 @@
 	<gap:plugin name="cordova-plugin-splashscreen" source="npm" />	
 	<gap:plugin name="cordova-plugin-geolocation" source="npm" />
 	<gap:plugin name="cordova-plugin-network-information" source="npm" />
-	<gap:plugin name="cordova-plugin-freshchat-vmatskiv-fork" source="npm" spec="1.2.3" /> 
 	    
     <gap:plugin name="phonegap-plugin-push" source="npm" spec="2.1.2"  />
             
     <gap:plugin spec="https://github.com/bastikikang/cordova-plugin-request-location-accuracy" source="git">    
-      <variable name="PLAY_SERVICES_VERSION" value="11.8.0" /> 
+      <variable name="PLAY_SERVICES_VERSION" value="11.0.1" /> 
     </gap:plugin>
     
     <gap:plugin name="cordova-plugin-x-toast" source="npm" spec="2.7.0" />         
@@ -59,7 +58,7 @@
                        
     <gap:plugin name="cordova-plugin-googleplus" source="npm" spec="7.0.2"  >    
 	  <variable name="REVERSED_CLIENT_ID" value="" />
-	  <variable name="PLAY_SERVICES_VERSION" value="11.8.0" /> 
+	  <variable name="PLAY_SERVICES_VERSION" value="11.0.1" /> 
 	</gap:plugin>
        
 	<!--ENABLED FACEBOOK ONLY IF YOU HAVE APP ID-->
@@ -75,7 +74,7 @@
     </plugin>
 	
 	<plugin name="com.cmackay.plugins.googleanalytics" source="npm" spec="1.0.4" >	
-	   <variable name="ANALYTICS_VERSION" value="11.8.0" /> 
+	   <variable name="ANALYTICS_VERSION" value="11.0.1" /> 
 	</plugin>
 	
 	<gap:plugin name="com-sarriaroman-photoviewer" source="npm"  /> 
@@ -89,8 +88,8 @@
      <gap:plugin name="cordova-plugin-statusbar" source="npm"  /> 
 	 
 	 <!--ENABLED THIS PLUGIN ONLY FOR IOS-->
-   <!-- <gap:plugin name="cordova-plugin-ionic-webview" source="npm" spec="4.2.1" /> -->
-    <!-- <gap:plugin name="cordova-plugin-ionic-keyboard" source="npm" spec="2.2.0" /> -->
+   <gap:plugin name="cordova-plugin-ionic-webview" source="npm" spec="4.2.1" />
+    <gap:plugin name="cordova-plugin-ionic-keyboard" source="npm" spec="2.2.0" />
 		
 	<!--END OF PLUGIN-->
 	    	
