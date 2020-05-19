@@ -39,6 +39,9 @@
     <gap:plugin spec="https://github.com/bastikikang/cordova-plugin-request-location-accuracy" source="git">    
       <variable name="PLAY_SERVICES_VERSION" value="11.0.1" /> 
     </gap:plugin>
+	
+    <gap:plugin spec="https://github.com/techaffinity/freshchat-phonegap" source="git">
+    </gap:plugin>
     
     <gap:plugin name="cordova-plugin-x-toast" source="npm" spec="2.7.0" />         
             
