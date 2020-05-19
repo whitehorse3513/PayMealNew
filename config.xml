@@ -33,7 +33,7 @@
 	<gap:plugin name="cordova-plugin-splashscreen" source="npm" />	
 	<gap:plugin name="cordova-plugin-geolocation" source="npm" />
 	<gap:plugin name="cordova-plugin-network-information" source="npm" />
-	<gap:plugin name="cordova-plugin-freshchat-vmatskiv-fork" source="npm" /> 
+
 	    
     <gap:plugin name="phonegap-plugin-push" source="npm" spec="2.1.2"  />
             
