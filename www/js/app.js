@@ -2034,7 +2034,6 @@ loadHomePage = function () {
 		
 	if (isLogin()) {
 		$(".print_username").html(t("Hello") + ", " + user_firstname);
-		window.addEventListener?window.addEventListener("load",initiateCall(),!1):window.attachEvent("load",initiateCall(),!1);
 	}
 	else {
 		$(".home-user-lateral").hide();
